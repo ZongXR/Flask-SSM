@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flask-mvc主页</title>
+    <script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+    <script>
+        function getCustom() {
+            let question = document.getElementById("inpu").value;
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:5000/custom",
+                data: {question: question},
+                success: function(data){
+                    $("#oupu").append("<div>问：" + question + "</div>")
+                    $("#oupu").append("<div>答：" + data + "</div>")
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<label>
+    <textarea id="inpu" cols="100" rows="8"></textarea>
+</label><br />
+<button onclick="getCustom()">请求</button><br />
+<div id="oupu"></div>
+</body>
+</html>
