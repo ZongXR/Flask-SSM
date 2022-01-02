@@ -1,0 +1,2 @@
+# flask-mvc-example
+基于flask开发的一套web模板，完全按照MVC分层的思想实现，对于有一定web基础，但入门python的人可起到教学作用。尤其有助于java转python的web开发
