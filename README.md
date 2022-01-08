@@ -1,5 +1,5 @@
 <h1>flask-mvc-example</h1>
-这事一套基于flask开发的web模板，完全按照MVC分层的思想实现，对于有一定web基础，但入门python的人可起到教学作用。尤其有助于java转python的web开发
+这是一套基于flask开发的web模板，完全按照MVC分层的思想实现，对于没有web基础但需要做web项目的人可起到教学作用。尤其有助于java转python的web开发，让你按照java的思路写python
 <h2>这个怎么用？</h2>
 <h3>后台资源</h3>
 <h4>package.name.controller包</h4>
@@ -46,4 +46,11 @@
 <tr>
 <td>1.0.0.0</td><td>完成模板搭建，实现MVC分层，现在可以自助接入自定义内容。</td><td>2022年1月2日</td>
 </tr>
+<<<<<<< HEAD
+<tr>
+<td>1.1.0.0</td><td>完善模板，现在可以在controller下自建多级包</td><td>2022年1月9日</td>
+</tr>
 </table>
+=======
+</table>
+>>>>>>> 2d747b11331d16d3ec38e42f1f9763a6203acddd
