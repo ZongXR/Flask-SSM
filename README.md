@@ -28,7 +28,7 @@
 </ol>
 <h4>package.name.utils包</h4>
 <ol>
-<li>这个包用于存放工具类，样例中已经给出了工具类StringUtils的样例。</li>
+<li>这个包用于存放工具类，样例中已经给出了工具类StringUtils, DirUtils的样例。</li>
 </ol>
 <h3>前台资源</h3>
 <h4>static目录</h4>
@@ -51,5 +51,8 @@
 </tr>
 <tr>
 <td>1.1.1.0</td><td>完善模板，现在可以在service下自建多级包</td><td>2022年1月10日</td>
+</tr>
+<tr>
+<td>1.1.2.0</td><td>完善模板，现在可以在task下自建多级包</td><td>2022年1月11日</td>
 </tr>
 </table>
