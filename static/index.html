@@ -12,8 +12,8 @@
                 url: "http://localhost:5000/custom",
                 data: {question: question},
                 success: function(data){
-                    $("#oupu").append("<div>问：" + question + "</div>")
-                    $("#oupu").append("<div>答：" + data + "</div>")
+                    $("#oupu").append("<div>请求：" + question + "</div>")
+                    $("#oupu").append("<div>响应：" + data + "</div>")
                 }
             });
         }

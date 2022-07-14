@@ -58,4 +58,7 @@
 <tr>
 <td>1.1.2.1</td><td>添加模板目录</td><td>2021年1月30日</td>
 </tr>
+<tr>
+<td>1.2.0.0</td><td>service层设置为单例模式;补充SQLalchemy的点查询demo</td><td>2022年7月14日</td>
+</tr>
 </table>

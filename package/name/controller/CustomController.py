@@ -11,5 +11,5 @@ def custom():
     :return: 响应
     """
     param = request.values.get("question")
-    result = base_service.run(param)
+    result = base_service.run(int(param))
     return result

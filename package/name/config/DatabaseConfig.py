@@ -1,6 +1,6 @@
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
-USERNAME = 'root'
+USERNAME = 'username'
 PASSWORD = 'password'
 HOST = 'localhost'
 PORT = '3306'
