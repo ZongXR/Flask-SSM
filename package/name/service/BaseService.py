@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from package.name.dao import db
-from package.name.dao.TableNameDao import TableNameDao
+from package.name.dao.TableNameDao import query_one
 
 
 class BaseService:
@@ -32,5 +32,4 @@ class BaseService:
         :return: 答案
         """
         # TODO 在此写业务逻辑
-        table_name_dao = TableNameDao()
-        return str(table_name_dao.query_one(param))
+        return str(query_one(param))

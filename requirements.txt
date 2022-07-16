@@ -4,4 +4,4 @@ Flask-APScheduler~=1.12.2
 Flask-Cors~=3.0.10
 Flask-HTTPAuth~=4.5.0
 Flask-SQLAlchemy~=2.5.1
-PyInstaller~=3.6
+SQLAlchemy~=1.4.18

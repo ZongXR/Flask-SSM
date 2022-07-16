@@ -61,4 +61,7 @@
 <tr>
 <td>1.2.0.0</td><td>service层设置为单例模式;补充SQLalchemy的点查询demo</td><td>2022年7月14日</td>
 </tr>
+<tr>
+<td>1.3.0.0</td><td>分离pojo和dao</td><td>2022年7月16日</td>
+</tr>
 </table>
