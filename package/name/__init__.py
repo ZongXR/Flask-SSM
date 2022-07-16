@@ -18,5 +18,5 @@ def create_app() -> Flask:
     init_view(app)
     init_scheduler(app)
     CORS(app, supports_credentials=True)
-    app.logger.info("web应用启动")
+    app.logger.info("web应用启动成功")
     return app

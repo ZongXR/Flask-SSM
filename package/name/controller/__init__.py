@@ -17,6 +17,7 @@ def init_view(app: Flask):
     :return:
     """
     app.register_blueprint(bp)
+    app.logger.info("初始化view成功")
 
 
 for file in os.listdir(os.path.dirname(__file__)):

@@ -13,3 +13,4 @@ def init_db(app: Flask):
     :return:
     """
     db.init_app(app)
+    app.logger.info("连接数据库成功")
