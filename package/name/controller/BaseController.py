@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Response, send_from_directory
 from package.name.controller import bp
-from package.name.vo.CommonResult import CommonResult
+from package.name.vo import CommonResult
 
 
 @bp.route('/', methods=["GET", "POST"])

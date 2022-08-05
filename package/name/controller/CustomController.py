@@ -2,7 +2,7 @@
 from package.name.controller import bp
 from flask import request, current_app, Response
 from package.name.service import base_service
-from package.name.vo.CommonResult import CommonResult
+from package.name.vo import CommonResult
 from package.name.exception import CustomException
 
 
