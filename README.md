@@ -67,4 +67,7 @@
 <tr>
 <td>1.3.1.0</td><td>输出更多日志</td><td>2022年7月16日</td>
 </tr>
+<tr>
+<td>1.3.2.0</td><td>增加ViewObject; 增加logs目录</td><td>2022年8月5日</td>
+</tr>
 </table>
