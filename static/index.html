@@ -27,21 +27,31 @@
     </script>
 </head>
 <body>
+
+<small>*请在此输入请求地址</small>
 <label for="url">
-    <small>*请在此输入请求地址</small><br/>
-    <input id="url" placeholder="输入请求地址" type="text" value="/custom" />
-</label><br/><br/>
+    <input id="url" placeholder="输入请求地址" type="text" value="/custom"/>
+</label><br/>
+<br/>
+<small>*请在此选择mime值</small><br/>
 <label>
-    <small>*请在此选择mime值</small><br/>
-    <input type="radio" name="mime" value="application/json;charset=utf-8" checked />application/json;charset=utf-8<br/>
-    <input type="radio" name="mime" value="application/x-www-form-urlencoded;charset=utf-8" />application/x-www-form-urlencoded;charset=utf-8<br/>
-    <input type="radio" name="mime" value="text/html;charset=utf-8" />text/html;charset=utf-8<br/>
+    <input type="radio" id="mime_json" name="mime" value="application/json;charset=utf-8" checked/>application/json;charset=utf-8
 </label><br/>
 <label>
-    <small>*请在此选择请求方式</small><br/>
-    <input type="radio" name="request_method" value="POST" checked />POST<br/>
-    <input type="radio" name="request_method" value="GET" />GET<br/>
+    <input type="radio" id="mime_form" name="mime" value="application/x-www-form-urlencoded;charset=utf-8"/>application/x-www-form-urlencoded;charset=utf-8
 </label><br/>
+<label>
+    <input type="radio" id="mime_text" name="mime" value="text/html;charset=utf-8"/>text/html;charset=utf-8
+</label><br/>
+<br />
+<small>*请在此选择请求方式</small><br/>
+<label>
+    <input type="radio" name="request_method" value="POST" checked/>POST
+</label><br/>
+<label>
+    <input type="radio" name="request_method" value="GET"/>GET
+</label><br/>
+<br />
 <label for="inpu">
     <small>*请在此输入请求正文json</small><br/>
     <textarea id="inpu" cols="100" rows="8">
