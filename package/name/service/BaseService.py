@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from flask import current_app
 from package.name.dao import db
 from package.name.dao.TableNameDao import query_one
 
@@ -32,4 +33,5 @@ class BaseService:
         :return: 答案
         """
         # TODO 在此写业务逻辑
+        current_app.logger.info("执行业务逻辑%s, 参数%s" % (type(self), param))
         return str(query_one(param))

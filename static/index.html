@@ -6,24 +6,52 @@
     <script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
     <script>
         function getCustom() {
-            let question = document.getElementById("inpu").value;
             $.ajax({
-                type: "GET",
-                url: "http://localhost:5000/custom",
-                data: {question: question},
-                success: function(data){
-                    $("#oupu").append("<div>请求：" + question + "</div>")
-                    $("#oupu").append("<div>响应：" + data + "</div>")
+                type: $("input[name='request_method']:checked").val(),
+                contentType: $("input[name='mime']:checked").val(),
+                dataType: "json",
+                url: $("#url").val(),
+                data: $("#inpu").val(),
+                success: function (response) {
+                    $("#oupu").append("--------------------------------------------------");
+                    $("#oupu").append("<div>请求：" + $("#inpu").val() + "</div>");
+                    $("#oupu").append("<div>响应：" + JSON.stringify(response) + "</div>");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $("#oupu").append("--------------------------------------------------");
+                    $("#oupu").append("<div>请求：" + $("#inpu").val() + "</div>");
+                    $("#oupu").append("<div>响应：" + JSON.stringify(jqXHR) + "</div>");
                 }
             });
         }
     </script>
 </head>
 <body>
+<label for="url">
+    <small>*请在此输入请求地址</small><br/>
+    <input id="url" placeholder="输入请求地址" type="text" value="/custom" />
+</label><br/><br/>
 <label>
-    <textarea id="inpu" cols="100" rows="8"></textarea>
-</label><br />
-<button onclick="getCustom()">请求</button><br />
+    <small>*请在此选择mime值</small><br/>
+    <input type="radio" name="mime" value="application/json;charset=utf-8" checked />application/json;charset=utf-8<br/>
+    <input type="radio" name="mime" value="application/x-www-form-urlencoded;charset=utf-8" />application/x-www-form-urlencoded;charset=utf-8<br/>
+    <input type="radio" name="mime" value="text/html;charset=utf-8" />text/html;charset=utf-8<br/>
+</label><br/>
+<label>
+    <small>*请在此选择请求方式</small><br/>
+    <input type="radio" name="request_method" value="POST" checked />POST<br/>
+    <input type="radio" name="request_method" value="GET" />GET<br/>
+</label><br/>
+<label for="inpu">
+    <small>*请在此输入请求正文json</small><br/>
+    <textarea id="inpu" cols="100" rows="8">
+{
+    "question": 2
+}
+    </textarea>
+</label><br/>
+<button onclick="getCustom()">请求</button>
+<br/>
 <div id="oupu"></div>
 </body>
 </html>
