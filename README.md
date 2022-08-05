@@ -15,7 +15,7 @@
 </ol>
 <h4>package.name.dao包</h4>
 <ol>
-<li>这个包对应着数据访问层，相当于java的dao包。每个类对应着一张表，用法同<a href="http://www.pythondoc.com/flask-sqlalchemy/quickstart.html" target="_blank">Flask_SQLAlchemy</a>完全一样</li>
+<li>这个包对应着数据访问层，相当于java的dao包。主要用来写sql，用法同<a href="http://www.pythondoc.com/flask-sqlalchemy/quickstart.html" target="_blank">Flask_SQLAlchemy</a>完全一样</li>
 </ol>
 <h4>package.name.task包</h4>
 <ol>
@@ -29,6 +29,14 @@
 <h4>package.name.utils包</h4>
 <ol>
 <li>这个包用于存放工具类，样例中已经给出了工具类StringUtils, DirUtils的样例。</li>
+</ol>
+<h4>package.name.pojo包</h4>
+<ol>
+<li>这个包用于存放实体类，通过继承flask_sqlalchemy的Model类，可实现对实体对象的快速query</li>
+</ol>
+<h4>package.name.vo包</h4>
+<ol>
+<li>这个包存储了ViewObject，是后端响应给前端的标准json数据格式</li>
 </ol>
 <h3>前台资源</h3>
 <h4>static目录</h4>
@@ -75,5 +83,8 @@
 </tr>
 <tr>
 <td>1.4.1.0</td><td>修改前端页面样式</td><td>2022年8月5日</td>
+</tr>
+<tr>
+<td>1.5.0.0</td><td>新增自定义异常及全局、局部异常处理</td><td>2022年8月5日</td>
 </tr>
 </table>

@@ -3,6 +3,12 @@ from package.name.controller import bp
 from flask import request, current_app, Response
 from package.name.service import base_service
 from package.name.vo.CommonResult import CommonResult
+from package.name.exception import CustomException
+
+
+@bp.errorhandler(CustomException)
+def custom_error_handler(e: CustomException) -> Response:
+    return CommonResult.failed(message=str(e), data=repr(e))
 
 
 @bp.route("/custom", methods=["POST"])
