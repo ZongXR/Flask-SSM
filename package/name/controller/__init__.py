@@ -7,7 +7,8 @@ import os
 _path_ = os.getcwd()
 
 
-bp = Blueprint("blue_print", __name__, static_folder=_path_ + "/static", template_folder=_path_ + "/templates", static_url_path="")
+bp_base = Blueprint("blueprint_base", __name__, static_folder=os.path.join(_path_, "static"), template_folder=os.path.join(_path_, "templates"), static_url_path="")
+bp_custom = Blueprint("blueprint_custom", __name__, static_folder=os.path.join(_path_, "static"), template_folder=os.path.join(_path_, "templates"), static_url_path="")
 
 
 def init_view(app: Flask):
@@ -16,7 +17,8 @@ def init_view(app: Flask):
     :param app:
     :return:
     """
-    app.register_blueprint(bp)
+    app.register_blueprint(bp_base)
+    app.register_blueprint(bp_custom)
     app.logger.info("初始化view成功")
 
 

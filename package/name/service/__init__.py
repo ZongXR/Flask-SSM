@@ -2,6 +2,7 @@
 import os
 from package.name.utils.StringUtils import to_snake
 from package.name.utils.DirUtils import recurse_files
+from package.name.service.BaseService import BaseService
 
 
 for file in os.listdir(os.path.dirname(__file__)):
