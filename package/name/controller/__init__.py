@@ -1,14 +1,31 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, Blueprint
-from package.name.utils.DirUtils import recurse_files
 import os
+from flask import Flask
+from package.name.utils.DirUtils import recurse_files
 
 
-_path_ = os.getcwd()
-
-
-bp_base = Blueprint("blueprint_base", __name__, static_folder=os.path.join(_path_, "static"), template_folder=os.path.join(_path_, "templates"), static_url_path="")
-bp_custom = Blueprint("blueprint_custom", __name__, static_folder=os.path.join(_path_, "static"), template_folder=os.path.join(_path_, "templates"), static_url_path="")
+__blueprints__ = []
+for _file_ in os.listdir(os.path.dirname(__file__)):
+    if _file_.startswith("__"):
+        continue
+    _full_file_ = os.path.join(os.path.dirname(__file__), _file_)
+    if os.path.isfile(_full_file_):
+        _module_name_ = _file_[:-3]
+        __import__(__name__ + "." + _module_name_)
+        __blueprints__.append(eval(_module_name_ + ".bp"))
+    else:
+        _files_ = recurse_files(_full_file_)
+        for _sub_file_ in _files_:
+            _module_name_ = os.path.basename(_sub_file_)
+            _path_name_ = os.path.dirname(_sub_file_)
+            if _module_name_.startswith("__"):
+                continue
+            _package_name_ = __name__ + _path_name_.replace(os.path.dirname(__file__), "").replace(os.sep, ".")
+            if "__" in _package_name_:
+                continue
+            _module_name_ = _module_name_[:-3]
+            __import__(_package_name_ + "." + _module_name_)
+            __blueprints__.append(eval(_module_name_ + ".bp"))
 
 
 def init_view(app: Flask):
@@ -17,28 +34,6 @@ def init_view(app: Flask):
     :param app:
     :return:
     """
-    app.register_blueprint(bp_base)
-    app.register_blueprint(bp_custom)
+    for __blueprint__ in __blueprints__:
+        app.register_blueprint(__blueprint__)
     app.logger.info("初始化view成功")
-
-
-for file in os.listdir(os.path.dirname(__file__)):
-    if file.startswith("__"):
-        continue
-    full_file = os.path.join(os.path.dirname(__file__), file)
-    if os.path.isfile(full_file):
-        module_name = file[:-3]
-        __import__(__name__ + "." + module_name)
-    else:
-        files = recurse_files(full_file)
-        for sub_file in files:
-            module_name = os.path.basename(sub_file)
-            path_name = os.path.dirname(sub_file)
-            if module_name.startswith("__"):
-                continue
-            package_name = __name__ + path_name.replace(os.path.dirname(__file__), "").replace(os.sep, ".")
-            if "__" in package_name:
-                continue
-            module_name = module_name[:-3]
-            __import__(package_name + "." + module_name)
-
