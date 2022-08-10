@@ -5,7 +5,7 @@ from pathlib import Path
 from flask import Flask
 from flask.config import Config
 from flask_apscheduler import APScheduler
-from package.name.utils.DirUtils import recurse_files
+from package.name.utils.dir_utils import recurse_files
 
 _path_ = os.path.dirname(os.path.abspath(Path(__file__)))
 

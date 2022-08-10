@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from flask import Flask
-from package.name.utils.DirUtils import recurse_files
+from package.name.utils.dir_utils import recurse_files
 
 
 __blueprints__ = []

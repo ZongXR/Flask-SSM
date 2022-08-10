@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
 from flask_cors import CORS
-from package.name.config import DatabaseConfig, LogsConfig
+from package.name.config import database_config, logs_config
 from package.name.dao import init_db
 from package.name.controller import init_view
 from package.name.task import init_scheduler
@@ -13,7 +13,7 @@ def create_app() -> Flask:
     :return:
     """
     app = Flask(__name__)
-    app.config.from_object(DatabaseConfig)
+    app.config.from_object(database_config)
     init_db(app)
     init_view(app)
     init_scheduler(app)
