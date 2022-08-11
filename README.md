@@ -4,31 +4,31 @@
 <h3>后台资源</h3>
 <h4>package.name.controller包</h4>
 <ol>
-<li>这个包存放着前后端交互的接口，相当于java的controller包。如需自定义接口，仅需要把py文件放入该包内，并使用@bp.route装饰器注册进去即可。</li>
-<li>样例中已经给出了基础接口BaeController.py，如需自定义仿照此样例即可。如果接口需要调用业务层的服务，将服务层的类名改为蛇形命名法，然后直接import就行，模板能自动识别。如CustomController引用了base_service</li>
+<li>这个包存放着前后端交互的接口，相当于java的controller包。如需自定义接口，仅需要把py文件放入该包内，并使用<code>@bp.route</code>装饰器注册进去即可。</li>
+<li>样例中已经给出了基础接口base_controller.py，如需自定义仿照此样例即可，在此包下的每个py文件构成一个蓝图，并且能够自动注册。注意：BluePrint类对象必须命名为bp，才能够自动注册。</li>
 </ol>
 <h4>package.name.service包</h4>
 <ol>
-<li>这个包存放着业务的服务，相当于java的service包。里面的所有模块均需要以类的形式提供，并且要求一个模块只能有一个类，模块名与类名必须一致。</li>
-<li>按照上述规则制作的服务能够自动被模板发现，并且可以在controller中直接引用类名的蛇形命名法格式的变量名</li>
-<li>如果业务层需要引用数据层的变量，直接from ... import ...即可，和以往一样。</li>
+<li>这个包存放着业务的服务，相当于java的service包。里面的所有模块均需要以模块的形式提供，以此保证单例模式。</li>
+<li>如果需要被别的模块引用，直接<code>from package.name.service import **_service</code>即可</li>
 </ol>
 <h4>package.name.dao包</h4>
 <ol>
 <li>这个包对应着数据访问层，相当于java的dao包。主要用来写sql，用法同<a href="http://www.pythondoc.com/flask-sqlalchemy/quickstart.html" target="_blank">Flask_SQLAlchemy</a>完全一样</li>
+<li>如果需要被别的模块引用，直接<code>from package.name.dao import **_dao</code>即可</li>
 </ol>
 <h4>package.name.task包</h4>
 <ol>
 <li>这个包用于存放定时任务，使用时只需要将自定义的定时任务放入包内。</li>
-<li>然后在文件中声明ID, FUNC, TRIGGER等用于标志定时任务的变量即可，这些变量必须大写。其中ID表示定时任务的id，必须唯一。FUNC表示定时任务执行的函数名，对应的函数需要在文件内给出。其他标识于<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。</li>
+<li>然后在文件中声明ID, FUNC, TRIGGER等用于标志定时任务的变量即可，这些变量必须大写。其中ID表示定时任务的id，必须唯一。FUNC表示定时任务执行的函数名，对应的函数需要在文件内给出。其他标识与<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。</li>
 </ol>
 <h4>package.name.config包</h4>
 <ol>
-<li>package.name.config，这个包存放着配置信息，包括但不限于数据库配置信息、日志配置信息。样例中已经给出了数据库配置样例DatabaseConfig.py，日志配置样例LogsConfig.py</li>
+<li>package.name.config，这个包存放着配置信息，包括但不限于数据库配置信息、日志配置信息。样例中已经给出了数据库配置样例database_config.py，日志配置样例logs_config.py</li>
 </ol>
 <h4>package.name.utils包</h4>
 <ol>
-<li>这个包用于存放工具类，样例中已经给出了工具类StringUtils, DirUtils的样例。</li>
+<li>这个包用于存放工具模块，样例中已经给出了工具dir_utils.py的样例。</li>
 </ol>
 <h4>package.name.pojo包</h4>
 <ol>
@@ -98,5 +98,8 @@
 </tr>
 <tr>
 <td>1.7.0.0</td><td>规范命名; service使用模块自动单例模式</td><td>2022年8月10日</td>
+</tr>
+<tr>
+<td>1.7.0.1</td><td>优化代码; 更新使用说明</td><td>2022年8月11日</td>
 </tr>
 </table>

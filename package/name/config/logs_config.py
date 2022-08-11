@@ -2,7 +2,7 @@
 from logging.config import dictConfig
 import os
 
-path = os.getcwd()
+__path__ = os.getcwd()
 
 dictConfig({
     "version": 1,
@@ -18,7 +18,7 @@ dictConfig({
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "DEBUG",
             "encoding": "utf-8",
-            "filename": path + "/logs/DEBUG",
+            "filename": os.path.join(__path__, "logs/DEBUG"),
             "when": "MIDNIGHT",
             "backupCount": 1,
             "formatter": "default"
@@ -27,7 +27,7 @@ dictConfig({
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "INFO",
             "encoding": "utf-8",
-            "filename": path + "/logs/INFO",
+            "filename": os.path.join(__path__, "logs/INFO"),
             "when": "MIDNIGHT",
             "backupCount": 1,
             "formatter": "default"
@@ -36,7 +36,7 @@ dictConfig({
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "WARN",
             "encoding": "utf-8",
-            "filename": path + "/logs/WARN",
+            "filename": os.path.join(__path__, "logs/WARN"),
             "when": "MIDNIGHT",
             "backupCount": 1,
             "formatter": "default"
@@ -45,7 +45,7 @@ dictConfig({
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "ERROR",
             "encoding": "utf-8",
-            "filename": path + "/logs/ERROR",
+            "filename": os.path.join(__path__, "logs/ERROR"),
             "when": "MIDNIGHT",
             "backupCount": 1,
             "formatter": "default"
