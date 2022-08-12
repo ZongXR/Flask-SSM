@@ -5,7 +5,7 @@
 <h4>package.name.controller包</h4>
 <ol>
 <li>这个包存放着前后端交互的接口，相当于java的controller包。如需自定义接口，仅需要把py文件放入该包内，并使用<code>@bp.route</code>装饰器注册进去即可。</li>
-<li>样例中已经给出了基础接口base_controller.py，如需自定义仿照此样例即可，在此包下的每个py文件构成一个蓝图，并且能够自动注册。注意：BluePrint类对象必须命名为bp，才能够自动注册。</li>
+<li>样例中已经给出了基础接口base_controller.py，如需自定义仿照此样例即可，在此包下的每个py文件构成一个蓝图，并且能够自动注册。</li>
 </ol>
 <h4>package.name.service包</h4>
 <ol>
@@ -101,5 +101,8 @@
 </tr>
 <tr>
 <td>1.7.0.1</td><td>优化代码; 更新使用说明</td><td>2022年8月11日</td>
+</tr>
+<tr>
+<td>1.8.0.0</td><td>现在不需要把BluePrint对象命名为bp，也能实现蓝图的自动注册</td><td>2022年8月13日</td>
 </tr>
 </table>

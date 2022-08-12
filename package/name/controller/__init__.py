@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-from flask import Flask
+import sys
+from flask import Flask, Blueprint
 from package.name.utils.dir_utils import recurse_files
 
 
@@ -12,7 +13,9 @@ for _file_ in os.listdir(os.path.dirname(__file__)):
     if os.path.isfile(_full_file_):
         _module_name_ = _file_[:-3]
         __import__(__name__ + "." + _module_name_)
-        __blueprints__.append(eval(_module_name_ + ".bp"))
+        _module_ = sys.modules[__name__ + "." + _module_name_]
+        _bps_ = list(filter(lambda x: isinstance(eval(_module_name_ + "." + x), Blueprint), dir(_module_)))
+        __blueprints__.extend(list(map(lambda x: eval(_module_name_ + "." + x), _bps_)))
     else:
         _files_ = recurse_files(_full_file_)
         for _sub_file_ in _files_:
