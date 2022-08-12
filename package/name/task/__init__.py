@@ -27,10 +27,11 @@ def init_scheduler(app: Flask):
             module = sys.modules[__name__ + "." + module_name]
             cfg.from_object(module)
             for key, value in cfg.items():
-                if "func" == key.lower():
-                    job["func"] = __name__ + "." + module_name + ":" + value
-                else:
-                    job[key.lower()] = value
+                if key.isupper():
+                    if "func" == key.lower():
+                        job["func"] = __name__ + "." + module_name + ":" + value
+                    else:
+                        job[key.lower()] = value
             jobs.append(job)
         else:
             files = recurse_files(full_file)

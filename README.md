@@ -105,4 +105,7 @@
 <tr>
 <td>1.8.0.0</td><td>现在不需要把BluePrint对象命名为bp，也能实现蓝图的自动注册</td><td>2022年8月13日</td>
 </tr>
+<tr>
+<td>1.8.0.1</td><td>fix some bugs</td><td>2022年8月13日</td>
+</tr>
 </table>
