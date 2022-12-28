@@ -10,7 +10,7 @@ def create_app() -> Flask:
     :return:
     """
     if "config" in os.listdir(os.path.dirname(__file__)):
-        __import__(".".join([__name__, "config", "logs_config"]), fromlist=["logs_config"])
+        logs_config = __import__(".".join([__name__, "config", "logs_config"]), fromlist=["logs_config"])
         database_config = __import__(".".join([__name__, "config", "database_config"]), fromlist=["database_config"])
     app = Flask(__name__)
     app.config.from_object(database_config)

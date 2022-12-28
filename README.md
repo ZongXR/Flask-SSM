@@ -111,4 +111,7 @@
 <tr>
 <td>1.9.0.0</td><td>解耦task、controller、config、utils各个子模块，不需要的模块直接删除即可；fix some bugs</td><td>2022年12月28日</td>
 </tr>
+<tr>
+<td>2.0.0.0</td><td>优化代码，提升执行效率</td><td>2022年12月28日</td>
+</tr>
 </table>
