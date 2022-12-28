@@ -108,4 +108,7 @@
 <tr>
 <td>1.8.0.1</td><td>fix some bugs</td><td>2022年8月13日</td>
 </tr>
+<tr>
+<td>1.9.0.0</td><td>解耦task、controller、config、utils各个子模块，不需要的模块直接删除即可；fix some bugs</td><td>2022年12月28日</td>
+</tr>
 </table>

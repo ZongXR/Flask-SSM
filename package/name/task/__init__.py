@@ -1,11 +1,28 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
 from pathlib import Path
 from flask import Flask
 from flask.config import Config
 from flask_apscheduler import APScheduler
-from package.name.utils.dir_utils import recurse_files
+
+
+def __recurse_files__(path: str) -> [str]:
+    """
+    递归查询目录下所有文件\n
+    :param path: 目录
+    :return: 目录树
+    """
+    result = []
+    if os.path.isfile(path):
+        result.append(path)
+    else:
+        files = os.listdir(path)
+        paths = map(lambda x: os.path.join(path, x), files)
+        for path_one in paths:
+            if not os.path.dirname(path_one).split(os.path.sep)[-1].startswith("__"):
+                result.extend(__recurse_files__(path_one))
+    return result
+
 
 _path_ = os.path.dirname(os.path.abspath(Path(__file__)))
 
@@ -23,8 +40,7 @@ def init_scheduler(app: Flask):
             module_name = file[:-3]
             cfg.clear()
             job = dict()
-            __import__(__name__ + "." + module_name)
-            module = sys.modules[__name__ + "." + module_name]
+            module = __import__(__name__ + "." + module_name, fromlist=[module_name])
             cfg.from_object(module)
             for key, value in cfg.items():
                 if key.isupper():
@@ -34,7 +50,7 @@ def init_scheduler(app: Flask):
                         job[key.lower()] = value
             jobs.append(job)
         else:
-            files = recurse_files(full_file)
+            files = __recurse_files__(full_file)
             for sub_file in files:
                 module_name = os.path.basename(sub_file)
                 path_name = os.path.dirname(sub_file)
@@ -46,8 +62,7 @@ def init_scheduler(app: Flask):
                 module_name = module_name[:-3]
                 cfg.clear()
                 job = dict()
-                __import__(package_name + "." + module_name)
-                module = sys.modules[package_name + "." + module_name]
+                module = __import__(package_name + "." + module_name, fromlist=[module_name])
                 cfg.from_object(module)
                 for key, value in cfg.items():
                     if "func" == key.lower():
