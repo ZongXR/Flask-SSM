@@ -37,4 +37,4 @@ def init_scheduler(app: Flask):
     })
     scheduler.init_app(app)
     scheduler.start()
-    app.logger.info("定时任务初始化成功并启动")
+    app.logger.info("定时任务初始化成功")

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask_sqlalchemy.model import Model
 from sqlalchemy.sql.sqltypes import INT, DECIMAL
 from sqlalchemy.sql.schema import Column
+from package.name.dao import db
 
 
-class TableName(Model):
+class TableName(db.Model):
 
     __tablename__ = "table_name"
 
