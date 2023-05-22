@@ -1,5 +1,8 @@
 .idea
 
+docs
+sql
+
 **.iml
 
 run_with_docker.sh
