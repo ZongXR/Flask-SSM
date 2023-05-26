@@ -14,4 +14,4 @@ def query_one(user_id: int) -> DECIMAL:
         from table_name
         where user_id = :user_id;
     """
-    return list(db.session.execute(sql, {"user_id": user_id}))[0][0]
+    return db.session.execute(sql, {"user_id": user_id}).fetchone()[0]

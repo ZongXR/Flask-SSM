@@ -12,4 +12,5 @@ def run(param: int) -> str:
     :return: 答案
     """
     current_app.logger.info("执行业务逻辑, 参数%s" % param)
-    return str(tablename_dao.query_one(param))
+    result = tablename_dao.query_one(param)
+    return str(result)

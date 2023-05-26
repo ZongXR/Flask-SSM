@@ -9,7 +9,7 @@
 </ol>
 <h4>package.name.service包</h4>
 <ol>
-<li>这个包存放着业务的服务，相当于java的service包。里面的所有模块均需要以模块的形式提供，以此保证单例模式。</li>
+<li>这个包存放着业务逻辑，相当于java的service包。</li>
 <li>如果需要被别的模块引用，直接<code>from package.name.service import **_service</code>即可</li>
 </ol>
 <h4>package.name.dao包</h4>
@@ -20,32 +20,50 @@
 <h4>package.name.task包</h4>
 <ol>
 <li>这个包用于存放定时任务，使用时只需要将自定义的定时任务放入包内。</li>
-<li>然后在文件中声明ID, FUNC, TRIGGER等用于标志定时任务的变量即可，这些变量必须大写。其中ID表示定时任务的id，必须唯一。FUNC表示定时任务执行的函数名，对应的函数需要在文件内给出。其他标识与<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。</li>
+<li>然后在文件中声明<code>ID</code>, <code>FUNC</code>, <code>TRIGGER</code>等用于标志定时任务的变量即可，这些变量必须大写。其中<code>ID</code>表示定时任务的id，必须唯一。<code>FUNC</code>表示定时任务执行的函数名，对应的函数需要在文件内给出。其他标识与<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。</li>
 </ol>
 <h4>package.name.config包</h4>
 <ol>
-<li>package.name.config，这个包存放着配置信息，包括但不限于数据库配置信息、日志配置信息。样例中已经给出了数据库配置样例database_config.py，日志配置样例logs_config.py</li>
+<li>这个包存放着配置信息，包括但不限于数据库配置信息、日志配置信息。</li>
+<li><code>database_config.py</code>存储着数据库连接的配置信息，可直接修改。该样例默认使用MySQL数据库</li>
+<li><code>logs_config.py</code>存储着日志的配置信息，可直接修改。该样例默认日志存储位置为logs目录，默认日志级别为DEBUG</li>
 </ol>
 <h4>package.name.utils包</h4>
 <ol>
-<li>这个包用于存放工具模块，样例中已经给出了工具dir_utils.py的样例。</li>
+<li>这个包是工具模块，用于存放工具类和函数</li>
+<li>样例中已经给出了工具<code>CursorResultUtils.py</code>，可直接使用。</li>
 </ol>
 <h4>package.name.pojo包</h4>
 <ol>
-<li>这个包用于存放实体类，通过继承flask_sqlalchemy的Model类，可实现对实体对象的快速query</li>
+<li>这个包用于存放实体类，类似于java的pojo包</li>
+<li>通过继承<code>db.Model</code>类，可通过jpa查询规范实现对实体对象的快速检索</li>
+<li>里面每一个类必须与数据库表对应。通过<code>__tablename__</code>属性指定表名，其他<code>Column</code>类型属性与字段名一一对应</li>
 </ol>
 <h4>package.name.vo包</h4>
 <ol>
 <li>这个包存储了ViewObject，是后端响应给前端的标准json数据格式</li>
 </ol>
+<h4>package.name.decorator包</h4>
+<ol>
+<li>这个包存储了一系列的装饰器函数，类似于Spring中的AOP面向切面编程</li>
+<li>其中<code>transaction.py</code>实现了事务管理器。如需对某个函数开启事务，直接加上<code>@transactional</code>即可。</li>
+<li>其中<code>unittest.py</code>实现了单元测试的功能。如需对某个函数进行单元测试，直接加上<code>@test</code>，然后在函数所在的py文件里面加上<code>if __name__ == '__main__':</code>后，直接运行改py文件即可</li>
+</ol>
 <h3>前台资源</h3>
 <h4>static目录</h4>
-该目录用于存放静态资源，存放html, css, js, 图片等资源。样例中已经给出了主页及用到的js文件。
+<ol>
+<li>该目录用于存放静态资源，存放html, css, js, 图片等资源。</li>
+<li>该样例的默认主页为<code>index.html</code>，实现了类似java的swagger功能。可以在浏览器直接向指定接口发送请求，并且自定义请求路径、请求方法等信息</li>
+</ol>
 <h4>template目录</h4>
 该目录用于存放模板文件，类似于java的jsp。具体用法见<a href="http://www.pythondoc.com/flask/quickstart.html#id7" target="_blank">Flask</a><br />
 注意：java的jsp属于动态资源
 <h2>原理</h2>
-你会发现，该模板中有很多放入包内自动配置的内容。而使这些自动生效的根源就在于每个包下面把的__init__.py，通过该文件实现了免配置自动生效的效果。从而模拟出来类似于java的控制反转和依赖注入的效果。
+<ol>
+<li>你会发现，该框架中有很多放入包内自动配置的内容，其核心在于每个包下面的<code>__init__.py</code>。</li>
+<li>通过使用python的反射机制，模拟了Spring的IOC控制反转的效果，实现了接口的自动注册、定时任务的自动注册</li>
+<li>通过使用python的装饰者模式，模拟了Spring的AOP面向切面编程，实现了事务管理器、单元测试，等功能</li>
+</ol>
 <h2>版本更新</h2>
 <table>
 <tr>
@@ -131,5 +149,8 @@
 </tr>
 <tr>
 <td>2.2.2.2</td><td>修复数据库连接包含特殊字符导致无法连接的BUG</td><td>2023年5月26日</td>
+</tr>
+<tr>
+<td>2.3.0.0</td><td>新增单元测试功能; 前端新增PUT和DELETE请求方式; 规范dao的用法</td><td>2023年5月26日</td>
 </tr>
 </table>
