@@ -1,7 +1,11 @@
+# -*- coding: utf-8 -*-
+from urllib.parse import quote_plus
+
+
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = 'root'
+PASSWORD = quote_plus('root')
 HOST = 'localhost'
 PORT = '3306'
 DATABASE = 'dbname'

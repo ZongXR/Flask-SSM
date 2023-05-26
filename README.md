@@ -129,4 +129,7 @@
 <tr>
 <td>2.2.2.1</td><td>add some exclude path</td><td>2023年5月22日</td>
 </tr>
+<tr>
+<td>2.2.2.2</td><td>修复数据库连接包含特殊字符导致无法连接的BUG</td><td>2023年5月26日</td>
+</tr>
 </table>
