@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
-USERNAME = 'root'
+USERNAME = quote_plus('root')
 PASSWORD = quote_plus('root')
 HOST = 'localhost'
 PORT = '3306'

@@ -153,4 +153,7 @@
 <tr>
 <td>2.3.0.0</td><td>新增单元测试功能; 前端新增PUT和DELETE请求方式; 规范dao的用法</td><td>2023年5月26日</td>
 </tr>
+<tr>
+<td>2.3.0.1</td><td>fix some bugs</td><td>2023年5月29日</td>
+</tr>
 </table>

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from flask import current_app
-from package.name.dao import db
 from package.name.dao import tablename_dao
 
 
