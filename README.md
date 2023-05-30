@@ -1,6 +1,41 @@
 <h1>flask-mvc-example</h1>
 这是一套基于flask开发的web模板，完全按照MVC分层的思想实现，对于没有web基础但需要做web项目的人可起到教学作用。尤其有助于java转python的web开发，让你按照java的思路写python
 <h2>这个怎么用？</h2>
+<h3>初始化</h3>
+<p>该项目提供了一键初始化脚本，按照以下步骤即可将自定义包名、数据库连接、日志设置，等内容配置进去</p>
+<ol>
+<li>拉取本项目后，cd到项目根目录，确保所有文件没被占用</li>
+<li>把需要的依赖项添加进<code>./requirements.txt</code>，并执行以下命令安装依赖:<br />
+<code>pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r ./requirements.txt</code>
+</li>
+<li>执行以下命令，即可把项目自定义内容配置进去: <br />
+<code>python3 initializer.py \<br />
+--package-name your.package.name \<br />
+--db-dialect database_dialect \<br />
+--db-driver database_driver \<br />
+--db-username database_username \<br />
+--db-password database_password \<br />
+--db-host database_host \<br />
+--db-port database_port \<br />
+--db-database database_name \<br />
+--log-level log_level \<br />
+--db-tables table1 table2 table3 ... 
+</code><br />
+例如: <br />
+<code>python3 initializer.py \<br />
+--package-name package.name \<br />
+--db-dialect mysql \<br />
+--db-driver pymysql \<br />
+--db-username root \<br />
+--db-password root \<br />
+--db-host localhost \<br />
+--db-port 3306 \<br />
+--db-database dbname \<br />
+--log-level DEBUG \<br />
+--db-tables table_name1 table_name2
+</code><br />
+</li>
+</ol>
 <h3>后台资源</h3>
 <h4>package.name.controller包</h4>
 <ol>
@@ -61,7 +96,7 @@
 <h2>原理</h2>
 <ol>
 <li>你会发现，该框架中有很多放入包内自动配置的内容，其核心在于每个包下面的<code>__init__.py</code>。</li>
-<li>通过使用python的反射机制，模拟了Spring的IOC控制反转的效果，实现了接口的自动注册、定时任务的自动注册</li>
+<li>通过使用python的反射机制，模拟了Spring的IOC控制反转的效果，实现了接口的自动注册、定时任务的自动注册、初始化指定数据库的表名字段名，等功能</li>
 <li>通过使用python的装饰者模式，模拟了Spring的AOP面向切面编程，实现了事务管理器、单元测试，等功能</li>
 </ol>
 <h2>版本更新</h2>
@@ -155,5 +190,8 @@
 </tr>
 <tr>
 <td>2.3.0.1</td><td>fix some bugs</td><td>2023年5月29日</td>
+</tr>
+<tr>
+<td>2.4.0.0</td><td>add initializer</td><td>2023年5月30日</td>
 </tr>
 </table>
