@@ -194,4 +194,7 @@
 <tr>
 <td>2.4.0.0</td><td>add initializer</td><td>2023年5月30日</td>
 </tr>
+<tr>
+<td>2.4.0.1</td><td>fix some bugs</td><td>2023年5月30日</td>
+</tr>
 </table>
