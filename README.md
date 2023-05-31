@@ -90,7 +90,7 @@
 <li>该目录用于存放静态资源，存放html, css, js, 图片等资源。</li>
 <li>该样例的默认主页为<code>index.html</code>，实现了类似java的swagger功能。可以在浏览器直接向指定接口发送请求，并且自定义请求路径、请求方法等信息</li>
 </ol>
-<h4>template目录</h4>
+<h4>templates目录</h4>
 该目录用于存放模板文件，类似于java的jsp。具体用法见<a href="http://www.pythondoc.com/flask/quickstart.html#id7" target="_blank">Flask</a><br />
 注意：java的jsp属于动态资源
 <h2>原理</h2>
@@ -196,5 +196,8 @@
 </tr>
 <tr>
 <td>2.4.0.1</td><td>fix some bugs</td><td>2023年5月30日</td>
+</tr>
+<tr>
+<td>2.4.0.2</td><td>fix some bugs</td><td>2023年5月31日</td>
 </tr>
 </table>
