@@ -200,4 +200,7 @@
 <tr>
 <td>2.4.0.2</td><td>fix some bugs</td><td>2023年5月31日</td>
 </tr>
+<tr>
+<td>2.4.0.3</td><td>fix some bugs</td><td>2023年6月1日</td>
+</tr>
 </table>
