@@ -5,3 +5,4 @@ Flask-Cors~=3.0.10
 Flask-HTTPAuth~=4.5.0
 Flask-SQLAlchemy~=2.5.1
 SQLAlchemy~=1.4.18
+typing-inspect~=0.8.0

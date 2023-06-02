@@ -51,6 +51,7 @@
 <ol>
 <li>这个包对应着数据访问层，相当于java的dao包。主要用来写sql，用法同<a href="http://www.pythondoc.com/flask-sqlalchemy/quickstart.html" target="_blank">Flask_SQLAlchemy</a>完全一样</li>
 <li>如果需要被别的模块引用，直接<code>from package.name.dao import **_dao</code>即可</li>
+<li>dao函数的参数是传递给SQL的参数，返回值是SQL语句。再对dao函数加上<code>@mapper(result_type=**)</code>装饰器即可取用特定<code>result_type</code>类型格式的返回值</li>
 </ol>
 <h4>package.name.task包</h4>
 <ol>
@@ -81,7 +82,10 @@
 <h4>package.name.decorator包</h4>
 <ol>
 <li>这个包存储了一系列的装饰器函数，类似于Spring中的AOP面向切面编程</li>
-<li>其中<code>transaction.py</code>实现了事务管理器。如需对某个函数开启事务，直接加上<code>@transactional</code>即可。</li>
+<li>其中<code>pybatis.py</code>模拟了MyBatis: <br />
+如需对某个函数开启事务，直接加上<code>@transactional(rollback_for=**)</code>即可。<br />
+如需执行某条SQL，直接加上<code>@mapper(result_type=**)</code>即可。
+</li>
 <li>其中<code>unittest.py</code>实现了单元测试的功能。如需对某个函数进行单元测试，直接加上<code>@test</code>，然后在函数所在的py文件里面加上<code>if __name__ == '__main__':</code>后，直接运行改py文件即可</li>
 </ol>
 <h3>前台资源</h3>
@@ -97,7 +101,7 @@
 <ol>
 <li>你会发现，该框架中有很多放入包内自动配置的内容，其核心在于每个包下面的<code>__init__.py</code>。</li>
 <li>通过使用python的反射机制，模拟了Spring的IOC控制反转的效果，实现了接口的自动注册、定时任务的自动注册、初始化指定数据库的表名字段名，等功能</li>
-<li>通过使用python的装饰者模式，模拟了Spring的AOP面向切面编程，实现了事务管理器、单元测试，等功能</li>
+<li>通过使用python的装饰者模式，模拟了Spring的AOP面向切面编程，实现了事务管理器、单元测试、ORM对象关系映射，等功能</li>
 </ol>
 <h2>版本更新</h2>
 <table>
@@ -202,5 +206,8 @@
 </tr>
 <tr>
 <td>2.4.0.3</td><td>fix some bugs</td><td>2023年6月1日</td>
+</tr>
+<tr>
+<td>2.5.0.0</td><td>add mapper decorator; fix some bugs; add unit test example; change dao function usage</td><td>2023年6月2日</td>
 </tr>
 </table>

@@ -223,7 +223,7 @@ if __name__ == '__main__':
             for _file_ in _files_:
                 if _file_.endswith(".py") or _file_.endswith(".PY"):
                     _file_path_ = os.path.join(_path_, _file_)
-                    if _file_path_ == os.path.join(os.getcwd(), __file__):
+                    if _file_path_ == os.path.join(os.getcwd(), __file__) or _file_path_ == __file__.replace("/", os.sep):
                         continue    # skip the initializer file
                     logging.debug("read file from %s." % _file_path_)
                     with open(_file_path_, "r", encoding="utf-8") as f:
