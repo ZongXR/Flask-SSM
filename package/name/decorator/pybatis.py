@@ -1,12 +1,24 @@
 # -*- coding: utf-8 -*-
-from typing import Type, List, Tuple, Dict
+import sys
+import typing
+from typing import Type, List, Tuple, Dict, Union, Optional
+from types import ModuleType
 from functools import wraps
 from inspect import signature
-from typing_inspect import get_args, get_origin
 from flask import current_app
 from sqlalchemy import text
 from sqlalchemy.engine.cursor import CursorResult
 from package.name.dao import db
+
+
+if sys.version_info >= (3, 9):
+    from types import GenericAlias
+else:
+    GenericAlias = getattr(typing, "_GenericAlias")
+if sys.version_info >= (3, 8):
+    from typing import get_args, get_origin
+else:
+    from typing_inspect import get_args, get_origin
 
 
 def transactional(rollback_for: Type = Exception):
@@ -35,10 +47,26 @@ def transactional(rollback_for: Type = Exception):
     return decorate
 
 
-def mapper(result_type: Type = CursorResult):
+def __try_to_import__(module_name: str) -> Optional[ModuleType]:
     """
-    事务管理器\n
+    根据包名导入模块\n
+    :param module_name: 包名
+    :return: 模块
+    """
+    result = None
+    try:
+        result = __import__(module_name)
+    except ModuleNotFoundError as e:
+        pass
+    return result
+
+
+def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **kwargs):
+    """
+    ORM映射\n
     :param result_type: 要返回的类型
+    :param arguments: 变长参数
+    :param kwargs: 关键字参数
     :return: 修改后的返回值
     """
     def decorate(func):
@@ -49,26 +77,26 @@ def mapper(result_type: Type = CursorResult):
                 raise TypeError("error in @mapper, return result of mapper function must be a sql string.")
             for i, k in enumerate(signature(func).parameters.keys()):
                 params[k] = args[i]
-            # try to import pandas as pd
-            pd = None
-            try:
-                pd = __import__("pandas")
-            except ModuleNotFoundError as e:
-                pass
+            # try to import modules:
+            pd = __try_to_import__("pandas")
+            np = __try_to_import__("numpy")
             # process all result_types
             if result_type is CursorResult:                                                 # CursorResult
                 result: CursorResult = db.session.execute(sql, params)
                 return result
             elif pd is not None and result_type is pd.DataFrame:                            # pd.DataFrame
                 result: CursorResult = db.session.execute(sql, params)
-                return pd.DataFrame(result.fetchall(), columns=result.mappings().keys())
+                return pd.DataFrame(result.fetchall(), columns=result.mappings().keys(), *arguments, **kwargs)
             elif pd is not None and result_type is pd.Series:                               # pd.Series
                 result: CursorResult = db.session.execute(sql, params)
                 values = list(zip(*result.fetchall()))
                 keys = list(result.mappings().keys())
                 if len(keys) > 1:
                     current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
-                return pd.Series(values[0], name=keys[0])
+                return pd.Series(values[0], name=keys[0], *arguments, **kwargs)
+            elif np is not None and result_type is np.ndarray:                              # np.ndarray
+                result: CursorResult = db.session.execute(sql, params)
+                return np.array(result.fetchall(), *arguments, **kwargs)
             elif get_origin(result_type) is list:
                 if result_type is List:                                                     # List
                     result: CursorResult = db.session.execute(sql, params)

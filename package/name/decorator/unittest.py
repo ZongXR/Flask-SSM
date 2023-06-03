@@ -10,8 +10,8 @@ def test(func):
     :return: 原函数的返回值
     """
     def wrapper(*args, **kwargs):
-        stack = getattr(getattr(getattr(globs, "_app_ctx_stack"), "_local"), "stack", tuple())
-        if len(stack) == 0:
+        _app_ctx_stack = getattr(globs, "_app_ctx_stack", None)
+        if _app_ctx_stack.top is None:
             # change directory
             path_idx = __file__[0:-3].rindex(__name__.replace(".", os.path.sep))
             os.chdir(__file__[0:path_idx])
