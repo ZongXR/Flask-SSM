@@ -64,7 +64,7 @@
 <li><code>database_config.py</code>存储着数据库连接的配置信息，可直接修改。该样例默认使用MySQL数据库</li>
 <li><code>logs_config.py</code>存储着日志的配置信息，可直接修改。该样例默认日志存储位置为logs目录，默认日志级别为DEBUG</li>
 <li><code>eureka_config.py</code>是用于将微服务注册到eureka的配置信息，默认关闭</li>
-<li><code>server_config.py</code>用于该web应用的基础配置，如host, port, 等</li>
+<li><code>app_config.py</code>用于该web应用的基础配置，如host, port, 等</li>
 </ol>
 <h4>package.name.utils包</h4>
 <ol>
@@ -220,5 +220,8 @@
 </tr>
 <tr>
 <td>2.7.0.0</td><td>将配置信息全部写入config包内; 新增eureka注册功能</td><td>2023年6月24日</td>
+</tr>
+<tr>
+<td>2.7.1.0</td><td>新增HOST, PORT等配置项; 初始化脚本新增<code>--app-host</code>, <code>--app-port</code>, <code>--app-debug</code>, <code>--application-root</code>选项</td><td>2023年6月24日</td>
 </tr>
 </table>

@@ -39,13 +39,13 @@ def to_pojo(table_name: str, dbname: str, dialect: str, _engine_) -> bool:
     :param _engine_:
     :return: 是否成功
     """
-    _class_name_ = table_name.title().replace("_", "")
-    _insp_ = inspect(_engine_)
-    with open("./package/name/pojo/TableName.py", "r", encoding="utf-8") as f:
-        lines = f.readlines()
-    if dialect:
-        lines.insert(2, "from sqlalchemy.dialects.%s.types import *\n" % dialect)
     try:
+        _class_name_ = table_name.title().replace("_", "")
+        _insp_ = inspect(_engine_)
+        with open("./package/name/pojo/TableName.py", "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        if dialect:
+            lines.insert(2, "from sqlalchemy.dialects.%s.types import *\n" % dialect)
         # get the primary key
         metadata = MetaData(bind=_engine_)
         metadata.reflect(bind=_engine_, schema=dbname, only=[table_name])
@@ -65,8 +65,8 @@ def to_pojo(table_name: str, dbname: str, dialect: str, _engine_) -> bool:
                 field_primarykey = ", primary_key=True" if field["name"] == primary_key else ""
                 f.write("    %s = Column(%s%s)\n\n" % (field_name, field_type, field_primarykey))
         return True
-    except Exception as e:
-        logging.exception(e)
+    except Exception as _e:
+        logging.exception(_e)
         return False
 
 
@@ -136,6 +136,10 @@ if __name__ == '__main__':
     parser.add_argument("--db-database", help="name of database", type=str)
     parser.add_argument("--db-tables", help="table names in the database", dest="db_tables", nargs="+")
     parser.add_argument("--log-level", help="level of logging", type=str)
+    parser.add_argument("--app-host", help="host of the app", type=str)
+    parser.add_argument("--app-port", help="port of the app", type=int)
+    parser.add_argument("--application-root", help="context path of the app", type=str)
+    parser.add_argument("--app-debug", help="whether if the app is in debug", type=bool)
     args = parser.parse_args()
 
     # get argument values
@@ -149,106 +153,180 @@ if __name__ == '__main__':
     db_port = args.db_port
     db_database = args.db_database
     db_tables = args.db_tables
+    app_host = args.app_host
+    app_port = args.app_port
+    application_root = args.application_root
+    app_debug = args.app_debug
 
     # 改写文件内容
     result = 0
     if log_level:
         logging.info("replacing log level config, set to %s" % log_level)
-        result = result + replace_txt(
-            "./package/name/config/logs_config.py",
-            """"root": {"level": "DEBUG", "handlers": ["console", "debug", "info", "warn", "error"]}""",
-            """"root": {"level": "%s", "handlers": ["console", "debug", "info", "warn", "error"]}""" % log_level
-        )
+        try:
+            result = result + replace_txt(
+                "./package/name/config/logs_config.py",
+                """"root": {"level": "DEBUG", "handlers": ["console", "debug", "info", "warn", "error"]}""",
+                """"root": {"level": "%s", "handlers": ["console", "debug", "info", "warn", "error"]}""" % log_level
+            )
+        except Exception as e:
+            logging.exception(e)
     if db_dialect:
         logging.info("replacing database dialect, set to %s" % db_dialect)
-        result = result + replace_txt(
-            "./package/name/config/database_config.py",
-            """DB_DIALECT = 'mysql'""",
-            """DB_DIALECT = '%s'""" % db_dialect
-        )
+        try:
+            result = result + replace_txt(
+                "./package/name/config/database_config.py",
+                """DB_DIALECT = 'mysql'""",
+                """DB_DIALECT = '%s'""" % db_dialect
+            )
+        except Exception as e:
+            logging.exception(e)
     if db_driver:
         logging.info("replacing database driver, set to %s" % db_driver)
-        result = result + replace_txt(
-            "./package/name/config/database_config.py",
-            """DB_DRIVER = 'pymysql'""",
-            """DB_DRIVER = '%s'""" % db_driver
-        )
+        try:
+            result = result + replace_txt(
+                "./package/name/config/database_config.py",
+                """DB_DRIVER = 'pymysql'""",
+                """DB_DRIVER = '%s'""" % db_driver
+            )
+        except Exception as e:
+            logging.exception(e)
     if db_username:
         logging.info("replacing database username, set to %s" % db_username)
-        result = result + replace_txt(
-            "./package/name/config/database_config.py",
-            """DB_USERNAME = quote_plus('root')""",
-            """DB_USERNAME = quote_plus('%s')""" % db_username
-        )
+        try:
+            result = result + replace_txt(
+                "./package/name/config/database_config.py",
+                """DB_USERNAME = quote_plus('root')""",
+                """DB_USERNAME = quote_plus('%s')""" % db_username
+            )
+        except Exception as e:
+            logging.exception(e)
     if db_password:
         logging.info("replacing database password, set to %s" % db_password)
-        result = result + replace_txt(
-            "./package/name/config/database_config.py",
-            """DB_PASSWORD = quote_plus('root')""",
-            """DB_PASSWORD = quote_plus('%s')""" % db_password
-        )
+        try:
+            result = result + replace_txt(
+                "./package/name/config/database_config.py",
+                """DB_PASSWORD = quote_plus('root')""",
+                """DB_PASSWORD = quote_plus('%s')""" % db_password
+            )
+        except Exception as e:
+            logging.exception(e)
     if db_host:
         logging.info("replacing database host, set to %s" % db_host)
-        result = result + replace_txt(
-            "./package/name/config/database_config.py",
-            """DB_HOST = 'localhost'""",
-            """DB_HOST = '%s'""" % db_host
-        )
+        try:
+            result = result + replace_txt(
+                "./package/name/config/database_config.py",
+                """DB_HOST = 'localhost'""",
+                """DB_HOST = '%s'""" % db_host
+            )
+        except Exception as e:
+            logging.exception(e)
     if db_port:
         logging.info("replacing database port, set to %s" % db_port)
-        result = result + replace_txt(
-            "./package/name/config/database_config.py",
-            """DB_PORT = '3306'""",
-            """DB_PORT = '%s'""" % db_port
-        )
+        try:
+            result = result + replace_txt(
+                "./package/name/config/database_config.py",
+                """DB_PORT = '3306'""",
+                """DB_PORT = '%s'""" % db_port
+            )
+        except Exception as e:
+            logging.exception(e)
     if db_database:
         logging.info("replacing database name, set to %s" % db_database)
-        result = result + replace_txt(
-            "./package/name/config/database_config.py",
-            """DB_DATABASE = 'dbname'""",
-            """DB_DATABASE = '%s'""" % db_database
-        )
+        try:
+            result = result + replace_txt(
+                "./package/name/config/database_config.py",
+                """DB_DATABASE = 'dbname'""",
+                """DB_DATABASE = '%s'""" % db_database
+            )
+        except Exception as e:
+            logging.exception(e)
+    if app_host:
+        logging.info("replacing the host of the app")
+        try:
+            result = result + replace_txt(
+                "./package/name/config/app_config.py",
+                """APP_HOST = '0.0.0.0'""",
+                """APP_HOST = '%s'""" % app_host
+            )
+        except Exception as e:
+            logging.exception(e)
+    if app_port:
+        logging.info("replacing the port of the app")
+        try:
+            result = result + replace_txt(
+                "./package/name/config/app_config.py",
+                """APP_PORT = 5000""",
+                """APP_HOST = %d""" % app_port
+            )
+        except Exception as e:
+            logging.exception(e)
+    if app_debug:
+        logging.info("replacing the debug flag of the app")
+        try:
+            result = result + replace_txt(
+                "./package/name/config/app_config.py",
+                """DEBUG = False""",
+                """DEBUG = %s""" % app_debug
+            )
+        except Exception as e:
+            logging.exception(e)
+    if application_root:
+        logging.info("set the context path of the app")
+        try:
+            result = result + replace_txt(
+                "./package/name/config/app_config.py",
+                """APPLICATION_ROOT = '/'""",
+                """APPLICATION_ROOT = '%s'""" % application_root
+            )
+        except Exception as e:
+            logging.exception(e)
     if db_tables:
         if db_dialect in ["mysql", "postgresql", "mssql", "oracle", "sqlite", "sybase", "firebird"]:
-            engine = create_engine("{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(db_dialect, db_driver, db_username, db_password, db_host, db_port, db_database))
-            for db_table in db_tables:
-                logging.info("creating pojo with table %s" % db_table)
-                result = result + to_pojo(db_table, db_database, db_dialect, engine)
+            try:
+                with create_engine("{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(db_dialect, db_driver, db_username, db_password, db_host, db_port, db_database)) as engine:
+                    for db_table in db_tables:
+                        logging.info("creating pojo with table %s" % db_table)
+                        result = result + to_pojo(db_table, db_database, db_dialect, engine)
+            except Exception as e:
+                logging.exception(e)
         else:
             logging.warning("skip param --db-tables, only support mysql, postgresql, mssql, oracle, sqlite, sybase, firebird now.")
 
     if package_name and package_name != "package.name":
-        # write import codes
-        for _path_, _folders_, _files_ in os.walk(os.getcwd(), topdown=True):
-            for _file_ in _files_:
-                if _file_.endswith(".py") or _file_.endswith(".PY"):
-                    _file_path_ = os.path.join(_path_, _file_)
-                    if _file_path_ == os.path.join(os.getcwd(), __file__) or _file_path_ == __file__.replace("/", os.sep):
-                        continue    # skip the initializer file
-                    logging.debug("read file from %s." % _file_path_)
-                    with open(_file_path_, "r", encoding="utf-8") as f:
-                        _file_codes_ = f.read()
+        try:
+            # write import codes
+            for _path_, _folders_, _files_ in os.walk(os.getcwd(), topdown=True):
+                for _file_ in _files_:
+                    if _file_.endswith(".py") or _file_.endswith(".PY"):
+                        _file_path_ = os.path.join(_path_, _file_)
+                        if _file_path_ == os.path.join(os.getcwd(), __file__) or _file_path_ == __file__.replace("/", os.sep):
+                            continue    # skip the initializer file
+                        logging.debug("read file from %s." % _file_path_)
+                        with open(_file_path_, "r", encoding="utf-8") as f:
+                            _file_codes_ = f.read()
 
-                    _file_codes_new_ = replace_with_regex(_file_codes_, re.compile(r"\s*from (package\.name)(\.\S+)* import \S+\s*"), package_name)
-                    _file_codes_new_ = replace_with_regex(_file_codes_new_, re.compile(r"\s*import (package\.name)(\.\S+)*\s*"), package_name)
-                    if _file_codes_ is not _file_codes_new_:
-                        with open(_file_path_, "w", encoding="utf-8") as f:
-                            f.write(_file_codes_new_)
-                            result = result + 1
-        # change file path
-        package_names = package_name.split(".")
-        if package_name == "package":
-            result = result + move_files("./package/name", "./package")
-            shutil.rmtree("./package/name")
-        elif package_name.startswith("package.name."):
-            result = result + move_files("./package/name", os.path.join(*package_names))
-        else:
-            result = result + move_files("./package/name", os.path.join(*package_names))
-            shutil.rmtree("./package")
-        # create __init__.py
-        for i, package in enumerate(package_names):
-            _init_file = os.path.join(*(package_names[0:i+1] + ["__init__.py"]))
-            if not os.path.exists(_init_file):
-                open(_init_file, "w", encoding="utf-8")
+                        _file_codes_new_ = replace_with_regex(_file_codes_, re.compile(r"\s*from (package\.name)(\.\S+)* import \S+\s*"), package_name)
+                        _file_codes_new_ = replace_with_regex(_file_codes_new_, re.compile(r"\s*import (package\.name)(\.\S+)*\s*"), package_name)
+                        if _file_codes_ is not _file_codes_new_:
+                            with open(_file_path_, "w", encoding="utf-8") as f:
+                                f.write(_file_codes_new_)
+                                result = result + 1
+            # change file path
+            package_names = package_name.split(".")
+            if package_name == "package":
+                result = result + move_files("./package/name", "./package")
+                shutil.rmtree("./package/name")
+            elif package_name.startswith("package.name."):
+                result = result + move_files("./package/name", os.path.join(*package_names))
+            else:
+                result = result + move_files("./package/name", os.path.join(*package_names))
+                shutil.rmtree("./package")
+            # create __init__.py
+            for i, package in enumerate(package_names):
+                _init_file = os.path.join(*(package_names[0:i+1] + ["__init__.py"]))
+                if not os.path.exists(_init_file):
+                    open(_init_file, "w", encoding="utf-8")
+        except Exception as e:
+            logging.exception(e)
 
     logging.info("已完成初始化，替换内容%d处" % result)

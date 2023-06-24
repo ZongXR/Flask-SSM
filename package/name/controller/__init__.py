@@ -26,5 +26,5 @@ def init_view(app: Flask):
     :return:
     """
     for __blueprint__ in __blueprints__:
-        app.register_blueprint(__blueprint__)
+        app.register_blueprint(__blueprint__, url_prefix=app.config.get("APPLICATION_ROOT"))
     app.logger.info("初始化view成功")
