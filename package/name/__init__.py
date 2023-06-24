@@ -11,9 +11,9 @@ def create_app() -> Flask:
     """
     app = Flask(__name__)
     if "config" in os.listdir(os.path.dirname(__file__)):
-        logs_config = __import__(".".join([__name__, "config", "logs_config"]), fromlist=["logs_config"])
-        database_config = __import__(".".join([__name__, "config", "database_config"]), fromlist=["database_config"])
-        app.config.from_object(database_config)
+        configs = __import__(".".join([__name__, "config"]), fromlist=["config"])
+        if "init_config" in dir(configs):
+            configs.init_config(app)
     if "dao" in os.listdir(os.path.dirname(__file__)):
         dao = __import__(".".join([__name__, "dao"]), fromlist=["dao"])
         if "init_db" in dir(dao):
