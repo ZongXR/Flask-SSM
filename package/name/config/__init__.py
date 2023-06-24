@@ -26,4 +26,13 @@ def init_config(app: Flask):
     """
     for __module__ in __modules__:
         app.config.from_object(__module__)
+    if app.config.get("EUREKA_ENABLED", None):
+        try:
+            flask_eureka = __import__("flask_eureka")
+        except ModuleNotFoundError as e:
+            app.logger.exception(e)
+        else:
+            eureka = flask_eureka.Eureka(app)
+            eureka.register_service()
+            app.register_blueprint(flask_eureka.eureka.eureka_bp)
     app.logger.info("初始化配置成功")

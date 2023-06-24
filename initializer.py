@@ -163,50 +163,50 @@ if __name__ == '__main__':
         logging.info("replacing database dialect, set to %s" % db_dialect)
         result = result + replace_txt(
             "./package/name/config/database_config.py",
-            """DIALECT = 'mysql'""",
-            """DIALECT = '%s'""" % db_dialect
+            """DB_DIALECT = 'mysql'""",
+            """DB_DIALECT = '%s'""" % db_dialect
         )
     if db_driver:
         logging.info("replacing database driver, set to %s" % db_driver)
         result = result + replace_txt(
             "./package/name/config/database_config.py",
-            """DRIVER = 'pymysql'""",
-            """DRIVER = '%s'""" % db_driver
+            """DB_DRIVER = 'pymysql'""",
+            """DB_DRIVER = '%s'""" % db_driver
         )
     if db_username:
         logging.info("replacing database username, set to %s" % db_username)
         result = result + replace_txt(
             "./package/name/config/database_config.py",
-            """USERNAME = quote_plus('root')""",
-            """USERNAME = quote_plus('%s')""" % db_username
+            """DB_USERNAME = quote_plus('root')""",
+            """DB_USERNAME = quote_plus('%s')""" % db_username
         )
     if db_password:
         logging.info("replacing database password, set to %s" % db_password)
         result = result + replace_txt(
             "./package/name/config/database_config.py",
-            """PASSWORD = quote_plus('root')""",
-            """PASSWORD = quote_plus('%s')""" % db_password
+            """DB_PASSWORD = quote_plus('root')""",
+            """DB_PASSWORD = quote_plus('%s')""" % db_password
         )
     if db_host:
         logging.info("replacing database host, set to %s" % db_host)
         result = result + replace_txt(
             "./package/name/config/database_config.py",
-            """HOST = 'localhost'""",
-            """HOST = '%s'""" % db_host
+            """DB_HOST = 'localhost'""",
+            """DB_HOST = '%s'""" % db_host
         )
     if db_port:
         logging.info("replacing database port, set to %s" % db_port)
         result = result + replace_txt(
             "./package/name/config/database_config.py",
-            """PORT = '3306'""",
-            """PORT = '%s'""" % db_port
+            """DB_PORT = '3306'""",
+            """DB_PORT = '%s'""" % db_port
         )
     if db_database:
         logging.info("replacing database name, set to %s" % db_database)
         result = result + replace_txt(
             "./package/name/config/database_config.py",
-            """DATABASE = 'dbname'""",
-            """DATABASE = '%s'""" % db_database
+            """DB_DATABASE = 'dbname'""",
+            """DB_DATABASE = '%s'""" % db_database
         )
     if db_tables:
         if db_dialect in ["mysql", "postgresql", "mssql", "oracle", "sqlite", "sybase", "firebird"]:
