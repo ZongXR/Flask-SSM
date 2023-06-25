@@ -278,6 +278,11 @@ if __name__ == '__main__':
                 """APPLICATION_ROOT = '/'""",
                 """APPLICATION_ROOT = '%s'""" % application_root
             )
+            result = result + replace_txt(
+                "./static/index.html",
+                """    <input id="url" placeholder="输入请求地址" type="text" value="/custom"/>""",
+                """    <input id="url" placeholder="输入请求地址" type="text" value="%s/custom"/>""" % application_root.rstrip("/")
+            )
         except Exception as e:
             logging.exception(e)
     if db_tables:

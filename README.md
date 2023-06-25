@@ -11,6 +11,10 @@
 <li>执行以下命令，即可把项目自定义内容配置进去: <br />
 <code>python3 initializer.py \<br />
 --package-name your.package.name \<br />
+--app-host your_app_host \<br />
+--app-port your_app_port \<br />
+--app-debug if_the_app_in_debug \<br />
+--application-root context_path \<br />
 --db-dialect database_dialect \<br />
 --db-driver database_driver \<br />
 --db-username database_username \<br />
@@ -24,6 +28,10 @@
 例如: <br />
 <code>python3 initializer.py \<br />
 --package-name package.name \<br />
+--app-host 0.0.0.0 \<br />
+--app-port 5000 \<br />
+--app-debug False \<br />
+--application-root / \<br />
 --db-dialect mysql \<br />
 --db-driver pymysql \<br />
 --db-username root \<br />
@@ -223,5 +231,8 @@
 </tr>
 <tr>
 <td>2.7.1.0</td><td>新增HOST, PORT等配置项; 初始化脚本新增<code>--app-host</code>, <code>--app-port</code>, <code>--app-debug</code>, <code>--application-root</code>选项</td><td>2023年6月24日</td>
+</tr>
+<tr>
+<td>2.7.2.0</td><td>initializer的<code>--application-root</code>选项修改<code>index.html</code></td><td>2023年6月25日</td>
 </tr>
 </table>
