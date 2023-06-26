@@ -235,4 +235,7 @@
 <tr>
 <td>2.7.2.0</td><td>initializer的<code>--application-root</code>选项修改<code>index.html</code></td><td>2023年6月25日</td>
 </tr>
+<tr>
+<td>2.7.3.0</td><td>fix some bugs</td><td>2023年6月26日</td>
+</tr>
 </table>
