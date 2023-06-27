@@ -13,4 +13,6 @@ def index():
     访问主页\n
     :return: 主页静态文件
     """
-    return render_template("index.html", base=current_app.config.get("APPLICATION_ROOT", "/")).strip("/")
+    base_path = current_app.config.get("APPLICATION_ROOT", "/")
+    base_path = "" if base_path == "/" else "/" + base_path.strip("/")
+    return render_template("index.html", base=base_path)

@@ -26,6 +26,11 @@ def init_config(app: Flask):
     """
     for __module__ in __modules__:
         app.config.from_object(__module__)
+        for __key__ in dir(__module__):
+            if __key__.isupper():
+                __value__ = os.getenv(__key__)
+                if __value__ is not None:
+                    app.config[__key__] = __value__
     if app.config.get("EUREKA_ENABLED", None):
         try:
             flask_eureka = __import__("flask_eureka")

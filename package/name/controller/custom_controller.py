@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 from flask import request, current_app, Response, Blueprint
-from werkzeug.exceptions import HTTPException
 from package.name.service import base_service
 from package.name.vo import CommonResult
 
@@ -11,10 +10,10 @@ bp = Blueprint(__name__.replace(".", "_"), __name__, static_folder=os.path.join(
 
 
 # TODO 在这里写自己的异常处理handler
-@bp.errorhandler(HTTPException)
-def custom_error_handler(e: HTTPException) -> Response:
+@bp.errorhandler(Exception)
+def custom_error_handler(e: Exception) -> Response:
     current_app.logger.exception(e)
-    return CommonResult.make_response(code=e.code, message=e.description, data=e)
+    return CommonResult.failed(message=str(e), data=e)
 
 
 # TODO 从这以下写自己的接口
