@@ -17,12 +17,12 @@ def custom_error_handler(e: Exception) -> Response:
 
 
 # TODO 从这以下写自己的接口
-@bp.route("/custom", methods=["POST"])
-def custom() -> Response:
+@bp.route("/hello_world", methods=["POST"])
+def hello_world() -> Response:
     """
     自定义接口\n
     :return: 响应
     """
-    param = request.json.get("question")
+    param = request.json.get("param")
     result = base_service.run(param)
     return CommonResult.ok(data=result)

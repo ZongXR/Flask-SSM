@@ -241,4 +241,7 @@
 <tr>
 <td>2.7.4.0</td><td>允许使用同名环境变量对配置项覆盖; fix some bugs</td><td>2023年6月27日</td>
 </tr>
+<tr>
+<td>2.7.5.0</td><td>更换eureka客户端; fix some bugs</td><td>2023年6月29日</td>
+</tr>
 </table>
