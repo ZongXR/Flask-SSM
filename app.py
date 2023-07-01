@@ -8,6 +8,8 @@ app = create_app()
 if __name__ == '__main__':
     app.run(
         host=app.config.get("APP_HOST", None),
-        port=app.config.get("APP_PORT", None)
+        port=app.config.get("APP_PORT", None),
+        threaded=app.config.get("APP_THREAD", None),
+        processes=app.config.get("APP_PROCESS", None)
     )
 

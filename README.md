@@ -244,4 +244,7 @@
 <tr>
 <td>2.7.5.0</td><td>更换eureka客户端; fix some bugs</td><td>2023年6月29日</td>
 </tr>
+<tr>
+<td>2.7.6.0</td><td>增加多线程、多进程配置项</td><td>2023年7月1日</td>
+</tr>
 </table>

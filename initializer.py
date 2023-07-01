@@ -140,6 +140,8 @@ if __name__ == '__main__':
     parser.add_argument("--app-port", help="port of the app", type=int)
     parser.add_argument("--application-root", help="context path of the app", type=str)
     parser.add_argument("--app-debug", help="whether if the app is in debug", type=bool)
+    parser.add_argument("--app-thread", help="whether if enable multiple threads", type=bool)
+    parser.add_argument("--app-process", help="the number of processes", type=int)
     args = parser.parse_args()
 
     # get argument values
@@ -157,6 +159,8 @@ if __name__ == '__main__':
     app_port = args.app_port
     application_root = args.application_root
     app_debug = args.app_debug
+    app_thread = args.app_thread
+    app_process = args.app_process
 
     # 改写文件内容
     result = 0
@@ -267,6 +271,26 @@ if __name__ == '__main__':
                 "./package/name/config/app_config.py",
                 """DEBUG = False""",
                 """DEBUG = %s""" % app_debug
+            )
+        except Exception as e:
+            logging.exception(e)
+    if app_thread:
+        logging.info("setting multiple threads")
+        try:
+            result = result + replace_txt(
+                "./package/name/config/app_config.py",
+                """APP_THREAD = False""",
+                """APP_THREAD = %s""" % app_thread
+            )
+        except Exception as e:
+            logging.exception(e)
+    if app_process:
+        logging.info("setting multiple processes")
+        try:
+            result = result + replace_txt(
+                "./package/name/config/app_config.py",
+                """APP_PROCESS = 1""",
+                """APP_PROCESS = %d""" % app_process
             )
         except Exception as e:
             logging.exception(e)
