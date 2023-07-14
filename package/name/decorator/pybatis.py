@@ -100,7 +100,11 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
             elif get_origin(result_type) is list:
                 if result_type is List:                                                     # List
                     result: CursorResult = db.session.execute(sql, params)
-                    return list(result.fetchone())
+                    fetch_result = result.fetchone()
+                    if fetch_result is None:
+                        return None
+                    else:
+                        return list(fetch_result)
                 elif get_origin(get_args(result_type)[0]) is dict:                          # List[Dict]
                     result: CursorResult = db.session.execute(sql, params)
                     return result.mappings().all()
@@ -129,7 +133,11 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                     return result.mappings()
                 elif get_origin(get_args(result_type)[0]) is tuple:                         # Tuple[Tuple]
                     result: CursorResult = db.session.execute(sql, params)
-                    return tuple(result.fetchall())
+                    fetch_result = result.fetchall()
+                    if fetch_result is None:
+                        return None
+                    else:
+                        return tuple(fetch_result)
                 elif get_origin(get_args(result_type)[0]) is list:                          # Tuple[List]
                     result: CursorResult = db.session.execute(sql, params)
                     return map(list, result)
