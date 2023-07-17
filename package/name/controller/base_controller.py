@@ -4,7 +4,7 @@ from flask import Blueprint, current_app, render_template
 
 
 # 自动注册蓝图，此行代码不要动
-bp = Blueprint(__name__.replace(".", "_"), __name__, static_folder=os.path.join(os.getcwd(), "static"), template_folder=os.path.join(os.getcwd(), "templates"), static_url_path="")
+bp = Blueprint(__name__.replace(".", "_"), __name__, static_folder="static", template_folder="templates", static_url_path="", root_path=os.getcwd())
 
 
 @bp.route('/', methods=["GET", "POST"])

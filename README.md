@@ -250,4 +250,7 @@
 <tr>
 <td>2.7.6.1</td><td>fix some bugs</td><td>2023年7月14日</td>
 </tr>
+<tr>
+<td>2.8.0.0</td><td>新增上传文件功能</td><td>2023年7月17日</td>
+</tr>
 </table>
