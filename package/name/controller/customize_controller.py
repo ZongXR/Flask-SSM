@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from flask import request, current_app, Response, Blueprint, send_file
+from tempfile import TemporaryFile
 from package.name.service import base_service
 from package.name.vo import CommonResult
 
@@ -35,5 +36,7 @@ def upload() -> Response:
     :return: 响应
     """
     file = request.files.get("upload_file")
-    file.save(os.path.join(bp.static_folder, file.filename))
-    return send_file(os.path.join(bp.static_folder, file.filename), mimetype=file.mimetype, as_attachment=True, download_name=file.filename, attachment_filename=file.filename)
+    result = TemporaryFile()
+    result.write(file.stream.read())
+    result.seek(0)
+    return send_file(result, mimetype=file.mimetype, as_attachment=True, download_name=file.filename, attachment_filename=file.filename)
