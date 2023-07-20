@@ -7,6 +7,16 @@
     <title>flask-mvc主页</title>
     <script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
     <script>
+        /**
+         * 清屏按钮的响应函数
+         */
+        function clearDiv() {
+            $("#oupu").text("");
+        }
+
+        /**
+         * 请求按钮的响应函数
+         */
         function getCustom() {
             $("#uploadform").attr("action", $("#url").val());
             $("#uploadform").attr("method", $("input[name='request_method']:checked").val());
@@ -67,6 +77,9 @@
 <label>
     <input type="radio" name="request_method" value="DELETE"/>DELETE
 </label><br/>
+<label>
+    <input type="radio" name="request_method" value="PATCH"/>PATCH
+</label><br/>
 <br/>
 <label for="inpu">
     <small>*请在此输入请求正文json</small><br/>
@@ -80,6 +93,7 @@
     　　　<input id="uploadfile" type="file" name="upload_file"/><input type="reset"/>
 </form>
 <button onclick="getCustom()">请求</button>
+<button onclick="clearDiv()">清屏</button>
 <br/>
 <div id="oupu"></div>
 </body>
