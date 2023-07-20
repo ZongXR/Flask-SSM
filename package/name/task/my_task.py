@@ -10,6 +10,8 @@ FUNC = "my_func"
 TRIGGER = "interval"
 # 触发时间间隔设定5秒
 SECONDS = 5
+# 重启替换持久化
+REPLACE_EXISTING = True
 
 
 def my_func():

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from package.name.config.database_config import SQLALCHEMY_DATABASE_URI
 
 
-SCHEDULER_JOBSTORES = dict()
+SCHEDULER_JOBSTORES = {"default": SQLAlchemyJobStore(url=SQLALCHEMY_DATABASE_URI)}
 SCHEDULER_TIMEZONE = 'Asia/Shanghai'
 SCHEDULER_API_ENABLED = True
 SCHEDULER_API_PREFIX = '/scheduler'
