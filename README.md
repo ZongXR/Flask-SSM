@@ -262,4 +262,7 @@
 <tr>
 <td>2.8.2.1</td><td>开启定时任务调度持久化; fix some bugs</td><td>2023年7月20日</td>
 </tr>
+<tr>
+<td>2.8.2.2</td><td>fix some bugs</td><td>2023年7月21日</td>
+</tr>
 </table>

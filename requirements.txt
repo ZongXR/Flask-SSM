@@ -7,3 +7,4 @@ Flask-SQLAlchemy~=2.5.1
 SQLAlchemy~=1.4.18
 typing-inspect~=0.8.0
 APScheduler~=3.8.1
+Werkzeug~=2.1.2
