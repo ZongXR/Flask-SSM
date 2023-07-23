@@ -73,6 +73,7 @@
 <li><code>logs_config.py</code>存储着日志的配置信息，可直接修改。该样例默认日志存储位置为logs目录，默认日志级别为DEBUG</li>
 <li><code>eureka_config.py</code>是用于将微服务注册到eureka的配置信息，默认关闭</li>
 <li><code>app_config.py</code>用于该web应用的基础配置，如host, port, 等</li>
+<li><code>scheduler_config.py</code>用于定时任务的配置，如定时任务线程池、是否启用API、可信认证等</li>
 </ol>
 <h4>package.name.utils包</h4>
 <ol>
@@ -264,5 +265,8 @@
 </tr>
 <tr>
 <td>2.8.2.2</td><td>fix some bugs</td><td>2023年7月21日</td>
+</tr>
+<tr>
+<td>2.8.2.3</td><td>fix some bugs; 修改数据库配置项</td><td>2023年7月23日</td>
 </tr>
 </table>

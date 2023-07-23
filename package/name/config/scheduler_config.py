@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from flask_apscheduler.auth import HTTPBasicAuth
 from package.name.config.database_config import SQLALCHEMY_DATABASE_URI
 
 

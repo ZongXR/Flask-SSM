@@ -28,9 +28,13 @@ def init_config(app: Flask):
         app.config.from_object(__module__)
         for __key__ in dir(__module__):
             if __key__.isupper():
-                __value__ = os.getenv(__key__)
-                if __value__ is not None:
-                    app.config[__key__] = __value__
+                __value__ = app.config.get(__key__)
+                __env_value__ = os.getenv(__key__)
+                if __env_value__ is not None:
+                    if type(__value__) is str:
+                        app.config[__key__] = __env_value__
+                    else:
+                        app.config[__key__] = eval(__env_value__)
     if app.config.get("EUREKA_ENABLED", None):
         eureka_client = __import__("py_eureka_client.eureka_client", fromlist=["eureka_client"])
         eureka_client.init(

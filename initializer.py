@@ -179,8 +179,8 @@ if __name__ == '__main__':
         try:
             result = result + replace_txt(
                 "./package/name/config/database_config.py",
-                """DB_DIALECT = 'mysql'""",
-                """DB_DIALECT = '%s'""" % db_dialect
+                """db_dialect = 'mysql'""",
+                """db_dialect = '%s'""" % db_dialect
             )
         except Exception as e:
             logging.exception(e)
@@ -189,8 +189,8 @@ if __name__ == '__main__':
         try:
             result = result + replace_txt(
                 "./package/name/config/database_config.py",
-                """DB_DRIVER = 'pymysql'""",
-                """DB_DRIVER = '%s'""" % db_driver
+                """db_driver = 'pymysql'""",
+                """db_driver = '%s'""" % db_driver
             )
         except Exception as e:
             logging.exception(e)
@@ -199,8 +199,8 @@ if __name__ == '__main__':
         try:
             result = result + replace_txt(
                 "./package/name/config/database_config.py",
-                """DB_USERNAME = quote_plus('root')""",
-                """DB_USERNAME = quote_plus('%s')""" % db_username
+                """db_username = quote_plus('root')""",
+                """db_username = quote_plus('%s')""" % db_username
             )
         except Exception as e:
             logging.exception(e)
@@ -209,8 +209,8 @@ if __name__ == '__main__':
         try:
             result = result + replace_txt(
                 "./package/name/config/database_config.py",
-                """DB_PASSWORD = quote_plus('root')""",
-                """DB_PASSWORD = quote_plus('%s')""" % db_password
+                """db_password = quote_plus('root')""",
+                """db_password = quote_plus('%s')""" % db_password
             )
         except Exception as e:
             logging.exception(e)
@@ -219,8 +219,8 @@ if __name__ == '__main__':
         try:
             result = result + replace_txt(
                 "./package/name/config/database_config.py",
-                """DB_HOST = 'localhost'""",
-                """DB_HOST = '%s'""" % db_host
+                """db_host = 'localhost'""",
+                """db_host = '%s'""" % db_host
             )
         except Exception as e:
             logging.exception(e)
@@ -229,8 +229,8 @@ if __name__ == '__main__':
         try:
             result = result + replace_txt(
                 "./package/name/config/database_config.py",
-                """DB_PORT = '3306'""",
-                """DB_PORT = '%s'""" % db_port
+                """db_port = '3306'""",
+                """db_port = '%s'""" % db_port
             )
         except Exception as e:
             logging.exception(e)
@@ -239,8 +239,8 @@ if __name__ == '__main__':
         try:
             result = result + replace_txt(
                 "./package/name/config/database_config.py",
-                """DB_DATABASE = 'dbname'""",
-                """DB_DATABASE = '%s'""" % db_database
+                """db_database = 'dbname'""",
+                """db_database = '%s'""" % db_database
             )
         except Exception as e:
             logging.exception(e)
