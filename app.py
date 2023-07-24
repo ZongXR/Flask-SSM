@@ -13,5 +13,6 @@ if __name__ == '__main__':
         host=app.config.get("APP_HOST", None),
         port=app.config.get("APP_PORT", None),
         threaded=app.config.get("APP_THREAD", None),
-        processes=app.config.get("APP_PROCESS", None)
+        processes=app.config.get("APP_PROCESS", None),
+        use_reloader=True
     )
