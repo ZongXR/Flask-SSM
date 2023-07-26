@@ -54,7 +54,7 @@ def to_pojo(table_name: str, dbname: str, dialect: str, _engine_) -> bool:
         ow = getattr(_automap_base.classes, table_name)
         primary_key = inspect(ow).primary_key[0].name
         # write .py file
-        with open("./package/name/pojo/%s.py" % _class_name_, "w", encoding="utf-8") as f:
+        with open("./package/name/pojo/%s.py" % table_name, "w", encoding="utf-8") as f:
             for line in lines[0:7]:
                 f.write(line)
             f.write("class %s(db.Model):\n\n" % _class_name_)
