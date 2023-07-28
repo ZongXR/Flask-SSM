@@ -275,4 +275,7 @@
 <tr>
 <td>2.8.2.5</td><td>修正不规范的命名</td><td>2023年7月26日</td>
 </tr>
+<tr>
+<td>2.8.2.6</td><td>修复<code>pybatis</code>的空指针异常</td><td>2023年7月28日</td>
+</tr>
 </table>

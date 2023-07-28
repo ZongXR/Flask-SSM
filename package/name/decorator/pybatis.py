@@ -8,6 +8,7 @@ from inspect import signature
 from flask import current_app
 from sqlalchemy import text
 from sqlalchemy.engine.cursor import CursorResult
+from sqlalchemy.engine.result import MappingResult
 from package.name.dao import db
 
 
@@ -84,6 +85,9 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
             if result_type is CursorResult:                                                 # CursorResult
                 result: CursorResult = db.session.execute(sql, params)
                 return result
+            elif result_type is MappingResult:                                              # MappingResult
+                result: CursorResult = db.session.execute(sql, params)
+                return result.mappings()
             elif pd is not None and result_type is pd.DataFrame:                            # pd.DataFrame
                 result: CursorResult = db.session.execute(sql, params)
                 return pd.DataFrame(result.fetchall(), columns=result.mappings().keys(), *arguments, **kwargs)
@@ -93,7 +97,10 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                 keys = list(result.mappings().keys())
                 if len(keys) > 1:
                     current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
-                return pd.Series(values[0], name=keys[0], *arguments, **kwargs)
+                if len(values) > 0:
+                    return pd.Series(values[0], name=keys[0], *arguments, **kwargs)
+                else:
+                    return pd.Series(values, name=keys[0], *arguments, **kwargs)
             elif np is not None and result_type is np.ndarray:                              # np.ndarray
                 result: CursorResult = db.session.execute(sql, params)
                 return np.array(result.fetchall(), *arguments, **kwargs)
@@ -123,6 +130,9 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                             return db.session.query(_class_).from_statement(text(sql)).params(**params).all()
                     else:                                                                   # List[T]
                         result: CursorResult = db.session.execute(sql, params)
+                        keys = list(result.mappings().keys())
+                        if len(keys) > 1:
+                            current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
                         return [x[0] for x in result]
             elif get_origin(result_type) is tuple:
                 if result_type is Tuple:                                                    # Tuple
@@ -130,14 +140,11 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                     return result.fetchone()
                 elif get_origin(get_args(result_type)[0]) is dict:                          # Tuple[Dict]
                     result: CursorResult = db.session.execute(sql, params)
-                    return result.mappings()
+                    return tuple(result.mappings().all())
                 elif get_origin(get_args(result_type)[0]) is tuple:                         # Tuple[Tuple]
                     result: CursorResult = db.session.execute(sql, params)
                     fetch_result = result.fetchall()
-                    if fetch_result is None:
-                        return None
-                    else:
-                        return tuple(fetch_result)
+                    return tuple(fetch_result)
                 elif get_origin(get_args(result_type)[0]) is list:                          # Tuple[List]
                     result: CursorResult = db.session.execute(sql, params)
                     return map(list, result)
@@ -150,6 +157,9 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                             return tuple(db.session.query(_class_).from_statement(text(sql)).params(**params).all())
                     else:                                                                   # Tuple[T]
                         result: CursorResult = db.session.execute(sql, params)
+                        keys = list(result.mappings().keys())
+                        if len(keys) > 1:
+                            current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
                         return (x[0] for x in result)
             elif get_origin(result_type) is dict:
                 if result_type is Dict:                                                     # Dict
@@ -159,17 +169,26 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                     result: CursorResult = db.session.execute(sql, params)
                     values = list(map(list, list(zip(*result.fetchall()))))
                     keys = list(result.mappings().keys())
-                    return dict(zip(keys, values))
+                    if len(values) > 0:
+                        return dict(zip(keys, values))
+                    else:
+                        return {key: [] for key in keys}
                 elif get_origin(get_args(result_type)[1]) is tuple:                         # Dict[str, Tuple]
                     result: CursorResult = db.session.execute(sql, params)
                     values = list(zip(*result.fetchall()))
                     keys = list(result.mappings().keys())
-                    return dict(zip(keys, values))
+                    if len(values) > 0:
+                        return dict(zip(keys, values))
+                    else:
+                        return {key: tuple() for key in keys}
                 else:                                                                       # Dict[str, T]
                     result: CursorResult = db.session.execute(sql, params)
                     values = result.fetchone()
                     keys = list(result.mappings().keys())
-                    return dict(zip(keys, values))
+                    if values:
+                        return dict(zip(keys, values))
+                    else:
+                        return {key: None for key in keys}
             else:
                 _class_ = result_type
                 if issubclass(_class_, db.Model):                                           # Pojo
@@ -182,6 +201,10 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                     keys = list(result.mappings().keys())
                     if len(keys) > 1:
                         current_app.logger.warning("found %d fields, only pick fields[0]: %s" % (len(keys), keys[0]))
-                    return result.fetchone()[0]
+                    fetch_result = result.fetchone()
+                    if fetch_result is None:
+                        return None
+                    else:
+                        return fetch_result[0]
         return wrapper
     return decorate
