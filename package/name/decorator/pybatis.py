@@ -73,7 +73,7 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
     def decorate(func):
         @wraps(func)
         def wrapper(*args, **params):
-            sql: CursorResult = func(*args, **params)
+            sql: str = func(*args, **params)
             if not isinstance(sql, str):
                 raise TypeError("error in @mapper, return result of mapper function must be a sql string.")
             for i, k in enumerate(signature(func).parameters.keys()):
@@ -124,16 +124,16 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                 else:
                     _class_ = get_args(result_type)[0]
                     if issubclass(_class_, db.Model):                                       # List[Pojo]
-                        if len(params) == 0:
-                            return db.session.query(_class_).from_statement(text(sql)).all()
-                        else:
-                            return db.session.query(_class_).from_statement(text(sql)).params(**params).all()
+                        return db.session.query(_class_).from_statement(text(sql)).params(**params).all()
                     else:                                                                   # List[T]
                         result: CursorResult = db.session.execute(sql, params)
                         keys = list(result.mappings().keys())
                         if len(keys) > 1:
                             current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
-                        return [x[0] for x in result]
+                        _res_ = [x[0] for x in result]
+                        if len(_res_) > 0 and type(_res_[0]) is not _class_:
+                            current_app.logger.warning("type of T is %s, but required result_type is %s" % (type(_res_[0]), _class_))
+                        return _res_
             elif get_origin(result_type) is tuple:
                 if result_type is Tuple:                                                    # Tuple
                     result: CursorResult = db.session.execute(sql, params)
@@ -147,20 +147,20 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                     return tuple(fetch_result)
                 elif get_origin(get_args(result_type)[0]) is list:                          # Tuple[List]
                     result: CursorResult = db.session.execute(sql, params)
-                    return map(list, result)
+                    return tuple(map(list, result))
                 else:
                     _class_ = get_args(result_type)[0]
                     if issubclass(_class_, db.Model):                                       # Tuple[Pojo]
-                        if len(params) == 0:
-                            return tuple(db.session.query(_class_).from_statement(text(sql)).all())
-                        else:
-                            return tuple(db.session.query(_class_).from_statement(text(sql)).params(**params).all())
+                        return tuple(db.session.query(_class_).from_statement(text(sql)).params(**params).all())
                     else:                                                                   # Tuple[T]
                         result: CursorResult = db.session.execute(sql, params)
                         keys = list(result.mappings().keys())
                         if len(keys) > 1:
                             current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
-                        return (x[0] for x in result)
+                        _res_ = tuple(x[0] for x in result)
+                        if len(_res_) > 0 and type(_res_[0]) is not _class_:
+                            current_app.logger.warning("type of T is %s, but required result_type is %s" % (type(_res_[0]), _class_))
+                        return _res_
             elif get_origin(result_type) is dict:
                 if result_type is Dict:                                                     # Dict
                     result: CursorResult = db.session.execute(sql, params)
