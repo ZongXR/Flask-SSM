@@ -2,7 +2,7 @@
 这是一套基于flask开发的web模板，完全按照MVC分层的思想实现，对于没有web基础但需要做web项目的人可起到教学作用。尤其有助于java转python的web开发，让你按照java的思路写python
 <h2>这个怎么用？</h2>
 <h3>初始化</h3>
-<p>该项目推荐使用Python3.7版本。该框架提供了一键初始化脚本，按照以下步骤即可将自定义包名、数据库连接、日志设置，等内容配置进去</p>
+<p>该项目推荐使用<strong>Python3.7</strong>版本。该框架提供了一键初始化脚本，按照以下步骤即可将自定义包名、数据库连接、日志设置，等内容配置进去</p>
 <ol>
 <li>拉取本项目后，cd到项目根目录，确保所有文件没被占用</li>
 <li>把需要的依赖项添加进<code>./requirements.txt</code>，并执行以下命令安装依赖:<br />
@@ -50,6 +50,12 @@
 <li>这个包存放着前后端交互的接口，相当于java的controller包。如需自定义接口，仅需要把py文件放入该包内，并使用<code>@bp.route</code>装饰器注册进去即可。</li>
 <li>样例中已经给出了基础接口base_controller.py，如需自定义仿照此样例即可，在此包下的每个py文件构成一个蓝图，并且能够自动注册。</li>
 </ol>
+使用样例：<code><br />
+@bp.route(&quot;/api&quot;, methods=[&quot;GET&quot;, &quot;POST&quot;])<br />
+def foobar() -> Response:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;...<br />
+&nbsp;&nbsp;&nbsp;&nbsp;return CommonResult.ok(data)
+</code>
 <h4>package.name.service包</h4>
 <ol>
 <li>这个包存放着业务逻辑，相当于java的service包。</li>
@@ -61,6 +67,109 @@
 <li>如果需要被别的模块引用，直接<code>from package.name.dao import **_dao</code>即可</li>
 <li>dao函数的参数是传递给SQL的参数，返回值是SQL语句。再对dao函数加上<code>@mapper(result_type=**)</code>装饰器即可取用特定<code>result_type</code>类型格式的返回值</li>
 </ol>
+使用样例：<code><br />
+@mapper(result_type=CursorResult)<br />
+def foobar(param):<br />
+&nbsp;&nbsp;&nbsp;&nbsp;sql = &quot;&quot;&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;select *<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from table_name<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where id = :param<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;return sql
+</code><br />
+具体的<code>@mapper</code>中<code>result_type</code>参数见下表
+<table>
+<tr>
+<th>result_type</th><th>返回类型</th>
+</tr>
+<tr>
+<td><code>sqlalchemy.engine.cursor.CursorResult</code></td><td>查询结果游标<code>CursorResult</code>类的对象</td>
+</tr>
+<tr>
+<td><code>sqlalchemy.engine.result.MappingResult</code></td><td>查询结果<code>MappingResult</code>类的对象</td>
+</tr>
+<tr>
+<td><code>pandas.DataFrame</code></td><td><code>DataFrame</code>二维数据表</td>
+</tr>
+<tr>
+<td><code>pandas.Series</code></td><td><code>Series</code>一维数据列</td>
+</tr>
+<tr>
+<td><code>numpy.ndarray</code></td><td><code>ndarray</code>二维数组</td>
+</tr>
+<tr>
+<td><code>typing.List</code>或<code>list</code></td><td>第一条查询结果组成的一维列表</td>
+</tr>
+<tr>
+<td><code>typing.List[typing.Dict]</code>或<code>typing.List[dict]</code></td><td>字典组成的列表，键是列名，值是数据。一个字典是一行数据</td>
+</tr>
+<tr>
+<td><code>typing.List[typing.Tuple]</code>或<code>typing.List[tuple]</code></td><td>元组组成的列表，一个元组是一行数据</td>
+</tr>
+<tr>
+<td><code>typing.List[typing.List]</code>或<code>typing.List[list]</code></td><td>二维列表，一行是一条数据</td>
+</tr>
+<tr>
+<td><code>typing.List[Pojo]</code></td><td>ORM对象组成的一维列表，要求<code>Pojo</code>类继承自<code>db.Model</code></td>
+</tr>
+<tr>
+<td><code>typing.List[T]</code></td><td>某个字段的数值组成的一维列表</td>
+</tr>
+<tr>
+<td><code>typing.Tuple</code>或<code>tuple</code></td><td>第一条查询结果组成的一维元组</td>
+</tr>
+<tr>
+<td><code>typing.Tuple[typing.Dict]</code>或<code>typing.Tuple[dict]</code></td><td>字典组成的元组，键是列名，值是数据。一个字典是一行数据</td>
+</tr>
+<tr>
+<td><code>typing.Tuple[typing.Tuple]</code>或<code>typing.Tuple[tuple]</code></td><td>二维元组，一行是一条数据</td>
+</tr>
+<tr>
+<td><code>typing.Tuple[typing.List]</code>或<code>typing.Tuple[list]</code></td><td>列表组成的元组，一个列表是一条数据</td>
+</tr>
+<tr>
+<td><code>typing.Tuple[Pojo]</code></td><td>ORM对象组成的一维元组，要求<code>Pojo</code>类继承自<code>db.Model</code></td>
+</tr>
+<tr>
+<td><code>typing.Tuple[T]</code></td><td>某个字段的数值组成的一维元组</td>
+</tr>
+<tr>
+<td><code>collections.abc.Generator</code>或<code>typing.Generator</code></td><td>一维元组组成的生成器，一个元组是一行数据</td>
+</tr>
+<tr>
+<td><code>typing.Generator[typing.Dict, None, None]</code>或<code>typing.Generator[dict, None, None]</code></td><td>字典组成的生成器，一个字典是一行数据。</td>
+</tr>
+<tr>
+<td><code>typing.Generator[typing.Tuple, None, None]</code>或<code>typing.Generator[tuple, None, None]</code></td><td>一维元组组成的生成器，一个元组是一行数据。</td>
+</tr>
+<tr>
+<td><code>typing.Generator[typing.List, None, None]</code>或<code>typing.Generator[list, None, None]</code></td><td>一维列表组成的生成器，一个列表是一行数据。</td>
+</tr>
+<tr>
+<td><code>typing.Generator[Pojo, None, None]</code></td><td>ORM对象组成的生成器，要求<code>Pojo</code>类继承自<code>db.Model</code></td>
+</tr>
+<tr>
+<td><code>typing.Generator[T, None, None]</code></td><td>单一字段值组成的生成器。</td>
+</tr>
+<tr>
+<td><code>typing.Dict</code>或<code>dict</code></td><td>第一条查询结果组成的字典</td>
+</tr>
+<tr>
+<td><code>typing.Dict[str, typing.List]</code>或<code>typing.Dict[str, list]</code></td><td>一个字典，键是列名，值是字段值组成的列表</td>
+</tr>
+<tr>
+<td><code>typing.Dict[str, typing.Tuple]</code>或<code>typing.Dict[str, tuple]</code></td><td>一个字段，键是列名，值是字段值组成的元组</td>
+</tr>
+<tr>
+<td><code>typing.Dict[str, T]</code></td><td>第一条查询结果组成的字典，键是列名，值是第一条数据的字段值</td>
+</tr>
+<tr>
+<td><code>Pojo</code></td><td>第一条查询结果对应的ORM对象，要求<code>Pojo</code>类继承自<code>db.Model</code></td>
+</tr>
+<tr>
+<td><code>T</code></td><td>泛型<code>T</code>对应的单一数值</td>
+</tr>
+</table>
 <h4>package.name.task包</h4>
 <ol>
 <li>这个包用于存放定时任务，使用时只需要将自定义的定时任务放入包内。</li>
@@ -280,5 +389,8 @@
 </tr>
 <tr>
 <td>2.8.2.7</td><td>fix some bugs; 优化代码执行逻辑</td><td>2023年8月11日</td>
+</tr>
+<tr>
+<td>2.9.0.0</td><td>优化代码执行逻辑; 修改定时任务默认配置项; <code>@mapper</code>新增<code>Generator</code>的定义</td><td>2023年8月28日</td>
 </tr>
 </table>

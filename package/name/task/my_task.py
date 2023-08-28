@@ -2,6 +2,7 @@
 from package.name.task import scheduler
 
 
+# TODO 自定义的定时任务，可自行修改
 # ID必须唯一
 ID = "scheduled_task"
 # 生效的函数名

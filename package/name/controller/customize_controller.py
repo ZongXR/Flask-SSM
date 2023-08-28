@@ -10,14 +10,14 @@ from package.name.vo import CommonResult
 bp = Blueprint(__name__.replace(".", "_"), __name__, static_folder="static", template_folder="templates", static_url_path="", root_path=os.getcwd())
 
 
-# TODO 在这里写自己的异常处理handler
+# TODO 对该模块内的异常进行全局处理，可自定义修改
 @bp.errorhandler(Exception)
 def custom_error_handler(e: Exception) -> Response:
     current_app.logger.exception(e)
     return CommonResult.failed(message=str(e), data=e)
 
 
-# TODO 从这以下写自己的接口
+# TODO 自定义接口，restful风格
 @bp.route("/hello_world", methods=["POST"])
 def hello_world() -> Response:
     """
@@ -29,6 +29,7 @@ def hello_world() -> Response:
     return CommonResult.ok(data=result)
 
 
+# TODO 自定义接口，文件处理相关
 @bp.route("/upload", methods=["POST"])
 def upload() -> Response:
     """
