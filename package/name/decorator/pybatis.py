@@ -169,10 +169,14 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                         if len(_res_) > 0 and type(_res_[0]) is not _class_:
                             current_app.logger.warning("type of T is %s, but required result_type is %s" % (type(_res_[0]), _class_))
                         return _res_
-            elif __get_origin__(result_type) is Generator:
+            elif issubclass(__get_origin__(result_type), Generator):
                 if result_type is Generator or result_type is typing.Generator:             # Generator
                     result: CursorResult = db.session.execute(sql, params)
-                    return (x for x in result)
+                    keys = list(result.mappings().keys())
+                    if len(keys) > 1:
+                        return (x for x in result)
+                    else:
+                        return (x[0] for x in result)
                 _class_ = get_args(result_type)[0]
                 if __get_origin__(_class_) is dict:                                         # Generator[Dict, None, None] or Generator[dict, None, None]
                     result: CursorResult = db.session.execute(sql, params)

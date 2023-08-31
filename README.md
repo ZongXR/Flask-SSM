@@ -134,7 +134,7 @@ def foobar(param):<br />
 <td><code>typing.Tuple[T]</code></td><td>某个字段的数值组成的一维元组</td>
 </tr>
 <tr>
-<td><code>collections.abc.Generator</code>或<code>typing.Generator</code></td><td>一维元组组成的生成器，一个元组是一行数据</td>
+<td><code>collections.abc.Generator</code>或<code>typing.Generator</code></td><td>根据SQL语句而定，如果返回一个字段就是该字段的生成器，如果返回多个字段就是一维元组的生成器</td>
 </tr>
 <tr>
 <td><code>typing.Generator[typing.Dict, None, None]</code>或<code>typing.Generator[dict, None, None]</code></td><td>字典组成的生成器，一个字典是一行数据。</td>
@@ -177,7 +177,7 @@ def foobar(param):<br />
 </ol>
 <h4>package.name.config包</h4>
 <ol>
-<li>这个包存放着配置信息，包括但不限于数据库配置信息、日志配置信息。</li>
+<li>这个包存放着配置信息，包括但不限于数据库配置信息、日志配置信息。如需配置生效，仅需要在该包内以key-value的形式写入配置项并保持key大写。注意：环境变量的数值会覆盖配置项。</li>
 <li><code>database_config.py</code>存储着数据库连接的配置信息，可直接修改。该样例默认使用MySQL数据库</li>
 <li><code>logs_config.py</code>存储着日志的配置信息，可直接修改。该样例默认日志存储位置为logs目录，默认日志级别为DEBUG</li>
 <li><code>eureka_config.py</code>是用于将微服务注册到eureka的配置信息，默认关闭</li>
@@ -195,6 +195,12 @@ def foobar(param):<br />
 <li>通过继承<code>db.Model</code>类，可通过jpa查询规范实现对实体对象的快速检索</li>
 <li>里面每一个类必须与数据库表对应。通过<code>__tablename__</code>属性指定表名，其他<code>Column</code>类型属性与字段名一一对应</li>
 </ol>
+使用样例<code><br />
+class TableName(db.Model):<br />
+&nbsp;&nbsp;&nbsp;&nbsp;__tablename__ = &quot;table_name&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;user_id = Column(INTEGER, primary_key=True)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;teach_time = Column(DECIMAL(precision=2, scale=0))
+</code>
 <h4>package.name.vo包</h4>
 <ol>
 <li>这个包存储了ViewObject，是后端响应给前端的标准json数据格式</li>
@@ -208,6 +214,15 @@ def foobar(param):<br />
 </li>
 <li>其中<code>unittest.py</code>实现了单元测试的功能。如需对某个函数进行单元测试，直接加上<code>@test</code>，然后在函数所在的py文件里面加上<code>if __name__ == '__main__':</code>后，直接运行改py文件即可</li>
 </ol>
+使用样例<code><br />
+from package.name.decorator.unittest import test<br />
+@test<br />
+def foobar(param: int):<br />
+&nbsp;&nbsp;&nbsp;&nbsp;...<br />
+&nbsp;&nbsp;&nbsp;&nbsp;return ...<br />
+if name == &quot;__main__&quot;:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;print(foobar(3))
+</code>
 <h3>前台资源</h3>
 <h4>static目录</h4>
 <ol>
@@ -392,5 +407,8 @@ def foobar(param):<br />
 </tr>
 <tr>
 <td>2.9.0.0</td><td>优化代码执行逻辑; 修改定时任务默认配置项; <code>@mapper</code>新增<code>Generator</code>的定义</td><td>2023年8月28日</td>
+</tr>
+<tr>
+<td>2.9.1.0</td><td>fix some bugs; 更新<code>pybatis</code>的用法</td><td>2023年8月31日</td>
 </tr>
 </table>
