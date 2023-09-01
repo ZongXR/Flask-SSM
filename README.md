@@ -51,10 +51,10 @@
 <li>样例中已经给出了基础接口base_controller.py，如需自定义仿照此样例即可，在此包下的每个py文件构成一个蓝图，并且能够自动注册。</li>
 </ol>
 使用样例：<code><br />
-@bp.route(&quot;/api&quot;, methods=[&quot;GET&quot;, &quot;POST&quot;])<br />
-def foobar() -> Response:<br />
+&commat;bp.route&lpar;&quot;/api&quot;, methods=&lsqb;&quot;GET&quot;, &quot;POST&quot;&rsqb;&rpar;<br />
+def foobar&lpar;&rpar; &ndash;&gt; Response&colon;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;...<br />
-&nbsp;&nbsp;&nbsp;&nbsp;return CommonResult.ok(data)
+&nbsp;&nbsp;&nbsp;&nbsp;return CommonResult.ok&lpar;data&rpar;
 </code>
 <h4>package.name.service包</h4>
 <ol>
@@ -68,16 +68,16 @@ def foobar() -> Response:<br />
 <li>dao函数的参数是传递给SQL的参数，返回值是SQL语句。再对dao函数加上<code>@mapper(result_type=**)</code>装饰器即可取用特定<code>result_type</code>类型格式的返回值</li>
 </ol>
 使用样例：<code><br />
-@mapper(result_type=CursorResult)<br />
-def foobar(param):<br />
+&commat;mapper&lpar;result_type=CursorResult&rpar;<br />
+def foobar&lpar;param&rpar;&colon;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;sql = &quot;&quot;&quot;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;select *<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;select &ast;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from table_name<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where id = :param<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where id = &colon;param&semi;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;return sql
 </code><br />
-具体的<code>@mapper</code>中<code>result_type</code>参数见下表
+具体的<code>&commat;mapper</code>中<code>result_type</code>参数见下表
 <table>
 <tr>
 <th>result_type</th><th>返回类型</th>
@@ -187,7 +187,6 @@ def foobar(param):<br />
 <h4>package.name.utils包</h4>
 <ol>
 <li>这个包是工具模块，用于存放工具类和函数</li>
-<li>样例中已经给出了工具<code>CursorResultUtils.py</code>，可直接使用。</li>
 </ol>
 <h4>package.name.pojo包</h4>
 <ol>
@@ -196,10 +195,13 @@ def foobar(param):<br />
 <li>里面每一个类必须与数据库表对应。通过<code>__tablename__</code>属性指定表名，其他<code>Column</code>类型属性与字段名一一对应</li>
 </ol>
 使用样例<code><br />
-class TableName(db.Model):<br />
+from sqlalchemy.sql.sqltypes import &ast;<br />
+from sqlalchemy.sql.schema import Column<br />
+from package.name.dao import db<br />
+class TableName&lpar;db.Model&rpar;&colon;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;__tablename__ = &quot;table_name&quot;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;user_id = Column(INTEGER, primary_key=True)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;teach_time = Column(DECIMAL(precision=2, scale=0))
+&nbsp;&nbsp;&nbsp;&nbsp;user_id = Column&lpar;INTEGER&comma;&nbsp;primary_key=True&rpar;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;teach_time = Column&lpar;DECIMAL&lpar;precision=2&comma;&nbsp;scale=0&rpar;&rpar;
 </code>
 <h4>package.name.vo包</h4>
 <ol>
@@ -209,19 +211,19 @@ class TableName(db.Model):<br />
 <ol>
 <li>这个包存储了一系列的装饰器函数，类似于Spring中的AOP面向切面编程</li>
 <li>其中<code>pybatis.py</code>模拟了MyBatis: <br />
-如需对某个函数开启事务，直接加上<code>@transactional(rollback_for=**)</code>即可。<br />
-如需执行某条SQL，直接加上<code>@mapper(result_type=**)</code>即可。
+如需对某个函数开启事务，直接加上<code>&commat;transactional&lpar;rollback_for=&ast;&ast;&rpar;</code>即可。<br />
+如需执行某条SQL，直接加上<code>&commat;mapper&lpar;result_type=&ast;&ast;&rpar;</code>即可。
 </li>
-<li>其中<code>unittest.py</code>实现了单元测试的功能。如需对某个函数进行单元测试，直接加上<code>@test</code>，然后在函数所在的py文件里面加上<code>if __name__ == '__main__':</code>后，直接运行改py文件即可</li>
+<li>其中<code>unittest.py</code>实现了单元测试的功能。如需对某个函数进行单元测试，直接加上<code>&commat;test</code>，然后在函数所在的py文件里面加上<code>if __name__ == &quot;__main__&quot;&colon;</code>后，直接运行改py文件即可</li>
 </ol>
 使用样例<code><br />
 from package.name.decorator.unittest import test<br />
-@test<br />
-def foobar(param: int):<br />
+&commat;test<br />
+def foobar&lpar;param: int&rpar;:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;...<br />
 &nbsp;&nbsp;&nbsp;&nbsp;return ...<br />
-if name == &quot;__main__&quot;:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;print(foobar(3))
+if name == &quot;__main__&quot;&colon;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;print&lpar;foobar&lpar;3&rpar;&rpar;
 </code>
 <h3>前台资源</h3>
 <h4>static目录</h4>
@@ -410,5 +412,8 @@ if name == &quot;__main__&quot;:<br />
 </tr>
 <tr>
 <td>2.9.1.0</td><td>fix some bugs; 更新<code>pybatis</code>的用法</td><td>2023年8月31日</td>
+</tr>
+<tr>
+<td>2.9.1.1</td><td>删除<code>CursorResultUtils.py</code>; 更新说明文档</td><td>2023年9月1日</td>
 </tr>
 </table>
