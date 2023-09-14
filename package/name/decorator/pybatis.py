@@ -119,7 +119,7 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                 if result_type is List or result_type is list:                              # List or list
                     result: CursorResult = db.session.execute(sql, params)
                     fetch_result = result.fetchone()
-                    return None if fetch_result is None else fetch_result
+                    return None if fetch_result is None else list(fetch_result)
                 _class_ = get_args(result_type)[0]
                 if __get_origin__(_class_) is dict:                                         # List[Dict] or List[dict]
                     result: CursorResult = db.session.execute(sql, params)

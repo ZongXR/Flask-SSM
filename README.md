@@ -416,4 +416,7 @@ if name == &quot;__main__&quot;&colon;<br />
 <tr>
 <td>2.9.1.1</td><td>删除<code>CursorResultUtils.py</code>; 更新说明文档</td><td>2023年9月1日</td>
 </tr>
+<tr>
+<td>2.9.1.2</td><td>fix some bugs</td><td>2023年9月14日</td>
+</tr>
 </table>
