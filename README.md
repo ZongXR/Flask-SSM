@@ -60,12 +60,19 @@ def foobar&lpar;&rpar; &ndash;&gt; Response&colon;<br />
 <ol>
 <li>这个包存放着业务逻辑，相当于java的service包。</li>
 <li>如果需要被别的模块引用，直接<code>from package.name.service import **_service</code>即可</li>
+<li>如果某个业务逻辑涉及向数据库写入数据，必须对该函数加上<code>&commat;transactional&lpar;rollback_for=&ast;&ast;&rpar;</code>装饰器</li>
 </ol>
+使用样例：<code><br />
+&commat;transactional&lpar;rollback_for=Exception&rpar;<br />
+def foobar&lpar;param&rpar;&colon;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;... # 提交事务<br />
+&nbsp;&nbsp;&nbsp;&nbsp;return ...
+</code>
 <h4>package.name.dao包</h4>
 <ol>
 <li>这个包对应着数据访问层，相当于java的dao包。主要用来写sql，用法同<a href="http://www.pythondoc.com/flask-sqlalchemy/quickstart.html" target="_blank">Flask_SQLAlchemy</a>完全一样</li>
 <li>如果需要被别的模块引用，直接<code>from package.name.dao import **_dao</code>即可</li>
-<li>dao函数的参数是传递给SQL的参数，返回值是SQL语句。再对dao函数加上<code>@mapper(result_type=**)</code>装饰器即可取用特定<code>result_type</code>类型格式的返回值</li>
+<li>dao函数的参数是传递给SQL的参数，返回值是SQL语句。再对dao函数加上<code>&commat;mapper&lpar;result_type=&ast;&ast;&rpar;</code>装饰器即可取用特定<code>result_type</code>类型格式的返回值</li>
 </ol>
 使用样例：<code><br />
 &commat;mapper&lpar;result_type=CursorResult&rpar;<br />
@@ -98,6 +105,12 @@ def foobar&lpar;param&rpar;&colon;<br />
 <td><code>numpy.ndarray</code></td><td><code>ndarray</code>二维数组</td>
 </tr>
 <tr>
+<td><code>None</code>或<code>typing.NoReturn</code></td><td>无返回值</td>
+</tr>
+<tr>
+<td><code>sqlalchemy.engine.row.Row</code></td><td><code>sqlalchemy.engine.row.Row</code>对象，第一条查询结果</td>
+</tr>
+<tr>
 <td><code>typing.List</code>或<code>list</code></td><td>第一条查询结果组成的一维列表</td>
 </tr>
 <tr>
@@ -108,6 +121,9 @@ def foobar&lpar;param&rpar;&colon;<br />
 </tr>
 <tr>
 <td><code>typing.List[typing.List]</code>或<code>typing.List[list]</code></td><td>二维列表，一行是一条数据</td>
+</tr>
+<tr>
+<td><code>typing.List[sqlalchemy.engine.row.Row]</code></td><td>全部查询结果，由<code>sqlalchemy.engine.row.Row</code>对象组成的列表</td>
 </tr>
 <tr>
 <td><code>typing.List[Pojo]</code></td><td>ORM对象组成的一维列表，要求<code>Pojo</code>类继承自<code>db.Model</code></td>
@@ -126,6 +142,9 @@ def foobar&lpar;param&rpar;&colon;<br />
 </tr>
 <tr>
 <td><code>typing.Tuple[typing.List]</code>或<code>typing.Tuple[list]</code></td><td>列表组成的元组，一个列表是一条数据</td>
+</tr>
+<tr>
+<td><code>typing.Tuple[sqlalchemy.engine.row.Row]</code></td><td>全部查询结果，由<code>sqlalchemy.engine.row.Row</code>对象组成的元组</td>
 </tr>
 <tr>
 <td><code>typing.Tuple[Pojo]</code></td><td>ORM对象组成的一维元组，要求<code>Pojo</code>类继承自<code>db.Model</code></td>
@@ -418,5 +437,8 @@ if name == &quot;__main__&quot;&colon;<br />
 </tr>
 <tr>
 <td>2.9.1.2</td><td>fix some bugs</td><td>2023年9月14日</td>
+</tr>
+<tr>
+<td>2.9.2.0</td><td>更新<code>pybatis</code>用法; 更新说明文档</td><td>2023年9月15日</td>
 </tr>
 </table>

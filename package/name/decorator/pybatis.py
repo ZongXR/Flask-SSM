@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import typing
-from typing import Type, List, Tuple, Dict, Union, Optional
+from typing import Type, List, Tuple, Dict, Union, Optional, NoReturn
 from types import ModuleType
 from functools import wraps
 from inspect import signature
@@ -10,6 +10,7 @@ from flask import current_app
 from sqlalchemy import text
 from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.result import MappingResult
+from sqlalchemy.engine.row import Row
 from package.name.dao import db
 
 
@@ -115,8 +116,14 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
             elif np is not None and result_type is np.ndarray:                              # np.ndarray
                 result: CursorResult = db.session.execute(sql, params)
                 return np.array(result.fetchall(), *arguments, **kwargs)
+            elif result_type in (None, NoReturn):                                           # NoReturn or None
+                db.session.execute(sql, params)
+                return None
+            elif result_type is Row:                                                        # Row
+                result: CursorResult = db.session.execute(sql, params)
+                return result.fetchone()
             elif __get_origin__(result_type) is list:
-                if result_type is List or result_type is list:                              # List or list
+                if result_type in (List, list):                                             # List or list
                     result: CursorResult = db.session.execute(sql, params)
                     fetch_result = result.fetchone()
                     return None if fetch_result is None else list(fetch_result)
@@ -126,10 +133,13 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                     return result.mappings().all()
                 elif __get_origin__(_class_) is tuple:                                      # List[Tuple] or List[tuple]
                     result: CursorResult = db.session.execute(sql, params)
-                    return result.fetchall()
+                    return list(map(tuple, result))
                 elif __get_origin__(_class_) is list:                                       # List[List] or List[list]
                     result: CursorResult = db.session.execute(sql, params)
                     return list(map(list, result))
+                elif __get_origin__(_class_) is Row:                                        # List[Row]
+                    result: CursorResult = db.session.execute(sql, params)
+                    return result.fetchall()
                 else:
                     if issubclass(_class_, db.Model):                                       # List[Pojo]
                         return db.session.query(_class_).from_statement(text(sql)).params(**params).all()
@@ -143,20 +153,23 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                             current_app.logger.warning("type of T is %s, but required result_type is %s" % (type(_res_[0]), _class_))
                         return _res_
             elif __get_origin__(result_type) is tuple:
-                if result_type is Tuple or result_type is tuple:                            # Tuple or tuple
+                if result_type in (Tuple, tuple):                                          # Tuple or tuple
                     result: CursorResult = db.session.execute(sql, params)
-                    return result.fetchone()
+                    fetch_result = result.fetchone()
+                    return None if fetch_result is None else tuple(fetch_result)
                 _class_ = get_args(result_type)[0]
                 if __get_origin__(_class_) is dict:                                         # Tuple[Dict] or Tuple[dict]
                     result: CursorResult = db.session.execute(sql, params)
                     return tuple(result.mappings().all())
                 elif __get_origin__(_class_) is tuple:                                      # Tuple[Tuple] or Tuple[tuple]
                     result: CursorResult = db.session.execute(sql, params)
-                    fetch_result = result.fetchall()
-                    return tuple(fetch_result)
+                    return tuple(map(tuple, result))
                 elif __get_origin__(_class_) is list:                                       # Tuple[List] or Tuple[list]
                     result: CursorResult = db.session.execute(sql, params)
                     return tuple(map(list, result))
+                elif __get_origin__(_class_) is Row:                                        # Tuple[Row]
+                    result: CursorResult = db.session.execute(sql, params)
+                    return tuple(result.fetchall())
                 else:
                     if issubclass(_class_, db.Model):                                       # Tuple[Pojo]
                         return tuple(db.session.query(_class_).from_statement(text(sql)).params(**params).all())
@@ -170,7 +183,7 @@ def mapper(result_type: Union[Type, GenericAlias] = CursorResult, *arguments, **
                             current_app.logger.warning("type of T is %s, but required result_type is %s" % (type(_res_[0]), _class_))
                         return _res_
             elif issubclass(__get_origin__(result_type), Generator):
-                if result_type is Generator or result_type is typing.Generator:             # Generator
+                if result_type in (Generator, typing.Generator):                            # Generator
                     result: CursorResult = db.session.execute(sql, params)
                     keys = list(result.mappings().keys())
                     if len(keys) > 1:

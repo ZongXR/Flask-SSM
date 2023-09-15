@@ -8,7 +8,7 @@ db = SQLAlchemy()
 
 def init_db(app: Flask):
     """
-    初始化数据库配置
+    初始化数据库配置\n
     :param app:
     :return:
     """
