@@ -441,4 +441,7 @@ if name == &quot;__main__&quot;&colon;<br />
 <tr>
 <td>2.9.2.0</td><td>更新<code>pybatis</code>用法; 更新说明文档</td><td>2023年9月15日</td>
 </tr>
+<tr>
+<td>2.9.3.0</td><td>更新主页, 新增表单提交功能</td><td>2023年9月20日</td>
+</tr>
 </table>
