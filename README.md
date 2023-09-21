@@ -444,4 +444,7 @@ if name == &quot;__main__&quot;&colon;<br />
 <tr>
 <td>2.9.3.0</td><td>更新主页, 新增表单提交功能</td><td>2023年9月20日</td>
 </tr>
+<tr>
+<td>2.9.4.0</td><td>新增对mime值选项的悬停提示, 提示内容为后端接收参数方式</td><td>2023年9月21日</td>
+</tr>
 </table>
