@@ -447,4 +447,7 @@ if name == &quot;__main__&quot;&colon;<br />
 <tr>
 <td>2.9.4.0</td><td>新增对mime值选项的悬停提示, 提示内容为后端接收参数方式</td><td>2023年9月21日</td>
 </tr>
+<tr>
+<td>2.9.4.1</td><td>fix some bugs</td><td>2023年9月25日</td>
+</tr>
 </table>
