@@ -14,8 +14,8 @@
         /**
          * 清屏按钮的响应函数
          */
-        function clearDiv(obj) {
-            $(obj).text("");
+        function clearDiv(dom) {
+            $(dom).text("");
         }
 
         /**
@@ -56,7 +56,7 @@
         /**
          * 请求按钮的响应函数
          */
-        function getCustom() {
+        function getCustom(dom, with_ajax) {
             let requestMethod = $("input[name='request_method']:checked").val();
             let mime = $("input[name='mime']:checked").val();
             let url = $("#url").val();
@@ -64,7 +64,7 @@
             let outputDiv = $("#oupu");
             let form = $("#uploadform");
 
-            if ($('#submit_way').is(':checked')) {
+            if (with_ajax) {
                 if (mime.startsWith("multipart/form-data")) {
                     form.attr("enctype", mime);
                     let formData = new FormData(form[0]);
@@ -107,7 +107,6 @@
     </script>
 </head>
 <body>
-<label><input type="checkbox" id="submit_way" name="submit_way" checked/>以ajax方式提交</label><br/>
 <small>*请在此输入请求地址</small>
 <label for="url">
     <input id="url" placeholder="输入请求地址" type="text" value="{{ base }}/hello_world"/>
@@ -152,10 +151,10 @@
 <form id="uploadform">
     <input id="uploadfile" type="file" name="upload_file" /><input type="reset" />
 </form>
-<button onclick="getCustom()">请求</button>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button onclick="getCustom(this, true)">ajax请求</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button onclick="getCustom(this, false)">提交表单</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <button onclick="clearDiv(document.getElementById('oupu'))">清屏</button>
 <br/>
 <div id="oupu"></div>

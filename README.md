@@ -450,4 +450,7 @@ if name == &quot;__main__&quot;&colon;<br />
 <tr>
 <td>2.9.4.1</td><td>fix some bugs</td><td>2023年9月25日</td>
 </tr>
+<tr>
+<td>2.9.5.0</td><td>修改前端页面样式</td><td>2023年10月12日</td>
+</tr>
 </table>

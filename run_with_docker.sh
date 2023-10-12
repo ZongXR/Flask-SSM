@@ -1,3 +1,3 @@
 #!/bin/bash
 mkdir -p /opt/flask-mvc-example/logs
-docker run -d -p 5000:5000 -v /opt/flask-mvc-example/logs:/opt/logs zongxr/flask-mvc-example:2.9.4.1
+docker run -d -p 5000:5000 -v /opt/flask-mvc-example/logs:/opt/logs zongxr/flask-mvc-example:2.9.5.0
