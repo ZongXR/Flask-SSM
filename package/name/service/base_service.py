@@ -12,7 +12,7 @@ def run(param: str) -> str:
     :param param 参数
     :return: 答案
     """
-    current_app.logger.info("执行业务逻辑, 参数%s" % param)
+    current_app.logger.info("执行业务逻辑, 参数: '%s'" % param)
     result = tablename_dao.query_one(param)
     return str(result)
 

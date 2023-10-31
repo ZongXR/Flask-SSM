@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
+from types import FunctionType
+from functools import wraps
 from pathlib import Path
 from flask import Flask
 from flask.config import Config
@@ -7,6 +9,20 @@ from flask_apscheduler import APScheduler
 
 
 scheduler = APScheduler()
+
+
+def _add_app_context_(app: Flask, func: FunctionType) -> FunctionType:
+    """
+    对定时任务的执行函数加上下文\n
+    :param app: flask的app
+    :param func: 定时任务执行的函数
+    :return: 加了上下文的定时任务的函数
+    """
+    @wraps(func)
+    def result(*args, **kwargs):
+        with app.app_context():
+            return func(*args, **kwargs)
+    return result
 
 
 def init_scheduler(app: Flask):
@@ -28,6 +44,8 @@ def init_scheduler(app: Flask):
                 if key.isupper():
                     if "func" == key.lower():
                         job["func"] = __name__ + "." + _file_ + ":" + value
+                        _task_function_ = getattr(_module_, value)
+                        setattr(_module_, value, _add_app_context_(app, _task_function_))
                     else:
                         job[key.lower()] = value
             jobs.append(job)
