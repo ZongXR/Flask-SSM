@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from package.name.decorator.pybatis import mapper
+from flask_ssm.decorator.pybatis import Mapper
 
 
 # TODO 从这以下写自己的SQL执行语句
-@mapper(result_type=str)
+@Mapper(result_type=str)
 def query_one(param: str):
     """
     获取一个字段\n

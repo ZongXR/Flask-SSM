@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from package.name.task import scheduler
+from flask import current_app
 
 
 # TODO 自定义的定时任务，可自行修改
@@ -20,5 +20,5 @@ def my_func():
     定时触发的函数\n
     :return: 空
     """
-    scheduler.app.logger.info("触发定时任务" + ID)
+    current_app.logger.info("触发定时任务" + ID)
 

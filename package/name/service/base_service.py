@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import current_app
+from flask_ssm.decorator.unittest import Test
 from package.name.dao import tablename_dao
-from package.name.decorator.unittest import test
 
 
-# TODO 在此写业务逻辑，如果需要进行单元测试，直接加上 @test
-@test
+# TODO 在此写业务逻辑，如果需要进行单元测试，直接加上 @Test
+@Test
 def run(param: str) -> str:
     """
     业务逻辑\n

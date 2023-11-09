@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql.schema import Column
-from package.name.dao import db
+from package.name.dao import Repository
 
 
-# TODO 自定义的ORM映射对象，必须继承自db.Model，属性与字段需对应
-class TableName(db.Model):
+# TODO 自定义的ORM映射对象，属性与字段需对应
+class Pojo(Repository.db.Model):
 
     __tablename__ = "table_name"
 

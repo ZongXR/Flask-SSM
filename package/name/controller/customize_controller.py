@@ -3,7 +3,7 @@ import os
 from flask import request, current_app, Response, Blueprint, send_file
 from tempfile import TemporaryFile
 from package.name.service import base_service
-from package.name.vo import CommonResult
+from flask_ssm.vo import CommonResult
 
 
 # 自动注册蓝图，此行代码不要动
