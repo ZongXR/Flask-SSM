@@ -1,4 +1,4 @@
-<h1>Flask-SSM</h1>
+<h1><a href="https://github.com/GoogleLLP/Flask-SSM" target="_blank">Flask-SSM</a></h1>
 这是在flask基础上，二次开发的web框架Flask-SSM，完全按照MVC分层的思想实现，对于没有web基础但需要做web项目的人可起到教学作用。尤其有助于java转python的web开发，让你按照java的思路写python
 <h2>使用方法</h2>
 <h3>创建基础环境</h3>
@@ -237,5 +237,8 @@
 </tr>
 <tr>
 <td>3.1.0.0</td><td>新增装饰器<code>&commat;TableName</code>&semi;&nbsp;装饰器<code>&commat;Test</code>新增统计运行时间的功能，并输出到日志&semi;&nbsp;修复若干BUG</td><td>2023年11月10日</td>
+</tr>
+<tr>
+<td>3.2.0.0</td><td>新增安装脚本&semi;&nbsp;框架上传至pypi官方源</td><td>2023年11月11日</td>
 </tr>
 </table>
