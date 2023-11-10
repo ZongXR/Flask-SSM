@@ -32,4 +32,6 @@ def pojo_private_properties(cls: Type) -> dict:
         result["__table__"] = getattr(cls, "__table__")
     if hasattr(cls, "__bind_key__"):
         result["__bind_key__"] = getattr(cls, "__bind_key__")
+    if hasattr(cls, "__table_args__"):
+        result["__table_args__ "] = getattr(cls, "__table_args__")
     return result

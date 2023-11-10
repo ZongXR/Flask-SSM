@@ -4,6 +4,7 @@ from flask import Flask
 from flask_ssm.base.ssm import SpringApplication
 from flask_ssm.utils.context_utils import has_app_context
 from flask_ssm.utils.module_utils import get_package_from_path, find_member_from_multi_level_package
+from flask_ssm.utils.time_utils import execute_time
 
 
 class Test:
@@ -24,5 +25,6 @@ class Test:
                 sp[1].init_app(app)
             # run original function
             with app.app_context():
-                result = self.func(*args, **kwargs)
+                result, use_time = execute_time(self.func, *args, **kwargs)
+                app.logger.info("执行用时: %dms" % use_time)
             return result

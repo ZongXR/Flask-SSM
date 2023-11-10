@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql.schema import Column
-from package.name.dao import Repository
+from flask_ssm.decorator.pybatis import TableName
 
 
 # TODO 自定义的ORM映射对象，属性与字段需对应
-class Pojo(Repository.db.Model):
-
-    __tablename__ = "table_name"
+@TableName("table_name")
+class Pojo:
 
     user_id = Column(INTEGER, primary_key=True)
 
