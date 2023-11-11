@@ -3,6 +3,7 @@ import os
 from typing import List, Optional, Union, Tuple, Any
 from types import ModuleType, FunctionType
 import inspect
+from flask import Blueprint
 
 
 def walk_sub_modules(package: ModuleType) -> List[ModuleType]:
@@ -75,3 +76,26 @@ def find_member_from_multi_level_package(func: FunctionType, _path_tree_: List[s
             _path_tree_.pop()
         else:
             return list()
+
+
+def blueprint_from_module(func: FunctionType) -> Blueprint:
+    """
+    从函数所在的模块中提取Blueprint类对象\n
+    :param func: 函数
+    :return: Blueprint类的对象
+    """
+    _module_ = inspect.getmodule(func)
+    _bps_ = inspect.getmembers(_module_, lambda x: isinstance(x, Blueprint))
+    if _bps_:
+        result = _bps_[-1][1]
+    else:
+        result = Blueprint(
+            _module_.__name__.replace(".", "_"),
+            _module_.__name__,
+            static_folder="static",
+            template_folder="templates",
+            static_url_path="",
+            root_path=os.getcwd()
+        )
+        setattr(_module_, "__blueprint__", result)
+    return result

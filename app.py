@@ -1,6 +1,6 @@
 # -*- coding : utf-8 -*-
 from flask import Flask
-from package.name import sp
+from test.demo import sp
 
 
 app = Flask(sp.base_package.__package__)

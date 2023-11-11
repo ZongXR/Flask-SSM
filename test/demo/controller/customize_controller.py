@@ -1,24 +1,20 @@
 # -*- coding: utf-8 -*-
-import os
-from flask import request, current_app, Response, Blueprint, send_file
+from flask import request, current_app, Response, send_file
 from tempfile import TemporaryFile
-from package.name.service import base_service
+from test.demo.service import base_service
 from flask_ssm.vo import CommonResult
-
-
-# 自动注册蓝图，此行代码不要动
-bp = Blueprint(__name__.replace(".", "_"), __name__, static_folder="static", template_folder="templates", static_url_path="", root_path=os.getcwd())
+from flask_ssm.springframework.web.bind.annotation import RequestMethod, RequestMapping, ExceptionHandler
 
 
 # TODO 对该模块内的异常进行全局处理，可自定义修改
-@bp.errorhandler(Exception)
+@ExceptionHandler(Exception)
 def custom_error_handler(e: Exception) -> Response:
     current_app.logger.exception(e)
     return CommonResult.failed(message=str(e), data=e)
 
 
 # TODO 自定义接口，restful风格
-@bp.route("/hello_world", methods=["POST"])
+@RequestMapping("/hello_world", [RequestMethod.POST])
 def hello_world() -> Response:
     """
     自定义接口\n
@@ -30,7 +26,7 @@ def hello_world() -> Response:
 
 
 # TODO 自定义接口，文件处理相关
-@bp.route("/upload", methods=["POST"])
+@RequestMapping("/upload", [RequestMethod.POST])
 def upload() -> Response:
     """
     上传文件\n

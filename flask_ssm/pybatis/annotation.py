@@ -4,16 +4,16 @@ import sys
 import typing
 from typing import Type, List, Tuple, Dict, Union, NoReturn, Optional
 from functools import wraps
+import pkgutil
 from inspect import signature
 import inspect
-import pkgutil
 from collections.abc import Generator
 from flask import current_app
 from sqlalchemy import text
 from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.result import MappingResult
 from sqlalchemy.engine.row import Row
-from flask_ssm.base.ssm import Repository
+from flask_ssm.springframework.stereotype import Repository
 from flask_ssm.utils.module_utils import try_to_import
 from flask_ssm.utils.type_utils import __get_origin__, pojo_private_properties
 
@@ -26,43 +26,6 @@ if sys.version_info >= (3, 8):
     from typing import get_args
 else:
     from typing_inspect import get_args
-
-
-class Transactional:
-    """
-    事务管理器\n
-    """
-    def __init__(self, rollback_for: Type = Exception):
-        """
-        构造方法\n
-        :param rollback_for: 捕获的异常
-        """
-        self.rollback_for = rollback_for
-
-    def __call__(self, func):
-        """
-        执行函数\n
-        :param func: 原函数
-        :return:
-        """
-        if not issubclass(self.rollback_for, Exception):
-            raise TypeError("%s is not subclass of Exception" % str(self.rollback_for))
-
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            _module_ = inspect.getmodule(func)
-            db = getattr(_module_, "__orm__")
-            result = None
-            try:
-                result = func(*args, **kwargs)
-            except self.rollback_for as e:
-                db.session.rollback()
-                current_app.logger.exception(e)
-            else:
-                db.session.commit()
-            finally:
-                return result
-        return wrapper
 
 
 class Mapper:

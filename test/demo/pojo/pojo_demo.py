@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql.schema import Column
-from flask_ssm.decorator.pybatis import TableName
+from flask_ssm.pybatis.annotation import TableName
 
 
 # TODO 自定义的ORM映射对象，属性与字段需对应

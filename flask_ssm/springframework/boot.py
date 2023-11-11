@@ -13,48 +13,12 @@ from flask.config import Config
 from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_ssm.springframework.stereotype import Controller, Service, Repository
+from flask_ssm.springframework.context.annotation import Configuration, Bean
+from flask_ssm.springframework.scheduling.annotation import Scheduled
 from flask_ssm.utils.module_utils import walk_sub_modules
 from flask_ssm.utils.context_utils import add_app_context
 from flask_ssm.utils.type_utils import pojo_private_properties
-
-
-class Controller:
-    """
-    接口\n
-    """
-    pass
-
-
-class Service:
-    """
-    业务逻辑\n
-    """
-    pass
-
-
-class Repository:
-    """
-    数据交互\n
-    """
-    db = SQLAlchemy()
-
-
-class Configuration:
-    """
-    配置项\n
-    """
-    pass
-
-
-class Scheduled:
-    """
-    定时任务\n
-    """
-    pass
-
-
-class Bean:
-    pass
 
 
 class SpringApplication:

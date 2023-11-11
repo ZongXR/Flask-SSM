@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask_ssm.decorator.pybatis import Mapper
+from flask_ssm.pybatis.annotation import Mapper
 
 
 # TODO 从这以下写自己的SQL执行语句
