@@ -35,7 +35,7 @@
 </ol>
 需要注意的是：
 <ul>
-<i>其中，配置项的key必须保持大写，才能被识别。</i>
+<li>其中，配置项的key必须保持大写，才能被识别。</li>
 <li>如果环境变量中有与key同名变量，变量值自动覆盖配置项。</li>
 </ul>
 <h3>web接口层</h3>
@@ -45,13 +45,13 @@
 <code>from&nbsp;flask_ssm.springframework.stereotype&nbsp;import&nbsp;Controller</code>
 </li>
 <li>
-如<code>test.demo.controller.base_controller</code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping</code><br />
+如<code>test.demo.controller.base_controller</code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping&lpar;value=**&comma;&nbsp;method=**&rpar;</code>或<code>&commat;GetMapping&lpar;value=**&rpar;</code>或<code>&commat;PostMapping&lpar;value=**&rpar;</code><br />
 <code>&commat;RequestMapping&lpar;&quot;/&quot;&comma;&nbsp;[RequestMethod.GET&comma;&nbsp;RequestMethod.POST]&rpar;</code><br />
 <code>def&nbsp;index&lpar;&rpar;:</code><br />
 <code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;render_template&lpar;&quot;index.html&quot;&rpar;</code><br />
 </li>
 <li>
-如<code>test.demo.controller.customize_controller</code>所示，对该模块内的全局异常处理函数加上<code>&commat;ExceptionHandler</code><br />
+如<code>test.demo.controller.customize_controller</code>所示，对该模块内的全局异常处理函数加上<code>&commat;ExceptionHandler&lpar;value=**&rpar;</code><br />
 <code>&commat;ExceptionHandler&lpar;Exception&rpar;</code><br />
 <code>def&nbsp;custom_error_handler&lpar;e&rpar;:</code><br />
 <code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;CommonResult.failed&lpar;message=str&lpar;e&rpar;&comma;&nbsp;data=e&rpar;</code>
@@ -327,5 +327,8 @@
 </tr>
 <tr>
 <td>3.3.0.0</td><td>新增<code>&commat;RequestMapping</code>&comma;&nbsp;<code>&commat;ExceptionHandler</code>装饰器&semi;&nbsp;修改包结构</td><td>2023年11月12日</td>
+</tr>
+<tr>
+<td>3.4.0.0</td><td>新增<code>&commat;GetMapping</code>&comma;&nbsp;<code>&commat;PostMapping</code>装饰器</td><td>2023年11月13日</td>
 </tr>
 </table>
