@@ -46,14 +46,14 @@ class RequestMapping:
         @wraps(func)
         def result(*args, **kwargs):
             if request.mimetype.startswith("application/json"):
-                kwargs = dict(**kwargs, **request.json)
+                kwargs.update(request.json)
             elif request.mimetype.startswith("application/x-www-form-urlencoded") or request.mimetype.startswith("multipart/form-data"):
                 values = request.values
                 values = dict(zip(values.keys(), map(lambda x: unquote(x), values.values())))
-                kwargs = dict(**kwargs, **values)
+                kwargs.update(values)
                 if request.mimetype.startswith("multipart/form-data"):
-                    kwargs = dict(**kwargs, **request.files)
-            kwargs = dict(**dict(zip(inspect.signature(func).parameters.keys(), args)), **kwargs)
+                    kwargs.update(request.files)
+            kwargs.update(dict(zip(inspect.signature(func).parameters.keys(), args)))
             return func(**kwargs)
         bp = blueprint_from_module(func)
         return bp.route(self.rule, methods=self.methods)(result)
