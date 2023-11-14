@@ -56,8 +56,7 @@ class Mapper:
             sql: str = func(*args, **params)
             if not isinstance(sql, str):
                 raise TypeError("error in @mapper, return result of mapper function must be a sql string.")
-            for i, k in enumerate(signature(func).parameters.keys()):
-                params[k] = args[i]
+            params = dict(**dict(zip(signature(func).parameters.keys(), args)), **params)
             # try to import modules:
             pd = try_to_import("pandas")
             np = try_to_import("numpy")
@@ -258,7 +257,7 @@ class TableName:
                             else:
                                 metadata["__table_args__"] = ({"schema": self.schema}, )
                         if self.table_name and not issubclass(cls, db.Model):
-                            cls = type(cls.__name__, (db.Model, cls), {"__tablename__": self.table_name})
+                            cls = type(cls.__name__, (db.Model, cls), metadata)
                             return cls
             package_tree.pop()
             sub_trees.pop()

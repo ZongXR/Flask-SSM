@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import request, current_app, Response, send_file
+from flask import current_app, Response, send_file
 from tempfile import TemporaryFile
 from test.demo.service import base_service
 from flask_ssm.vo import CommonResult
@@ -15,25 +15,25 @@ def custom_error_handler(e: Exception) -> Response:
 
 # TODO 自定义接口，restful风格
 @RequestMapping("/hello_world", [RequestMethod.POST])
-def hello_world() -> Response:
+def hello_world(param) -> Response:
     """
     自定义接口\n
+    :param param: 请求参数
     :return: 响应
     """
-    param = request.json.get("param")
     result = base_service.run(param)
     return CommonResult.ok(data=result)
 
 
 # TODO 自定义接口，文件处理相关
 @RequestMapping("/upload", [RequestMethod.POST])
-def upload() -> Response:
+def upload(upload_file) -> Response:
     """
     上传文件\n
+    :param upload_file: 上传的文件
     :return: 响应
     """
-    file = request.files.get("upload_file")
     result = TemporaryFile()
-    result.write(file.stream.read())
+    result.write(upload_file.stream.read())
     result.seek(0)
-    return send_file(result, mimetype=file.mimetype, as_attachment=True, download_name=file.filename, attachment_filename=file.filename)
+    return send_file(result, mimetype=upload_file.mimetype, as_attachment=True, download_name=upload_file.filename, attachment_filename=upload_file.filename)

@@ -46,9 +46,10 @@
 </li>
 <li>
 如<code>test.demo.controller.base_controller</code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping&lpar;value=**&comma;&nbsp;method=**&rpar;</code>或<code>&commat;GetMapping&lpar;value=**&rpar;</code>或<code>&commat;PostMapping&lpar;value=**&rpar;</code><br />
-<code>&commat;RequestMapping&lpar;&quot;/&quot;&comma;&nbsp;[RequestMethod.GET&comma;&nbsp;RequestMethod.POST]&rpar;</code><br />
-<code>def&nbsp;index&lpar;&rpar;:</code><br />
-<code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;render_template&lpar;&quot;index.html&quot;&rpar;</code><br />
+<code>&commat;RequestMapping&lpar;&quot;/hello_world&quot;&comma;&nbsp;[RequestMethod.POST]&rpar;</code><br />
+<code>def&nbsp;hello_world&lpar;param&rpar;:</code><br />
+<code>&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;=&nbsp;base_service.run&lpar;param&rpar;</code><br />
+<code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;CommonResult.ok&lpar;data=result&rpar;</code><br />
 </li>
 <li>
 如<code>test.demo.controller.customize_controller</code>所示，对该模块内的全局异常处理函数加上<code>&commat;ExceptionHandler&lpar;value=**&rpar;</code><br />
@@ -330,5 +331,8 @@
 </tr>
 <tr>
 <td>3.4.0.0</td><td>新增<code>&commat;GetMapping</code>&comma;&nbsp;<code>&commat;PostMapping</code>装饰器</td><td>2023年11月13日</td>
+</tr>
+<tr>
+<td>3.5.0.0</td><td><code>&commat;RequestMapping</code>装饰器实现参数注入功能，现在可以直接把请求参数写入接口的函数形参。</td><td>2023年11月14日</td>
 </tr>
 </table>

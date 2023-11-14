@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+from functools import wraps
 from typing import Union, Collection, Type
+import inspect
+from urllib.parse import unquote
+from flask import request
 from flask_ssm.utils.module_utils import blueprint_from_module
 
 
@@ -39,8 +43,20 @@ class RequestMapping:
         :param func: 原函数
         :return:
         """
+        @wraps(func)
+        def result(*args, **kwargs):
+            if request.mimetype.startswith("application/json"):
+                kwargs = dict(**kwargs, **request.json)
+            elif request.mimetype.startswith("application/x-www-form-urlencoded") or request.mimetype.startswith("multipart/form-data"):
+                values = request.values
+                values = dict(zip(values.keys(), map(lambda x: unquote(x), values.values())))
+                kwargs = dict(**kwargs, **values)
+                if request.mimetype.startswith("multipart/form-data"):
+                    kwargs = dict(**kwargs, **request.files)
+            kwargs = dict(**dict(zip(inspect.signature(func).parameters.keys(), args)), **kwargs)
+            return func(**kwargs)
         bp = blueprint_from_module(func)
-        return bp.route(self.rule, methods=self.methods)(func)
+        return bp.route(self.rule, methods=self.methods)(result)
 
 
 class GetMapping(RequestMapping):
