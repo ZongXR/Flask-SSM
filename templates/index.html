@@ -83,12 +83,12 @@
                     success: function (response) {
                         outputDiv.append("--------------------------------------------------");
                         outputDiv.append($("<div></div>").text("请求: " + data));
-                        outputDiv.append($("<div></div>").text("请求: " + JSON.stringify(response)));
+                        outputDiv.append($("<div></div>").text("响应: " + JSON.stringify(response)));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         outputDiv.append("--------------------------------------------------");
                         outputDiv.append($("<div></div>").text("请求: " + data));
-                        outputDiv.append($("<div></div>").text("请求: " + JSON.stringify(jqXHR)));
+                        outputDiv.append($("<div></div>").text("响应: " + JSON.stringify(jqXHR)));
                     }
                 });
             } else {

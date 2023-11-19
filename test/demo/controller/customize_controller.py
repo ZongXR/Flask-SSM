@@ -3,19 +3,21 @@ from flask import current_app, Response, send_file
 from tempfile import TemporaryFile
 from test.demo.service import base_service
 from flask_ssm.vo import CommonResult
-from flask_ssm.springframework.web.bind.annotation import RequestMethod, RequestMapping, ExceptionHandler
+from flask_ssm.springframework.web.bind.annotation import RequestMethod, RequestMapping, ExceptionHandler, ResponseBody
 
 
 # TODO 对该模块内的异常进行全局处理，可自定义修改
 @ExceptionHandler(Exception)
-def custom_error_handler(e: Exception) -> Response:
+@ResponseBody
+def custom_error_handler(e: Exception) -> CommonResult:
     current_app.logger.exception(e)
-    return CommonResult.failed(message=str(e), data=e)
+    return CommonResult.failed(message=str(e))
 
 
 # TODO 自定义接口，restful风格
 @RequestMapping("/hello_world", [RequestMethod.POST])
-def hello_world(param) -> Response:
+@ResponseBody
+def hello_world(param) -> CommonResult:
     """
     自定义接口\n
     :param param: 请求参数

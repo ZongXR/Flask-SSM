@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from functools import wraps
 from flask import Flask
 from flask_ssm.springframework.boot import SpringApplication
 from flask_ssm.utils.context_utils import has_app_context
@@ -9,6 +10,7 @@ from flask_ssm.utils.time_utils import execute_time
 
 class Test:
     def __init__(self, func):
+        wraps(func)(self)
         self.func = func
 
     def __call__(self, *args, **kwargs):

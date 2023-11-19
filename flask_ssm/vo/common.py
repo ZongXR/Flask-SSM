@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from json import dumps
-from flask import jsonify, Response
 
 
 class CommonResult(object):
@@ -24,7 +23,7 @@ class CommonResult(object):
         self.data = data
 
     @staticmethod
-    def ok(message: str = "OK", data: object = None) -> Response:
+    def ok(message: str = "OK", data: object = None):
         """
         请求成功\n
         :param message: 消息
@@ -32,10 +31,10 @@ class CommonResult(object):
         :return: 响应
         """
         result = CommonResult(code=200, message=message, data=data)
-        return jsonify(result.__dict__)
+        return result
 
     @staticmethod
-    def bad_request(message: str = "Bad Request", data: object = None) -> Response:
+    def bad_request(message: str = "Bad Request", data: object = None):
         """
         请求坏了\n
         :param message: 消息
@@ -43,10 +42,10 @@ class CommonResult(object):
         :return: 响应
         """
         result = CommonResult(code=400, message=message, data=data)
-        return jsonify(result.__dict__)
+        return result
 
     @staticmethod
-    def not_found(message: str = "Not Found", data: object = None) -> Response:
+    def not_found(message: str = "Not Found", data: object = None):
         """
         没找到\n
         :param message: 消息
@@ -54,10 +53,10 @@ class CommonResult(object):
         :return: 响应
         """
         result = CommonResult(code=404, message=message, data=data)
-        return jsonify(result.__dict__)
+        return result
 
     @staticmethod
-    def failed(message: str = "Internal Server Error", data: object = None) -> Response:
+    def failed(message: str = "Internal Server Error", data: object = None):
         """
         请求失败\n
         :param message: 消息
@@ -65,10 +64,10 @@ class CommonResult(object):
         :return: 响应
         """
         result = CommonResult(code=500, message=message, data=data)
-        return jsonify(result.__dict__)
+        return result
 
     @staticmethod
-    def make_response(code: int, message: str, data: object) -> Response:
+    def make_response(code: int, message: str, data: object):
         """
         制作一个响应\n
         :param code: 状态码
@@ -77,7 +76,7 @@ class CommonResult(object):
         :return: 响应
         """
         result = CommonResult(code=code, message=message, data=data)
-        return jsonify(result.__dict__)
+        return result
 
     def __str__(self) -> str:
         return dumps(self.__dict__)

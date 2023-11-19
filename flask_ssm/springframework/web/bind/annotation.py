@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+import re
 from functools import wraps
 from typing import Union, Collection, Type
 import inspect
 from urllib.parse import unquote
-from flask import request
+from flask import request, jsonify, Response
 from flask_ssm.utils.module_utils import blueprint_from_module
 
 
@@ -31,7 +32,7 @@ class RequestMapping:
         :param value: 请求路径
         :param method: 请求方法
         """
-        self.rule = value
+        self.rule = re.sub(r'\{([^}]+)\}', r'<\1>', value)
         if type(method) is str:
             self.methods = [method]
         else:
@@ -118,3 +119,31 @@ class ExceptionHandler:
         """
         bp = blueprint_from_module(func)
         return bp.errorhandler(self.exception_cls)(func)
+
+
+class ResponseBody:
+    """
+    把函数返回值的json写入响应体\n
+    """
+    def __init__(self, func):
+        """
+        构造函数\n
+        :param func: 装饰的函数
+        """
+        wraps(func)(self)
+        self.func = func
+
+    def __call__(self, *args, **kwargs) -> Response:
+        """
+        调用函数\n
+        :param args: 变长参数
+        :param kwargs: 关键字参数
+        :return: 修改后的返回值
+        """
+        result = self.func(*args, **kwargs)
+        if type(result) is Response:
+            return result
+        elif issubclass(type(result), dict):
+            return jsonify(dict(result))
+        else:
+            return jsonify(result.__dict__)

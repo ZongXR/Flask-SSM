@@ -1,6 +1,8 @@
 <h1><a href="https://github.com/GoogleLLP/Flask-SSM" target="_blank">Flask-SSM</a></h1>
 一款模仿SpringFramework的Python的web后端框架，基于Flask二次封装。通过Python反射模拟了Java的IOC控制反转，通过Python装饰者模式模拟了Java的AOP面向切面编程。具有接口自动发现、定时任务自动注册、事务管理器、单元测试，等功能。简化web后端开发流程，聚焦业务逻辑，让你按照Spring的习惯写Python
 <h2>使用方法</h2>
+首先使用以下命令安装该框架<br />
+<code>pip&nbsp;install&nbsp;Flask-SSM</code><br />
 使用教程请参考<a href="https://github.com/GoogleLLP/Flask-SSM" target="_blank">此地址</a>中的<code>test.demo</code>包，这是一个具有典型MVC结构的最小web应用。
 <h3>创建基础环境</h3>
 <ol>
@@ -45,8 +47,12 @@
 <code>from&nbsp;flask_ssm.springframework.stereotype&nbsp;import&nbsp;Controller</code>
 </li>
 <li>
-如<code>test.demo.controller.base_controller</code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping&lpar;value=**&comma;&nbsp;method=**&rpar;</code>或<code>&commat;GetMapping&lpar;value=**&rpar;</code>或<code>&commat;PostMapping&lpar;value=**&rpar;</code><br />
+如<code>test.demo.controller.base_controller</code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping&lpar;value=**&comma;&nbsp;method=**&rpar;</code>或<code>&commat;GetMapping&lpar;value=**&rpar;</code>或<code>&commat;PostMapping&lpar;value=**&rpar;</code>
+</li>
+<li>
+如<code>test.demo.controller.customize_controller</code>所示，如果响应体是json格式，使用<code>&commat;ResponseBody</code>把函数返回值映射为json格式写入响应体中。注意，由于Python装饰器有前后执行顺序区别，因此<code>&commat;ResponseBody</code>要加在<code>&commat;RequestMapping</code>后面<br />
 <code>&commat;RequestMapping&lpar;&quot;/hello_world&quot;&comma;&nbsp;[RequestMethod.POST]&rpar;</code><br />
+<code>&commat;ResponseBody</code><br />
 <code>def&nbsp;hello_world&lpar;param&rpar;:</code><br />
 <code>&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;=&nbsp;base_service.run&lpar;param&rpar;</code><br />
 <code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;CommonResult.ok&lpar;data=result&rpar;</code><br />
@@ -55,7 +61,7 @@
 如<code>test.demo.controller.customize_controller</code>所示，对该模块内的全局异常处理函数加上<code>&commat;ExceptionHandler&lpar;value=**&rpar;</code><br />
 <code>&commat;ExceptionHandler&lpar;Exception&rpar;</code><br />
 <code>def&nbsp;custom_error_handler&lpar;e&rpar;:</code><br />
-<code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;CommonResult.failed&lpar;message=str&lpar;e&rpar;&comma;&nbsp;data=e&rpar;</code>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;str&lpar;e&rpar;</code>
 </li>
 </ol>
 <h3>业务逻辑层</h3>
@@ -337,5 +343,8 @@
 </tr>
 <tr>
 <td>3.5.1.0</td><td>优化执行逻辑，提升执行效率</td><td>2023年11月14日</td>
+</tr>
+<tr>
+<td>3.6.0.0</td><td>新增<code>&commat;ResponseBody</code>装饰器&comma;&nbsp;修复若干BUG</td><td>2023年11月19日</td>
 </tr>
 </table>
