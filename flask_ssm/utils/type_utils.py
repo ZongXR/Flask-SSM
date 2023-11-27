@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from typing import Type
+from flask import Response, jsonify
 
 
 if sys.version_info >= (3, 8):
@@ -35,3 +36,17 @@ def pojo_private_properties(cls: Type) -> dict:
     if hasattr(cls, "__table_args__"):
         result["__table_args__ "] = getattr(cls, "__table_args__")
     return result
+
+
+def to_json(obj) -> Response:
+    """
+    把obj转为json串\n
+    :param obj: 要转换的对象
+    :return: 响应
+    """
+    if type(obj) is Response:
+        return obj
+    elif issubclass(type(obj), dict):
+        return jsonify(dict(obj))
+    else:
+        return jsonify(obj.__dict__)

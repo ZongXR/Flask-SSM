@@ -4,8 +4,9 @@ from functools import wraps
 from typing import Union, Collection, Type
 import inspect
 from urllib.parse import unquote
-from flask import request, jsonify, Response
+from flask import request, Response
 from flask_ssm.utils.module_utils import blueprint_from_module
+from flask_ssm.utils.type_utils import to_json
 
 
 class RequestMethod:
@@ -55,7 +56,12 @@ class RequestMapping:
                 if request.mimetype.startswith("multipart/form-data"):
                     kwargs.update(request.files)
             kwargs.update(dict(zip(inspect.signature(func).parameters.keys(), args)))
-            return func(**kwargs)
+            _module_ = inspect.getmodule(func)
+            _inner_result_ = func(**kwargs)
+            if inspect.getmembers(_module_, lambda x: x is RestController):
+                return to_json(_inner_result_)
+            else:
+                return _inner_result_
         bp = blueprint_from_module(func)
         return bp.route(self.rule, methods=self.methods)(result)
 
@@ -141,9 +147,8 @@ class ResponseBody:
         :return: 修改后的返回值
         """
         result = self.func(*args, **kwargs)
-        if type(result) is Response:
-            return result
-        elif issubclass(type(result), dict):
-            return jsonify(dict(result))
-        else:
-            return jsonify(result.__dict__)
+        return to_json(result)
+
+
+class RestController:
+    pass
