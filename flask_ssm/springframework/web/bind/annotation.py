@@ -106,6 +106,54 @@ class PostMapping(RequestMapping):
         return super().__call__(func)
 
 
+class PutMapping(RequestMapping):
+    """
+    用它修饰PUT请求接口函数\n
+    """
+    def __init__(self, value: str):
+        super().__init__(value, RequestMethod.PUT)
+
+    def __call__(self, func):
+        """
+        执行函数\n
+        :param func: 原函数
+        :return:
+        """
+        return super().__call__(func)
+
+
+class DeleteMapping(RequestMapping):
+    """
+    用它修饰DELETE请求接口函数\n
+    """
+    def __init__(self, value: str):
+        super().__init__(value, RequestMethod.DELETE)
+
+    def __call__(self, func):
+        """
+        执行函数\n
+        :param func: 原函数
+        :return:
+        """
+        return super().__call__(func)
+
+
+class PatchMapping(RequestMapping):
+    """
+    用它修饰PATCH请求接口函数\n
+    """
+    def __init__(self, value: str):
+        super().__init__(value, RequestMethod.PATCH)
+
+    def __call__(self, func):
+        """
+        执行函数\n
+        :param func: 原函数
+        :return:
+        """
+        return super().__call__(func)
+
+
 class ExceptionHandler:
     """
     用来统一处理同一个模块的接口异常\n

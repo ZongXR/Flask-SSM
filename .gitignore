@@ -134,5 +134,3 @@ dmypy.json
 logs/*
 
 !logs/.gitkeep
-
-Flask-SSM-Zong-Xiangrui**

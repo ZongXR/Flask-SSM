@@ -47,7 +47,7 @@ APP_PROCESS = 1           # 进程个数
 <h3>web接口层</h3>
 <ol>
 <li>
-如<code>test.demo.controller</code>包所示，在<code>test.demo.controller.__init__.py</code>中导入<code>Controller</code>类，该包内的全部<code>Blueprint</code>类能被自动注册，从而实现接口的自动发现。
+如<code>test.demo.controller</code>包所示，在<code>test.demo.controller.__init__.py</code>中导入<code>Controller</code>类，标记该包内所有模块的函数为web接口。
 <pre>from flask_ssm.springframework.stereotype import Controller</pre>
 </li>
 <li>
@@ -369,5 +369,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.7.0.0</td><td>新增<code>RestController</code>类</td><td>2023年11月27日</td>
+</tr>
+<tr>
+<td>3.7.1.0</td><td>新增<code>&commat;PutMapping</code>&comma;&nbsp;<code>&commat;DeleteMapping</code>&comma;&nbsp;<code>&commat;PatchMapping</code>装饰器</td><td>2023年11月30日</td>
 </tr>
 </table>
