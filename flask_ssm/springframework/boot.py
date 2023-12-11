@@ -120,11 +120,12 @@ class SpringApplication:
         :param app: Flask对象
         :return:
         """
-        self.orm.init_app(app)
         for __dao_package__ in self.__dao_packages__:
             for __dao_module__ in walk_sub_modules(__dao_package__):
                 setattr(__dao_module__, "__orm__", self.orm)
-        app.logger.info("初始化数据库连接成功")
+        if self.__dao_packages__ and self.orm:
+            self.orm.init_app(app)
+            app.logger.info("初始化数据库连接成功")
 
     def __init_task__(self, app: Flask):
         """
@@ -152,9 +153,10 @@ class SpringApplication:
         app.config.update({
             "JOBS": jobs
         })
-        self.scheduler.init_app(app)
-        self.scheduler.start()
-        app.logger.info("初始化定时任务成功")
+        if self.__task_packages__ and self.scheduler:
+            self.scheduler.init_app(app)
+            self.scheduler.start()
+            app.logger.info("初始化定时任务成功")
 
     def __init_service__(self, app: Flask):
         """

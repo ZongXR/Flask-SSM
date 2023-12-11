@@ -55,7 +55,7 @@ class Mapper:
             db = getattr(_module_, "__orm__")
             sql: str = func(*params, **kwparams)
             if not isinstance(sql, str):
-                raise TypeError("error in @mapper, return result of mapper function must be a sql string.")
+                raise TypeError("error in @Mapper, return result of mapper function must be a sql string.")
             kwparams.update(dict(zip(signature(func).parameters.keys(), params)))
             # try to import modules:
             pd = try_to_import("pandas")

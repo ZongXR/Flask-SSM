@@ -3,15 +3,15 @@
 <h2>使用方法</h2>
 首先使用以下命令安装该框架<br />
 <code>pip&nbsp;install&nbsp;Flask-SSM</code><br />
-使用教程请参考<a href="https://github.com/GoogleLLP/Flask-SSM" target="_blank">此地址</a>中的<code>test.demo</code>包，这是一个具有典型MVC结构的最小web应用。
+使用教程请参考<a href="https://github.com/GoogleLLP/Flask-SSM" target="_blank">此地址</a>中的<code><a href="./test/demo" target="_blank">test.demo</a></code>包，这是一个具有典型MVC结构的最小web应用。
 <h3>创建基础环境</h3>
 <ol>
 <li>
-如<code>test.demo</code>包所示，在<code>test.demo.__init__.py</code>中定义<code>SpringApplication</code>类的对象。
+如<code><a href="./test/demo" target="_blank">test.demo</a></code>包所示，在<code><a href="./test/demo/__init__.py" target="_blank">test.demo.__init__.py</a></code>中定义<code>SpringApplication</code>类的对象。
 <pre>sp = SpringApplication()</pre>
 </li>
 <li>
-如<code>app.py</code>所示，在<code>app.py</code>中导入该对象，然后对其进行初始化。
+如<code><a href="./app.py" target="_blank">app.py</a></code>所示，在<code><a href="./app.py" target="_blank">app.py</a></code>中导入该对象，然后对其进行初始化。
 <pre>
 from test.demo import sp
 app = Flask(sp.base_package.__package__)
@@ -23,11 +23,11 @@ app.run()
 <h3>应用配置项</h3>
 <ol>
 <li>
-如<code>test.demo.config</code>包所示，在<code>test.demo.config.__init__.py</code>中导入<code>Configuration</code>类，该包内的配置项能自动识别。
+如<code><a href="./test/demo/config" target="_blank">test.demo.config</a></code>包所示，在<code><a href="./test/demo/config/__init__.py" target="_blank">test.demo.config.__init__.py</a></code>中导入<code>Configuration</code>类，该包内的配置项能自动识别。
 <pre>from flask_ssm.springframework.context.annotation import Configuration</pre>
 </li>
 <li>
-建议将同一类别的配置写在同一模块内。如<code>test.demo.config.app_config</code>所示：
+建议将同一类别的配置写在同一模块内。如<code><a href="./test/demo/config/app_config.py" target="_blank">test.demo.config.app_config</a></code>所示：
 <pre>
 APP_HOST = "0.0.0.0"      # 定义了应用的域
 APP_PORT = 5000           # 定义了应用的端口
@@ -47,14 +47,14 @@ APP_PROCESS = 1           # 进程个数
 <h3>web接口层</h3>
 <ol>
 <li>
-如<code>test.demo.controller</code>包所示，在<code>test.demo.controller.__init__.py</code>中导入<code>Controller</code>类，标记该包内所有模块的函数为web接口。
+如<code><a href="./test/demo/controller" target="_blank">test.demo.controller</a></code>包所示，在<code><a href="./test/demo/controller/__init__.py" target="_blank">test.demo.controller.__init__.py</a></code>中导入<code>Controller</code>类，标记该包内所有模块的函数为web接口。
 <pre>from flask_ssm.springframework.stereotype import Controller</pre>
 </li>
 <li>
-如<code>test.demo.controller.base_controller</code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping&lpar;value=**&comma;&nbsp;method=**&rpar;</code>或<code>&commat;GetMapping&lpar;value=**&rpar;</code>或<code>&commat;PostMapping&lpar;value=**&rpar;</code>
+如<code><a href="./test/demo/controller/base_controller.py" target="_blank">test.demo.controller.base_controller</a></code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping&lpar;value=**&comma;&nbsp;method=**&rpar;</code>或<code>&commat;GetMapping&lpar;value=**&rpar;</code>或<code>&commat;PostMapping&lpar;value=**&rpar;</code>
 </li>
 <li>
-如<code>test.demo.controller.customize_controller</code>所示，如果需要json格式的响应体，在<code>&commat;RequestMapping</code>后面加上<code>&commat;ResponseBody</code>，把函数返回值映射为json格式写入响应体中。
+如<code><a href="./test/demo/controller/customize_controller.py" target="_blank">test.demo.controller.customize_controller</a></code>所示，如果需要json格式的响应体，在<code>&commat;RequestMapping</code>后面加上<code>&commat;ResponseBody</code>，把函数返回值映射为json格式写入响应体中。
 <pre>
 @RequestMapping("/hello_world", [RequestMethod.POST])
 @ResponseBody
@@ -68,7 +68,7 @@ def hello_world(param):
 <pre>from flask_ssm.springframework.web.bind.annotation import RestController</pre>
 </li>
 <li>
-如<code>test.demo.controller.customize_controller</code>所示，对该模块内的全局异常处理函数加上<code>&commat;ExceptionHandler&lpar;value=**&rpar;</code>
+如<code><a href="./test/demo/controller/customize_controller.py" target="_blank">test.demo.controller.customize_controller</a></code>所示，对该模块内的全局异常处理函数加上<code>&commat;ExceptionHandler&lpar;value=**&rpar;</code>
 <pre>
 @ExceptionHandler(Exception)
 def custom_error_handler(e):
@@ -79,14 +79,14 @@ def custom_error_handler(e):
 <h3>业务逻辑层</h3>
 <ol>
 <li>
-如<code>test.demo.service</code>包所示，在<code>test.demo.service.__init__.py</code>中导入<code>Service</code>类。
+如<code><a href="./test/demo/service" target="_blank">test.demo.service</a></code>包所示，在<code><a href="./test/demo/service/__init__.py" target="_blank">test.demo.service.__init__.py</a></code>中导入<code>Service</code>类。
 <pre>from flask_ssm.springframework.stereotype import Service</pre>
 </li>
 <li>
 对于涉及数据修改的函数，使用<code>&commat;Transactional&lpar;rollback_for=**&rpar;</code>修饰，并使用<code>rollback_for</code>指定回滚的异常类型，从而开启事务。
 </li>
 <li>
-如<code>test.demo.service.base_service</code>所示，对于需要进行单元测试的函数，使用<code>&commat;Test</code>修饰该函数，并作为入口运行。
+如<code><a href="./test/demo/service/base_service.py" target="_blank">test.demo.service.base_service</a></code>所示，对于需要进行单元测试的函数，使用<code>&commat;Test</code>修饰该函数，并作为入口运行。
 <pre>
 @Test
 def run(param):
@@ -100,11 +100,11 @@ if __name__ == "__main__":
 <h3>数据交互层</h3>
 <ol>
 <li>
-如<code>test.demo.dao</code>包所示，在<code>test.demo.dao.__init__.py</code>中导入<code>Repository</code>类，可以使用注解式数据查询。
+如<code><a href="./test/demo/dao" target="_blank">test.demo.dao</a></code>包所示，在<code><a href="./test/demo/dao/__init__.py" target="_blank">test.demo.dao.__init__.py</a></code>中导入<code>Repository</code>类，可以使用注解式数据查询。
 <pre>from flask_ssm.springframework.stereotype import Repository</pre>
 </li>
 <li>
-如<code>test.demo.dao.tablename_dao</code>所示，对于查询函数，使用<code>&commat;Mapper&lpar;result_type=**&rpar;</code>修饰，并使用<code>result_type</code>指定返回类型。函数的参数为传入SQL语句的参数，返回值为SQL语句，即可实现返回对象的自动封装。
+如<code><a href="./test/demo/dao/tablename_dao.py" target="_blank">test.demo.dao.tablename_dao</a></code>所示，对于查询函数，使用<code>&commat;Mapper&lpar;result_type=**&rpar;</code>修饰，并使用<code>result_type</code>指定返回类型。函数的参数为传入SQL语句的参数，返回值为SQL语句，即可实现返回对象的自动封装。
 <pre>
 @Mapper(result_type=str)
 def query_one(param):
@@ -118,11 +118,11 @@ def query_one(param):
 <h3>定时任务</h3>
 <ol>
 <li>
-如<code>test.demo.task</code>包所示，在<code>test.demo.task.__init__.py</code>中导入<code>Scheduled</code>类，可以实现该包内的定时任务自动注册。
+如<code><a href="./test/demo/task" target="_blank">test.demo.task</a></code>包所示，在<code><a href="./test/demo/task/__init__.py" target="_blank">test.demo.task.__init__.py</a></code>中导入<code>Scheduled</code>类，可以实现该包内的定时任务自动注册。
 <pre>from flask_ssm.springframework.scheduling.annotation import Scheduled</pre>
 </li>
 <li>
-如<code>test.demo.task.my_task</code>所示，在模块中声明ID, FUNC, TRIGGER等用于标志定时任务的变量即可，这些变量必须大写。其中ID表示定时任务的id，必须唯一。FUNC表示定时任务执行的函数名，对应的函数需要在文件内给出。其他标识与<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。
+如<code><a href="./test/demo/task/my_task.py" target="_blank">test.demo.task.my_task</a></code>所示，在模块中声明ID, FUNC, TRIGGER等用于标志定时任务的变量即可，这些变量必须大写。其中ID表示定时任务的id，必须唯一。FUNC表示定时任务执行的函数名，对应的函数需要在文件内给出。其他标识与<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。
 <pre>
 ID = "scheduled_task"      # ID必须唯一
 FUNC = "my_func"           # 生效的函数名
@@ -137,7 +137,7 @@ def my_func():             # 定时执行的函数
 <h3>ORM对象</h3>
 <ol>
 <li>
-如<code>test.demo.pojo.pojo_demo</code>所示，每一个ORM映射对象需要使用类进行定义，并使用<code>&commat;TableName&lpar;value=**&rpar;</code>修饰，使用<code>value</code>指定表名。类的属性需要与表的字段对应，并使用<code>Column</code>类封装。
+如<code><a href="./test/demo/pojo/pojo_demo.py" target="_blank">test.demo.pojo.pojo_demo</a></code>所示，每一个ORM映射对象需要使用类进行定义，并使用<code>&commat;TableName&lpar;value=**&rpar;</code>修饰，使用<code>value</code>指定表名。类的属性需要与表的字段对应，并使用<code>Column</code>类封装。
 <pre>
 @TableName("table_name")
 class Pojo:
@@ -372,5 +372,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.7.1.0</td><td>新增<code>&commat;PutMapping</code>&comma;&nbsp;<code>&commat;DeleteMapping</code>&comma;&nbsp;<code>&commat;PatchMapping</code>装饰器</td><td>2023年11月30日</td>
+</tr>
+<tr>
+<td>3.7.1.1</td><td>fix some bugs</td><td>2023年12月11日</td>
 </tr>
 </table>
