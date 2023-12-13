@@ -9,12 +9,12 @@ with open("./README.md", "r", encoding="utf-8") as f:
     long_description = long_description.replace("./app.py", base_url + "/tree/main/app.py")
 packages = list(filter(lambda x: not x.startswith("test"), setuptools.find_packages()))
 requires_list = open('./requirements.txt', 'r', encoding='utf8').readlines()
-requires_list = [x.strip() for x in requires_list]
+requires_list = [x.strip() for x in requires_list if not x.startswith("PyMySQL")]
 
 
 setuptools.setup(
     name="Flask-SSM",
-    version="3.7.1.1",
+    version="3.7.1.2",
     author="Xiangrui Zong",
     author_email="zxr@tju.edu.cn",
     description="A Flask based package imitate with Spring Framework",

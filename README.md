@@ -376,4 +376,7 @@ class Pojo:
 <tr>
 <td>3.7.1.1</td><td>fix some bugs</td><td>2023年12月11日</td>
 </tr>
+<tr>
+<td>3.7.1.2</td><td>去除不必要的依赖</td><td>2023年12月13日</td>
+</tr>
 </table>
