@@ -135,21 +135,21 @@ class SpringApplication:
         """
         jobs = list()
         for __task_package__ in self.__task_packages__:
-            cfg = Config(os.path.dirname(os.path.abspath(Path(__task_package__.__file__))))
             for __task_module__ in walk_sub_modules(__task_package__):
                 setattr(__task_module__, "__orm__", self.orm)
-                cfg.clear()
-                job = dict()
+                cfg = Config(os.path.dirname(os.path.abspath(Path(__task_package__.__file__))))
                 cfg.from_object(__task_module__)
-                for key, value in cfg.items():
-                    if key.isupper():
-                        if "func" == key.lower():
-                            job["func"] = __task_module__.__name__ + ":" + value
-                            _task_function_ = getattr(__task_module__, value)
-                            setattr(__task_module__, value, add_app_context(app, _task_function_))
-                        else:
-                            job[key.lower()] = value
-                jobs.append(job)
+                if not cfg.get("FUNC", None):
+                    continue
+                else:
+                    __func__ = cfg.get("FUNC")
+                    cfg["FUNC"] = __task_module__.__name__ + ":" + cfg.get("FUNC")
+                    _task_function_ = getattr(__task_module__, __func__)
+                    setattr(__task_module__, __func__, add_app_context(app, _task_function_))
+                if "ID" not in cfg.keys():
+                    cfg["ID"] = __task_module__.__name__
+                cfg = {k.lower(): v for k, v in cfg.items() if k.isupper()}
+                jobs.append(dict(cfg))
         app.config.update({
             "JOBS": jobs
         })

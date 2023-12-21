@@ -122,9 +122,8 @@ def query_one(param):
 <pre>from flask_ssm.springframework.scheduling.annotation import Scheduled</pre>
 </li>
 <li>
-如<code><a href="./test/demo/task/my_task.py" target="_blank">test.demo.task.my_task</a></code>所示，在模块中声明ID, FUNC, TRIGGER等用于标志定时任务的变量即可，这些变量必须大写。其中ID表示定时任务的id，必须唯一。FUNC表示定时任务执行的函数名，对应的函数需要在文件内给出。其他标识与<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。
+如<code><a href="./test/demo/task/my_task.py" target="_blank">test.demo.task.my_task</a></code>所示，在模块中声明<code>FUNC</code>, <code>TRIGGER</code>等用于标志定时任务的变量即可，这些变量必须大写。<code>FUNC</code>表示定时任务执行的函数名，对应的函数需要在文件内给出，置空禁用定时任务。其他标识与<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。
 <pre>
-ID = "scheduled_task"      # ID必须唯一
 FUNC = "my_func"           # 生效的函数名
 TRIGGER = "interval"       # 触发条件，interval表示定时间间隔触发
 SECONDS = 5                # 触发时间间隔设定5秒
@@ -378,5 +377,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.7.1.2</td><td>去除不必要的依赖</td><td>2023年12月13日</td>
+</tr>
+<tr>
+<td>3.7.2.0</td><td>定时任务默认使用文件名作为<code>ID</code>;&nbsp;<code>FUNC</code>为空时禁用定时任务;&nbsp;优化执行逻辑，提升运行效率</td><td>2023年12月21日</td>
 </tr>
 </table>
