@@ -381,4 +381,7 @@ class Pojo:
 <tr>
 <td>3.7.2.0</td><td>定时任务默认使用文件名作为<code>ID</code>;&nbsp;<code>FUNC</code>为空时禁用定时任务;&nbsp;优化执行逻辑，提升运行效率</td><td>2023年12月21日</td>
 </tr>
+<tr>
+<td>3.7.2.1</td><td>fix some bugs</td><td>2023年12月25日</td>
+</tr>
 </table>

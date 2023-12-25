@@ -24,18 +24,19 @@ def walk_sub_modules(package: ModuleType) -> List[ModuleType]:
             yield _module_
 
 
-def try_to_import(module_name: str) -> Optional[ModuleType]:
+def try_to_import(*module_names: str) -> Optional[ModuleType]:
     """
     根据包名导入模块\n
-    :param module_name: 包名
+    :param module_names: 包名
     :return: 模块
     """
-    result = None
-    try:
-        result = __import__(module_name)
-    except ModuleNotFoundError as e:
-        pass
-    return result
+    for module_name in module_names:
+        try:
+            result = __import__(module_name, fromlist=module_name.split(".")[-1])
+            return result
+        except ModuleNotFoundError as e:
+            pass
+    return None
 
 
 def get_package_from_path(_path_: str, return_name: bool, change_dir: bool) -> Union[str, List[str]]:
