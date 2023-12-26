@@ -11,6 +11,6 @@ def query_one(param: str):
     :return: 全部数据
     """
     sql = """
-        select :param;
+        select #{param};
     """
     return sql

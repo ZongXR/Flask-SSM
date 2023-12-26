@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import re
 import sys
 import typing
 from typing import Type, List, Tuple, Dict, Union, NoReturn, Optional
@@ -54,6 +55,7 @@ class Mapper:
             _module_ = inspect.getmodule(func)
             db = getattr(_module_, "__orm__")
             sql: str = func(*params, **kwparams)
+            sql = re.sub(r'#\{(\w+)\}', r':\1', sql)
             if not isinstance(sql, str):
                 raise TypeError("error in @Mapper, return result of mapper function must be a sql string.")
             kwparams.update(dict(zip(signature(func).parameters.keys(), params)))

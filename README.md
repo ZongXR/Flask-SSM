@@ -384,4 +384,7 @@ class Pojo:
 <tr>
 <td>3.7.2.1</td><td>fix some bugs</td><td>2023年12月25日</td>
 </tr>
+<tr>
+<td>3.7.2.2</td><td>SQL语句兼容MyBatis的#&lcub;param&rcub;形式;&nbsp;fix some bugs</td><td>2023年12月26日</td>
+</tr>
 </table>
