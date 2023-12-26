@@ -104,12 +104,12 @@ if __name__ == "__main__":
 <pre>from flask_ssm.springframework.stereotype import Repository</pre>
 </li>
 <li>
-如<code><a href="./test/demo/dao/tablename_dao.py" target="_blank">test.demo.dao.tablename_dao</a></code>所示，对于查询函数，使用<code>&commat;Mapper&lpar;result_type=**&rpar;</code>修饰，并使用<code>result_type</code>指定返回类型。函数的参数为传入SQL语句的参数，返回值为SQL语句，即可实现返回对象的自动封装。
+如<code><a href="./test/demo/dao/tablename_dao.py" target="_blank">test.demo.dao.tablename_dao</a></code>所示，对于查询函数，使用<code>&commat;Mapper&lpar;result_type=**&rpar;</code>修饰，并使用<code>result_type</code>指定返回类型。函数的参数为传入SQL语句的参数，返回值为SQL语句，SQL语句的参数部分同MyBatis的用法，即可实现返回对象的自动封装。
 <pre>
 @Mapper(result_type=str)
 def query_one(param):
     sql = """
-        select :param;
+        select #{param};
     """
     return sql
 </pre>
@@ -386,5 +386,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.7.2.2</td><td>SQL语句兼容MyBatis的#&lcub;param&rcub;形式;&nbsp;fix some bugs</td><td>2023年12月26日</td>
+</tr>
+<tr>
+<td>3.7.2.3</td><td>SQL语句兼容MyBatis的$&lcub;param&rcub;形式</td><td>2023年12月26日</td>
 </tr>
 </table>

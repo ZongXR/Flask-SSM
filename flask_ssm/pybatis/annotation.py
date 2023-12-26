@@ -59,6 +59,7 @@ class Mapper:
             if not isinstance(sql, str):
                 raise TypeError("error in @Mapper, return result of mapper function must be a sql string.")
             kwparams.update(dict(zip(signature(func).parameters.keys(), params)))
+            sql = re.sub(r'\${(\w+)}', lambda x: str(kwparams.pop(x.group(1))), sql)
             # try to import modules:
             pd = try_to_import("pandas")
             np = try_to_import("numpy")
