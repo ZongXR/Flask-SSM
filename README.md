@@ -1,4 +1,4 @@
-<h1><a href="https://github.com/GoogleLLP/Flask-SSM" target="_blank">Flask-SSM</a></h1>
+<h1><a href="https://github.com/ZongXR/Flask-SSM" target="_blank">Flask-SSM</a></h1>
 一款模仿SpringFramework的Python的web后端框架，基于Flask二次封装。通过Python反射模拟了Java的IOC控制反转，通过Python装饰者模式模拟了Java的AOP面向切面编程。具有接口自动发现、定时任务自动注册、事务管理器、单元测试，等功能。简化web后端开发流程，聚焦业务逻辑，让你按照Spring的习惯写Python
 <h2>使用方法</h2>
 首先使用以下命令安装该框架<br />
@@ -392,5 +392,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.7.2.4</td><td>fix some bugs</td><td>2023年12月29日</td>
+</tr>
+<tr>
+<td>3.7.2.5</td><td>change github username</td><td>2023年12月29日</td>
 </tr>
 </table>
