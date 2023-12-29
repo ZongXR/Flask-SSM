@@ -3,7 +3,7 @@
 <h2>使用方法</h2>
 首先使用以下命令安装该框架<br />
 <code>pip&nbsp;install&nbsp;Flask-SSM</code><br />
-使用教程请参考<a href="https://github.com/GoogleLLP/Flask-SSM" target="_blank">此地址</a>中的<code><a href="./test/demo" target="_blank">test.demo</a></code>包，这是一个具有典型MVC结构的最小web应用。
+使用教程请参考<a href="https://github.com/ZongXR/Flask-SSM" target="_blank">此地址</a>中的<code><a href="./test/demo" target="_blank">test.demo</a></code>包，这是一个具有典型MVC结构的最小web应用。
 <h3>创建基础环境</h3>
 <ol>
 <li>
@@ -395,5 +395,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.7.2.5</td><td>change github username</td><td>2023年12月29日</td>
+</tr>
+<tr>
+<td>3.7.2.6</td><td>change github username</td><td>2023年12月29日</td>
 </tr>
 </table>
