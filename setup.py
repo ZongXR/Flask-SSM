@@ -2,7 +2,7 @@
 import setuptools
 
 
-base_url = "https://github.com/GoogleLLP/Flask-SSM"
+base_url = "https://github.com/ZongXR/Flask-SSM"
 with open("./README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
     long_description = long_description.replace("./test/demo", base_url + "/tree/main/test/demo")
@@ -14,7 +14,7 @@ requires_list = [x.strip() for x in requires_list if not x.startswith("PyMySQL")
 
 setuptools.setup(
     name="Flask-SSM",
-    version="3.7.2.3",
+    version="3.7.2.4",
     author="Xiangrui Zong",
     author_email="zxr@tju.edu.cn",
     description="A Flask based package imitate with Spring Framework",

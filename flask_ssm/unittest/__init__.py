@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 from functools import wraps
 from flask import Flask
 from flask_ssm.springframework.boot import SpringApplication
@@ -18,7 +19,7 @@ class Test:
             return self.func(*args, **kwargs)
         else:
             # change directory
-            _path_tree_ = get_package_from_path(os.getcwd(), False, True)
+            _path_tree_ = get_package_from_path(os.path.dirname(sys.argv[0]), False, True)
             # find package name
             sps = find_member_from_multi_level_package(lambda x: isinstance(x, SpringApplication), _path_tree_)
             # build app context

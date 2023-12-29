@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 from typing import List, Optional, Union, Tuple, Any
 from types import ModuleType, FunctionType
 import inspect
@@ -96,7 +97,7 @@ def blueprint_from_module(func: FunctionType) -> Blueprint:
             static_folder="static",
             template_folder="templates",
             static_url_path="",
-            root_path=os.getcwd()
+            root_path=os.path.dirname(sys.argv[0])
         )
         setattr(_module_, "__blueprint__", result)
     return result

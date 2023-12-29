@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from logging.config import dictConfig
 import os
+import sys
 
-__path__ = os.getcwd()
+__path__ = os.path.dirname(sys.argv[0])
 
 
 # TODO 日志相关配置，可自定义修改
