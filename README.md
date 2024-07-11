@@ -399,4 +399,7 @@ class Pojo:
 <tr>
 <td>3.7.2.6</td><td>change github username</td><td>2023年12月29日</td>
 </tr>
+<tr>
+<td>3.7.3.0</td><td>兼容Python&nbsp;3.10</td><td>2024年7月12日</td>
+</tr>
 </table>
