@@ -14,7 +14,7 @@ requires_list = [x.strip() for x in requires_list if not x.startswith("PyMySQL")
 
 setuptools.setup(
     name="Flask-SSM",
-    version="3.7.3.1",
+    version="3.7.3.2",
     author="Xiangrui Zong",
     author_email="zxr@tju.edu.cn",
     description="A Flask based package imitate with Spring Framework",

@@ -405,4 +405,7 @@ class Pojo:
 <tr>
 <td>3.7.3.1</td><td>fix some bugs</td><td>2024年7月12日</td>
 </tr>
+<tr>
+<td>3.7.3.2</td><td>fix some bugs</td><td>2024年7月13日</td>
+</tr>
 </table>

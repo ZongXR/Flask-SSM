@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from logging.config import dictConfig
 import os
-import sys
 
-__path__ = os.path.dirname(sys.argv[0])
+
+# TODO 日志保存位置
+__path__ = os.path.join(os.getcwd(), "logs")
+if not __path__:
+    os.mkdir(__path__)
 
 
 # TODO 日志相关配置，可自定义修改
@@ -23,8 +26,7 @@ dictConfig({
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "DEBUG",
             "encoding": "utf-8",
-            # TODO 日志保存位置
-            "filename": os.path.join(__path__, "logs/DEBUG"),
+            "filename": os.path.join(__path__, "DEBUG"),
             "when": "MIDNIGHT",
             "backupCount": 1,
             "formatter": "default"
@@ -33,7 +35,7 @@ dictConfig({
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "INFO",
             "encoding": "utf-8",
-            "filename": os.path.join(__path__, "logs/INFO"),
+            "filename": os.path.join(__path__, "INFO"),
             "when": "MIDNIGHT",
             "backupCount": 1,
             "formatter": "default"
@@ -42,7 +44,7 @@ dictConfig({
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "WARN",
             "encoding": "utf-8",
-            "filename": os.path.join(__path__, "logs/WARN"),
+            "filename": os.path.join(__path__, "WARN"),
             "when": "MIDNIGHT",
             "backupCount": 1,
             "formatter": "default"
@@ -51,7 +53,7 @@ dictConfig({
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "ERROR",
             "encoding": "utf-8",
-            "filename": os.path.join(__path__, "logs/ERROR"),
+            "filename": os.path.join(__path__, "ERROR"),
             "when": "MIDNIGHT",
             "backupCount": 1,
             "formatter": "default"

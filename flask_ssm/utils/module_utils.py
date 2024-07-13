@@ -97,7 +97,7 @@ def blueprint_from_module(func: FunctionType) -> Blueprint:
             static_folder="static",
             template_folder="templates",
             static_url_path="",
-            root_path=os.path.dirname(sys.argv[0])
+            root_path=os.path.dirname(os.path.abspath(sys.argv[0]))
         )
         setattr(_module_, "__blueprint__", result)
     return result
