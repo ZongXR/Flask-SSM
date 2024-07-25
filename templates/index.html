@@ -95,13 +95,16 @@
                 form.attr("action", url);
                 form.attr("method", requestMethod);
                 form.attr("enctype", mime);
-                for (let keyValue of data.split("&")) {
-                    let item = keyValue.split("=");
-                    let newInput = $("<input class='new_input'/>").attr("type", "hidden").attr("name", item[0]).attr("value", item[1]);
-                    form.append(newInput);
+                try {
+                    for (let keyValue of data.split("&")) {
+                        let item = keyValue.split("=");
+                        let newInput = $("<input class='new_input'/>").attr("type", "hidden").attr("name", item[0]).attr("value", item[1]);
+                        form.append(newInput);
+                    }
+                    form.submit();
+                } finally {
+                    $("input.new_input").remove();
                 }
-                form.submit();
-                $("input.new_input").remove();
             }
         }
     </script>
@@ -149,12 +152,12 @@
     </textarea>
 </label><br/>
 <form id="uploadform">
-    <input id="uploadfile" type="file" name="upload_file" /><input type="reset" />
+    <span>upload_file&equals;</span><input id="uploadfile" type="file" name="upload_file" /><input type="reset" />
 </form>
 <button onclick="getCustom(this, true)">ajax请求</button>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
 <button onclick="getCustom(this, false)">提交表单</button>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <button onclick="clearDiv(document.getElementById('oupu'))">清屏</button>
 <br/>
 <div id="oupu"></div>

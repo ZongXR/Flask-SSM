@@ -2,7 +2,7 @@
 import os
 import sys
 from typing import List, Optional, Union, Tuple, Any
-from types import ModuleType, FunctionType
+from types import ModuleType, FunctionType, LambdaType
 import inspect
 from flask import Blueprint
 
@@ -61,7 +61,7 @@ def get_package_from_path(_path_: str, return_name: bool, change_dir: bool) -> U
         return _path_tree_
 
 
-def find_member_from_multi_level_package(func: FunctionType, _path_tree_: List[str]) -> List[Tuple[str, Any]]:
+def find_member_from_multi_level_package(func: Union[FunctionType, LambdaType], _path_tree_: List[str]) -> List[Tuple[str, Any]]:
     """
     从多级包中寻找成员。从父向子查找，找到第一组就退出\n
     :param func: 筛选函数

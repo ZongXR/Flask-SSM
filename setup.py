@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import setuptools
+import flask_ssm
 
 
 base_url = "https://github.com/ZongXR/Flask-SSM"
@@ -14,7 +15,7 @@ requires_list = [x.strip() for x in requires_list if not x.startswith("PyMySQL")
 
 setuptools.setup(
     name="Flask-SSM",
-    version="3.7.3.2",
+    version=flask_ssm.__version__,
     author="Xiangrui Zong",
     author_email="zxr@tju.edu.cn",
     description="A Flask based package imitate with Spring Framework",

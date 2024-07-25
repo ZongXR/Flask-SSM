@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import inspect
 from functools import wraps
 from flask import Flask
 from flask_ssm.springframework.boot import SpringApplication
@@ -26,6 +27,7 @@ class Test:
             app = Flask(".".join(_path_tree_))
             for sp in sps:
                 sp[1].init_app(app)
+                setattr(inspect.getmodule(self.func), "__orm__", sp[1].orm)
             # run original function
             with app.app_context():
                 result, use_time = execute_time(self.func, *args, **kwargs)

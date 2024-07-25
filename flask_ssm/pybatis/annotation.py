@@ -33,7 +33,7 @@ class Mapper:
     """
     ORM映射\n
     """
-    def __init__(self, result_type: Union[Type, GenericAlias] = CursorResult, *args, **kwargs):
+    def __init__(self, result_type: Optional[Union[Type, GenericAlias]] = CursorResult, *args, **kwargs):
         """
         构造方法\n
         :param result_type: 返回类型
