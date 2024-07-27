@@ -124,12 +124,12 @@ def query_one(param):
 <li>
 如<code><a href="./test/demo/task/my_task.py" target="_blank">test.demo.task.my_task</a></code>所示，在模块中声明<code>FUNC</code>, <code>TRIGGER</code>等用于标志定时任务的变量即可，这些变量必须大写。<code>FUNC</code>表示定时任务执行的函数名，对应的函数需要在文件内给出，置空禁用定时任务。其他标识与<a href="https://segmentfault.com/a/1190000039111644" target="_blank">Flask-APScheduler</a>的用法完全一致，直接填入即可。
 <pre>
-FUNC = "my_func"           # 生效的函数名
+FUNC = "my_func"           # 生效的函数名，如需禁用可设为None
 TRIGGER = "interval"       # 触发条件，interval表示定时间间隔触发
 SECONDS = 5                # 触发时间间隔设定5秒
 REPLACE_EXISTING = True    # 重启替换持久化
 def my_func():             # 定时执行的函数
-    current_app.logger.info("触发定时任务" + ID)
+    current_app.logger.info("触发定时任务")
 </pre>
 </li>
 </ol>
@@ -410,5 +410,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.7.3.3</td><td>fix some bugs</td><td>2024年7月25日</td>
+</tr>
+<tr>
+<td>3.7.3.4</td><td>fix some bugs</td><td>2024年7月27日</td>
 </tr>
 </table>

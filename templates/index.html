@@ -63,6 +63,7 @@
             let data = $("#inpu").val();
             let outputDiv = $("#oupu");
             let form = $("#uploadform");
+            let uploadfile = $("#uploadfile");
 
             if (with_ajax) {
                 if (mime.startsWith("multipart/form-data")) {
@@ -79,7 +80,7 @@
                     type: requestMethod,
                     contentType: mime,
                     url: url,
-                    data: data,
+                    data: data.trim().length === 0 ? '' : data,
                     success: function (response) {
                         outputDiv.append("--------------------------------------------------");
                         outputDiv.append($("<div></div>").text("请求: " + data));
@@ -101,9 +102,13 @@
                         let newInput = $("<input class='new_input'/>").attr("type", "hidden").attr("name", item[0]).attr("value", item[1]);
                         form.append(newInput);
                     }
+                    if (! uploadfile.val()) {
+                        uploadfile.prop("disabled", true);
+                    }
                     form.submit();
                 } finally {
                     $("input.new_input").remove();
+                    uploadfile.prop("disabled", false);
                 }
             }
         }

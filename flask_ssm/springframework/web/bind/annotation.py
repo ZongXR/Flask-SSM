@@ -47,8 +47,10 @@ class RequestMapping:
         """
         @wraps(func)
         def result(*args, **kwargs):
-            if request.mimetype.startswith("application/json"):
-                kwargs.update(request.json)
+            if request.is_json:
+                json = request.get_json(silent=True)
+                if json is not None:
+                    kwargs.update(json)
             elif request.mimetype.startswith("application/x-www-form-urlencoded") or request.mimetype.startswith("multipart/form-data"):
                 values = request.values
                 values = dict(zip(values.keys(), map(lambda x: unquote(x), values.values())))
