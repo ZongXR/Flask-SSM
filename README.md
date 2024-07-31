@@ -51,7 +51,7 @@ APP_PROCESS = 1           # 进程个数
 <pre>from flask_ssm.springframework.stereotype import Controller</pre>
 </li>
 <li>
-如<code><a href="./test/demo/controller/base_controller.py" target="_blank">test.demo.controller.base_controller</a></code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping&lpar;value=**&comma;&nbsp;method=**&rpar;</code>或<code>&commat;GetMapping&lpar;value=**&rpar;</code>或<code>&commat;PostMapping&lpar;value=**&rpar;</code>
+如<code><a href="./test/demo/controller/base_controller.py" target="_blank">test.demo.controller.base_controller</a></code>所示，对需要注册的接口直接加上<code>&commat;RequestMapping&lpar;value=**&comma;&nbsp;method=**&rpar;</code>或<code>&commat;GetMapping&lpar;value=**&rpar;</code>或<code>&commat;PostMapping&lpar;value=**&rpar;</code>。如果需要对参数的类型进行校验，可以使用type&nbsp;hints。
 </li>
 <li>
 如<code><a href="./test/demo/controller/customize_controller.py" target="_blank">test.demo.controller.customize_controller</a></code>所示，如果需要json格式的响应体，在<code>&commat;RequestMapping</code>后面加上<code>&commat;ResponseBody</code>，把函数返回值映射为json格式写入响应体中。
@@ -104,7 +104,7 @@ if __name__ == "__main__":
 <pre>from flask_ssm.springframework.stereotype import Repository</pre>
 </li>
 <li>
-如<code><a href="./test/demo/dao/tablename_dao.py" target="_blank">test.demo.dao.tablename_dao</a></code>所示，对于查询函数，使用<code>&commat;Mapper&lpar;result_type=**&rpar;</code>修饰，并使用<code>result_type</code>指定返回类型。函数的参数为传入SQL语句的参数，返回值为SQL语句，SQL语句的参数部分同MyBatis的用法，即可实现返回对象的自动封装。
+如<code><a href="./test/demo/dao/tablename_dao.py" target="_blank">test.demo.dao.tablename_dao</a></code>所示，对于查询函数，使用<code>&commat;Mapper&lpar;result_type=**&rpar;</code>修饰，并使用<code>result_type</code>指定返回类型。函数的参数为传入SQL语句的参数，返回值为SQL语句，SQL语句的参数部分同MyBatis的用法，即可实现返回对象的自动封装。如果需要对SQL语句传参类型进行校验，可以使用type&nbsp;hints。
 <pre>
 @Mapper(result_type=str)
 def query_one(param):
@@ -413,5 +413,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.7.3.4</td><td>fix some bugs</td><td>2024年7月27日</td>
+</tr>
+<tr>
+<td>3.8.0.0</td><td>集成Flask-Pydantic，现在可以使用type&nbsp;hints对API及SQL的参数类型进行校验</td><td>2024年7月31日</td>
 </tr>
 </table>

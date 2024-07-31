@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import sys
+import logging
 from typing import Type
 from flask import Response, jsonify
+from pydantic import create_model, ValidationError
 
 
 if sys.version_info >= (3, 8):
@@ -50,3 +52,13 @@ def to_json(obj) -> Response:
         return jsonify(dict(obj))
     else:
         return jsonify(obj.__dict__)
+
+
+def validate_single_value(value_type, value):
+    model = create_model('DynamicModel', value=(value_type, ...))
+    try:
+        validated_value = model(value=value)
+        return validated_value.value
+    except ValidationError as e:
+        logging.warning(e)
+        return value

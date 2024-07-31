@@ -4,7 +4,10 @@ Flask-APScheduler~=1.12.3,>1.12.2
 Flask-Cors~=3.0.10
 Flask-HTTPAuth~=4.5.0
 Flask-SQLAlchemy~=2.5.1
+Flask-Pydantic~=0.12.0
 SQLAlchemy~=1.4.18
+pydantic~=2.0
 typing-inspect~=0.8.0;python_version=="3.7"
 APScheduler==3.10.4
 Werkzeug>=2.1.2,<=2.3.8
+setuptools~=65.5.0

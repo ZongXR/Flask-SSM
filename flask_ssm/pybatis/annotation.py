@@ -14,9 +14,10 @@ from sqlalchemy import text
 from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.result import MappingResult
 from sqlalchemy.engine.row import Row
+from pydantic import validate_call
 from flask_ssm.springframework.stereotype import Repository
 from flask_ssm.utils.module_utils import try_to_import
-from flask_ssm.utils.type_utils import __get_origin__, pojo_private_properties
+from flask_ssm.utils.type_utils import __get_origin__, pojo_private_properties, validate_single_value
 
 
 if sys.version_info >= (3, 9):
@@ -50,6 +51,8 @@ class Mapper:
         :param func: 原函数
         :return:
         """
+        func = validate_call(func)
+
         @wraps(func)
         def wrapper(*params, **kwparams):
             _module_ = inspect.getmodule(func)
@@ -118,9 +121,7 @@ class Mapper:
                         keys = list(result.mappings().keys())
                         if len(keys) > 1:
                             current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
-                        _res_ = [x[0] for x in result]
-                        if len(_res_) > 0 and type(_res_[0]) is not _class_:
-                            current_app.logger.warning("type of T is %s, but required result_type is %s" % (type(_res_[0]), _class_))
+                        _res_ = [validate_single_value(_class_, x[0]) for x in result]
                         return _res_
             elif __get_origin__(self.result_type) is tuple:
                 if self.result_type in (Tuple, tuple):                                          # Tuple or tuple
@@ -148,9 +149,7 @@ class Mapper:
                         keys = list(result.mappings().keys())
                         if len(keys) > 1:
                             current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
-                        _res_ = tuple(x[0] for x in result)
-                        if len(_res_) > 0 and type(_res_[0]) is not _class_:
-                            current_app.logger.warning("type of T is %s, but required result_type is %s" % (type(_res_[0]), _class_))
+                        _res_ = tuple(validate_single_value(_class_, x[0]) for x in result)
                         return _res_
             elif issubclass(__get_origin__(self.result_type), Generator):
                 if self.result_type in (Generator, typing.Generator):                            # Generator
@@ -178,7 +177,7 @@ class Mapper:
                         keys = list(result.mappings().keys())
                         if len(keys) > 1:
                             current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
-                        return (x[0] for x in result)
+                        return (validate_single_value(_class_, x[0]) for x in result)
             elif __get_origin__(self.result_type) is dict:
                 if self.result_type is Dict or self.result_type is dict:                              # Dict or dict
                     result: CursorResult = db.session.execute(sql, kwparams)
@@ -194,7 +193,7 @@ class Mapper:
                     values = list(zip(*result.fetchall()))
                     keys = list(result.mappings().keys())
                     return dict(zip(keys, values)) if len(values) > 0 else {key: tuple() for key in keys}
-                else:                                                                       # Dict[str, T]
+                else:                                                                       # Dict[str, Any]
                     result: CursorResult = db.session.execute(sql, kwparams)
                     values = result.fetchone()
                     keys = list(result.mappings().keys())
@@ -210,9 +209,7 @@ class Mapper:
                         current_app.logger.warning("found %d fields, only pick fields[0]: %s" % (len(keys), keys[0]))
                     fetch_result = result.fetchone()
                     _res_ = None if fetch_result is None else fetch_result[0]
-                    if _res_ is not None and type(_res_) is not _class_:
-                        current_app.logger.warning("type of T is %s, but required result_type is %s" % (type(_res_), _class_))
-                    return _res_
+                    return validate_single_value(_class_, _res_)
         return wrapper
 
 
