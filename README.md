@@ -417,4 +417,7 @@ class Pojo:
 <tr>
 <td>3.8.0.0</td><td>集成Flask-Pydantic，现在可以使用type&nbsp;hints对API及SQL的参数类型进行校验</td><td>2024年7月31日</td>
 </tr>
+<tr>
+<td>3.8.0.1</td><td>修复使用外部web服务器运行带来的BUG</td><td>2024年8月2日</td>
+</tr>
 </table>

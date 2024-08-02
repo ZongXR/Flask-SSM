@@ -4,7 +4,7 @@ import sys
 from typing import List, Optional, Union, Tuple, Any
 from types import ModuleType, FunctionType, LambdaType
 import inspect
-from flask import Blueprint
+from flask import Blueprint, Flask
 
 
 def walk_sub_modules(package: ModuleType) -> List[ModuleType]:
@@ -101,3 +101,13 @@ def blueprint_from_module(func: FunctionType) -> Blueprint:
         )
         setattr(_module_, "__blueprint__", result)
     return result
+
+
+def run_with_outside_server(self: Flask, server_name: Optional[str] = None) -> None:
+    """
+    使用外部web服务器运行时的必要设置\n
+    :param self: Flask对象
+    :param server_name: 服务器软件名称，暂未使用
+    """
+    for _, bp in self.blueprints.items():
+        bp.root_path = os.getcwd()

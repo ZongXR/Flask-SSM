@@ -6,6 +6,6 @@ COPY . /opt
 VOLUME ["/opt/logs"]
 EXPOSE 5000
 RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r /opt/requirements.txt
-RUN pip3 install Flask-SSM==3.8.0.0
+RUN pip3 install Flask-SSM==3.8.0.1
 # 启动
 CMD python3 ./app.py

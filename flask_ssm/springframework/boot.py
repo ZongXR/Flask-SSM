@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from typing import List, Optional
-from types import ModuleType
+from types import ModuleType, MethodType
 import inspect
 import pkgutil
 import logging
@@ -16,7 +16,7 @@ from flask_cors import CORS
 from flask_ssm.springframework.stereotype import Controller, Service, Repository
 from flask_ssm.springframework.context.annotation import Configuration, Bean
 from flask_ssm.springframework.scheduling.annotation import Scheduled
-from flask_ssm.utils.module_utils import walk_sub_modules
+from flask_ssm.utils.module_utils import walk_sub_modules, run_with_outside_server
 from flask_ssm.utils.context_utils import add_app_context
 from flask_ssm.utils.type_utils import pojo_private_properties
 
@@ -213,4 +213,5 @@ class SpringApplication:
         mounts = None if app.config.get("APPLICATION_ROOT", "/") == "/" else {app.config.get("APPLICATION_ROOT", "/"): app}
         app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts=mounts)
         app.run = run
+        app.run_with_outside_server = MethodType(run_with_outside_server, app)
         app.logger.info("初始化运行入口成功")
