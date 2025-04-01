@@ -14,6 +14,7 @@ from sqlalchemy import text
 from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.result import MappingResult
 from sqlalchemy.engine.row import Row
+from flask_sqlalchemy import SQLAlchemy
 from pydantic import validate_call
 from flask_ssm.springframework.stereotype import Repository
 from flask_ssm.utils.module_utils import try_to_import
@@ -39,7 +40,7 @@ class Mapper:
         构造方法\n
         :param result_type: 返回类型
         :param args: 传递给result_type的变长参数
-        :param kwargs: 传递给kwargs的关键字参数
+        :param kwargs: 传递给result_type的关键字参数
         """
         self.result_type = result_type
         self.args = args
@@ -56,7 +57,7 @@ class Mapper:
         @wraps(func)
         def wrapper(*params, **kwparams):
             _module_ = inspect.getmodule(func)
-            db = getattr(_module_, "__orm__")
+            db: SQLAlchemy = getattr(_module_, "__orm__")
             sql: str = func(*params, **kwparams)
             sql = re.sub(r'#\{(\w+)\}', r':\1', sql)
             if not isinstance(sql, str):
@@ -75,7 +76,7 @@ class Mapper:
                 return result.mappings()
             elif pd is not None and self.result_type is pd.DataFrame:                            # pd.DataFrame
                 result: CursorResult = db.session.execute(sql, kwparams)
-                return pd.DataFrame(result.fetchall(), columns=result.mappings().keys(), *self.args, **self.kwargs)
+                return pd.DataFrame(result.fetchall(), columns=result.mappings().keys(), *self.args, **self.kwargs).replace([None], np.nan)
             elif pd is not None and self.result_type is pd.Series:                               # pd.Series
                 result: CursorResult = db.session.execute(sql, kwparams)
                 values = list(zip(*result.fetchall()))
@@ -83,12 +84,14 @@ class Mapper:
                 if len(keys) > 1:
                     current_app.logger.warning("found %d columns, only pick columns[0]: %s" % (len(keys), keys[0]))
                 if len(values) > 0:
-                    return pd.Series(values[0], name=keys[0], *self.args, **self.kwargs)
+                    return pd.Series(values[0], name=keys[0], *self.args, **self.kwargs).replace([None], np.nan)
                 else:
-                    return pd.Series(values, name=keys[0], *self.args, **self.kwargs)
+                    return pd.Series(values, name=keys[0], *self.args, **self.kwargs).replace([None], np.nan)
             elif np is not None and self.result_type is np.ndarray:                              # np.ndarray
                 result: CursorResult = db.session.execute(sql, kwparams)
-                return np.array(result.fetchall(), *self.args, **self.kwargs)
+                sql_result = np.array(result.fetchall(), *self.args, **self.kwargs)
+                sql_result = np.where(sql_result == None, np.nan, sql_result)
+                return sql_result
             elif self.result_type in (None, NoReturn):                                           # NoReturn or None
                 db.session.execute(sql, kwparams)
                 return None

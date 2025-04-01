@@ -191,7 +191,7 @@ class ResponseBody:
         wraps(func)(self)
         self.func = func
 
-    def __call__(self, *args, **kwargs) -> Response:
+    def __call__(self, *args, **kwargs):
         """
         调用函数\n
         :param args: 变长参数
@@ -199,7 +199,10 @@ class ResponseBody:
         :return: 修改后的返回值
         """
         result = self.func(*args, **kwargs)
-        return to_json(result)
+        if type(result) is Response:
+            return result
+        else:
+            return to_json(result)
 
 
 class RestController:

@@ -2,7 +2,7 @@
 import sys
 import logging
 from typing import Type
-from flask import Response, jsonify
+from flask import jsonify
 from pydantic import create_model, ValidationError
 
 
@@ -40,18 +40,20 @@ def pojo_private_properties(cls: Type) -> dict:
     return result
 
 
-def to_json(obj) -> Response:
+def to_json(obj):
     """
     把obj转为json串\n
     :param obj: 要转换的对象
     :return: 响应
     """
-    if type(obj) is Response:
-        return obj
+    if type(obj) is str:
+        return f'"{obj}"'
     elif issubclass(type(obj), dict):
         return jsonify(dict(obj))
-    else:
+    elif hasattr(obj, "__dict__"):
         return jsonify(obj.__dict__)
+    else:
+        return str(obj)
 
 
 def validate_single_value(value_type, value):

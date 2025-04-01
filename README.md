@@ -420,4 +420,7 @@ class Pojo:
 <tr>
 <td>3.8.0.1</td><td>修复使用外部web服务器运行带来的BUG</td><td>2024年8月2日</td>
 </tr>
+<tr>
+<td>3.8.0.2</td><td>修复数据库null在numpy和pandas中识别为None的BUG; 修复把任意对象封装为json的方法的BUG</td><td>2025年4月1日</td>
+</tr>
 </table>
