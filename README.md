@@ -423,4 +423,7 @@ class Pojo:
 <tr>
 <td>3.8.0.2</td><td>修复数据库null在numpy和pandas中识别为None的BUG; 修复把任意对象封装为json的方法的BUG</td><td>2025年4月1日</td>
 </tr>
+<tr>
+<td>3.8.0.3</td><td>修复连接多个数据源引发的BUG</td><td>2025年4月6日</td>
+</tr>
 </table>
