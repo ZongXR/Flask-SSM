@@ -19,6 +19,7 @@ from flask_ssm.springframework.scheduling.annotation import Scheduled
 from flask_ssm.utils.module_utils import walk_sub_modules, run_with_outside_server
 from flask_ssm.utils.context_utils import add_app_context
 from flask_ssm.utils.type_utils import pojo_private_properties
+import flask_ssm.logging.logs_config
 
 
 class SpringApplication:
@@ -72,6 +73,7 @@ class SpringApplication:
         :param app: Flask对象
         :return:
         """
+        self.__init_self__(app)
         self.__init_config__(app)
         # self.__init_pojo__(app)
         self.__init_dao__(app)
@@ -80,6 +82,23 @@ class SpringApplication:
         self.__init_task__(app)
         self.__init_cors__(app)
         self.__init_run__(app)
+
+    def __init_self__(self, app: Flask):
+        """
+        初始化Flask-SSM与Flask的关联\n
+        """
+        if not hasattr(app, 'extensions'):
+            app.extensions = dict()
+        app.extensions["spring"] = self
+        app.jinja_env.globals['spring'] = self
+        app.context_processor(lambda: {'spring': self})
+        app.config.setdefault('APP_HOST', '0.0.0.0')
+        app.config.setdefault('APP_PORT', 5000)
+        app.config.setdefault('APP_THREAD', False)
+        app.config.setdefault('APP_PROCESS', 1)
+        app.config.setdefault("APPLICATION_ROOT", "/")
+        app.config.setdefault("USE_RELOADER", False)
+        app.config.setdefault("DEBUG", False)
 
     def __init_config__(self, app: Flask):
         """

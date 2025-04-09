@@ -1,3 +1,3 @@
 #!/bin/bash
 mkdir -p /opt/flask-ssm-example/logs
-docker run -d -p 5000:5000 -v /opt/flask-ssm-example/logs:/opt/logs zongxr/flask-ssm-example:3.8.0.3
+docker run -d -p 5000:5000 -v /opt/flask-ssm-example/logs:/opt/logs zongxr/flask-ssm-example:3.8.1.0

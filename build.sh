@@ -1,5 +1,5 @@
 #!/bin/bash
-docker build -t zongxr/flask-ssm-example:3.8.0.3 .
+docker build -t zongxr/flask-ssm-example:3.8.1.0 .
 python3 setup.py sdist bdist_wheel
 python3 -m twine upload --repository testpypi dist/*
 python3 -m twine upload dist/*

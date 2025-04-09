@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <base href='{{ base }}/'>
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="https://github.com/favicon.ico">
     <title>flask-ssm主页</title>
-    <script type="text/javascript" src="js/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.0.min.js" charset="utf-8"></script>
     <script>
         $(document).ready(function () {
             document.previousMime = $("input[name='mime']:checked").val();
@@ -56,11 +56,11 @@
         /**
          * 请求按钮的响应函数
          */
-        function getCustom(dom, with_ajax) {
-            let requestMethod = $("input[name='request_method']:checked").val();
-            let mime = $("input[name='mime']:checked").val();
-            let url = $("#url").val();
-            let data = $("#inpu").val();
+        async function getCustom(dom, with_ajax) {
+            let requestMethod = $("input[name='request_method']:checked").val().trim();
+            let mime = $("input[name='mime']:checked").val().trim();
+            let url = $("#url").val().trim();
+            let data = $("#inpu").val().trim();
             let outputDiv = $("#oupu");
             let form = $("#uploadform");
             let uploadfile = $("#uploadfile");
@@ -76,22 +76,22 @@
                     data = formData;
                     mime = false;
                 }
-                $.ajax({
-                    type: requestMethod,
-                    contentType: mime,
-                    url: url,
-                    data: data.trim().length === 0 ? '' : data,
-                    success: function (response) {
-                        outputDiv.append("--------------------------------------------------");
-                        outputDiv.append($("<div></div>").text("请求: " + data));
-                        outputDiv.append($("<div></div>").text("响应: " + JSON.stringify(response)));
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        outputDiv.append("--------------------------------------------------");
-                        outputDiv.append($("<div></div>").text("请求: " + data));
-                        outputDiv.append($("<div></div>").text("响应: " + JSON.stringify(jqXHR)));
-                    }
+                let response = await fetch(url, {
+                    method: requestMethod,
+                    headers: {"Content-Type": mime},
+                    body: data
                 });
+                if (response.ok) {
+                    let responseJson = await response.json();
+                    outputDiv.append("--------------------------------------------------");
+                    outputDiv.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
+                    outputDiv.append($("<div></div>").html("<strong><i>响应: </i></strong><pre>" + JSON.stringify(responseJson) + "</pre>"));
+                } else {
+                    let responseText = await response.text();
+                    outputDiv.append("--------------------------------------------------");
+                    outputDiv.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
+                    outputDiv.append($("<div></div>").html("<strong><i>响应: </i></strong>" + responseText));
+                }
             } else {
                 form.attr("action", url);
                 form.attr("method", requestMethod);
@@ -102,7 +102,7 @@
                         let newInput = $("<input class='new_input'/>").attr("type", "hidden").attr("name", item[0]).attr("value", item[1]);
                         form.append(newInput);
                     }
-                    if (! uploadfile.val()) {
+                    if (!uploadfile.val()) {
                         uploadfile.prop("disabled", true);
                     }
                     form.submit();

@@ -426,4 +426,7 @@ class Pojo:
 <tr>
 <td>3.8.0.3</td><td>修复连接多个数据源引发的BUG</td><td>2025年4月6日</td>
 </tr>
+<tr>
+<td>3.8.1.0</td><td>增加日志和启动参数的默认配置项; 适配Flask扩展编写规范; 前端请求使用fetch API替换ajax</td><td>2025年4月9日</td>
+</tr>
 </table>
