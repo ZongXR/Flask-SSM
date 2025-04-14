@@ -85,7 +85,7 @@
                     let responseJson = await response.json();
                     outputDiv.append("--------------------------------------------------");
                     outputDiv.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
-                    outputDiv.append($("<div></div>").html("<strong><i>响应: </i></strong><pre>" + JSON.stringify(responseJson) + "</pre>"));
+                    outputDiv.append($("<div></div>").html("<strong><i>响应: </i></strong>" + JSON.stringify(responseJson)));
                 } else {
                     let responseText = await response.text();
                     outputDiv.append("--------------------------------------------------");

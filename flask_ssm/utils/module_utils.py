@@ -94,8 +94,6 @@ def blueprint_from_module(func: FunctionType) -> Blueprint:
         result = Blueprint(
             _module_.__name__.replace(".", "_"),
             _module_.__name__,
-            static_folder="static",
-            template_folder="templates",
             static_url_path="",
             root_path=os.path.dirname(os.path.abspath(sys.argv[0]))
         )

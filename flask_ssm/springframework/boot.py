@@ -91,13 +91,14 @@ class SpringApplication:
             app.extensions = dict()
         app.extensions["spring"] = self
         app.jinja_env.globals['spring'] = self
-        app.context_processor(lambda: {'spring': self})
         app.config.setdefault('APP_HOST', '0.0.0.0')
         app.config.setdefault('APP_PORT', 5000)
         app.config.setdefault('APP_THREAD', False)
         app.config.setdefault('APP_PROCESS', 1)
+        app.config.setdefault("APP_STATIC", "static")
+        app.config.setdefault("APP_TEMPLATES", "templates")
+        app.config.setdefault("APP_RELOADER", False)
         app.config.setdefault("APPLICATION_ROOT", "/")
-        app.config.setdefault("USE_RELOADER", False)
         app.config.setdefault("DEBUG", False)
 
     def __init_config__(self, app: Flask):
@@ -129,8 +130,11 @@ class SpringApplication:
         for __controller_package__ in self.__controller_packages__:
             for __controller_module__ in walk_sub_modules(__controller_package__):
                 _blueprints_ = inspect.getmembers(__controller_module__, lambda x: isinstance(x, Blueprint))
-                for _blueprint_ in _blueprints_:
-                    app.register_blueprint(_blueprint_[1])
+                for _var_name_, _blueprint_ in _blueprints_:
+                    if "__blueprint__" == _var_name_:
+                        _blueprint_.template_folder = app.config.get("APP_TEMPLATES")
+                        _blueprint_.static_folder = app.config.get("APP_STATIC")
+                    app.register_blueprint(_blueprint_)
         app.logger.info("初始化视图成功")
 
     def __init_dao__(self, app: Flask):
@@ -226,7 +230,7 @@ class SpringApplication:
             kwargs["port"] = kwargs.get("port", app.config.get("APP_PORT", None))
             kwargs["threaded"] = kwargs.get("threaded", app.config.get("APP_THREAD", None))
             kwargs["processes"] = kwargs.get("processes", app.config.get("APP_PROCESS", None))
-            kwargs["use_reloader"] = kwargs.get("use_reloader", app.config.get("USE_RELOADER", None))
+            kwargs["use_reloader"] = kwargs.get("use_reloader", app.config.get("APP_RELOADER", None))
             kwargs.update(dict(zip(inspect.signature(app.run).parameters.keys(), args)))
             return Flask.run(app, **kwargs)
         mounts = None if app.config.get("APPLICATION_ROOT", "/") == "/" else {app.config.get("APPLICATION_ROOT", "/"): app}

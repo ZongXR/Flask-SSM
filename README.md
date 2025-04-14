@@ -29,13 +29,15 @@ app.run()
 <li>
 建议将同一类别的配置写在同一模块内。如<code><a href="./test/demo/config/app_config.py" target="_blank">test.demo.config.app_config</a></code>所示：
 <pre>
-APP_HOST = "0.0.0.0"      # 定义了应用的域
-APP_PORT = 5000           # 定义了应用的端口
-APPLICATION_ROOT = "/"    # 定义了应用的根路径
-USE_RELOADER = False      # 是否开启热更新
-DEBUG = False             # 是否处于debug模式
-APP_THREAD = False        # 是否开启多线程
-APP_PROCESS = 1           # 进程个数
+APP_HOST = '0.0.0.0'           # 应用的host，一般保持0.0.0.0
+APP_PORT = 5000                # 应用占用的端口
+APP_STATIC = "static"          # 静态资源目录
+APP_TEMPLATES = "templates"    # 渲染模板目录
+APP_RELOADER = False           # 是否开启热更新
+APPLICATION_ROOT = '/'         # 应用挂载servlet-path路径
+DEBUG = False                  # 是否处于DEBUG模式
+APP_THREAD = False             # 是否开启多线程
+APP_PROCESS = 1                # 进程个数
 </pre>
 </li>
 </ol>
@@ -428,5 +430,8 @@ class Pojo:
 </tr>
 <tr>
 <td>3.8.1.0</td><td>增加日志和启动参数的默认配置项; 适配Flask扩展编写规范; 前端请求使用fetch API替换ajax</td><td>2025年4月9日</td>
+</tr>
+<tr>
+<td>3.9.0.0</td><td>fix some bugs; 新增templates和static目录的配置项; 取消对Flask-Pydantic的依赖</td><td>2025年4月14日</td>
 </tr>
 </table>

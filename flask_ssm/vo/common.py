@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 from json import dumps
+from pydantic import BaseModel, ConfigDict, Field
 
 
-class CommonResult(object):
+class CommonResult(BaseModel):
 
-    code: int
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    message: str
+    code: int = Field(default=200, description="status code")
 
-    data: object
+    message: str = Field(default="OK", description="response message")
 
-    def __init__(self, code: int, message: str, data: object) -> None:
+    data: object = Field(default=None, description="response data")
+
+    def __init__(self, code: int, message: str, data: object):
         """
         构造方法\n
         :param code: 状态码
