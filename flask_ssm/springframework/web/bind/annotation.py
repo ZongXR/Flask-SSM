@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import re
+import json
 from functools import wraps
 from typing import Union, Collection, Type
 import inspect
 from urllib.parse import unquote
 from flask import request, Response
 from flask_ssm.utils.module_utils import blueprint_from_module
-from flask_ssm.utils.type_utils import to_json
 
 
 class RequestMethod:
@@ -48,9 +48,9 @@ class RequestMapping:
         @wraps(func)
         def result(*args, **kwargs):
             if request.is_json:
-                json = request.get_json(silent=True)
-                if json is not None:
-                    kwargs.update(json)
+                json_value = request.get_json(silent=True)
+                if json_value is not None:
+                    kwargs.update(json_value)
             elif request.mimetype.startswith("application/x-www-form-urlencoded") or request.mimetype.startswith("multipart/form-data"):
                 values = request.values
                 values = dict(zip(values.keys(), map(lambda x: unquote(x), values.values())))
@@ -61,7 +61,7 @@ class RequestMapping:
             _module_ = inspect.getmodule(func)
             _inner_result_ = func(**kwargs)
             if inspect.getmembers(_module_, lambda x: x is RestController):
-                return Response(status=200, response=to_json(_inner_result_))
+                return Response(status=200, response=json.dumps(_inner_result_, default=lambda x: x.__dict__), content_type="application/json;charset=utf-8")
             else:
                 return _inner_result_
         bp = blueprint_from_module(func)
@@ -200,7 +200,7 @@ class ResponseBody:
         if type(result) is Response:
             return result
         else:
-            return Response(status=200, response=to_json(result))
+            return Response(status=200, response=json.dumps(result, default=lambda x: x.__dict__), content_type="application/json;charset=utf-8")
 
 
 class RestController:

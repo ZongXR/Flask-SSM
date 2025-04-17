@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import sys
 import logging
-import json
 import inspect
 from inspect import Parameter
 from typing import Type, Tuple
 from types import FunctionType
-from pydantic import create_model, ValidationError, TypeAdapter, validate_call
+from pydantic import create_model, ValidationError, TypeAdapter
 
 
 if sys.version_info >= (3, 8):
@@ -41,22 +40,6 @@ def pojo_private_properties(cls: Type) -> dict:
     if hasattr(cls, "__table_args__"):
         result["__table_args__ "] = getattr(cls, "__table_args__")
     return result
-
-
-def to_json(obj) -> str:
-    """
-    把obj转为json串\n
-    :param obj: 要转换的对象
-    :return: 响应
-    """
-    if type(obj) is str:
-        return f'"{obj}"'
-    elif issubclass(type(obj), dict):
-        return json.dumps(dict(obj))
-    elif hasattr(obj, "__dict__"):
-        return json.dumps(obj.__dict__)
-    else:
-        return str(obj)
 
 
 def validate_value_with_type(value_type, value):

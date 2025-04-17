@@ -2,7 +2,7 @@
 import inspect
 from functools import wraps
 from pydantic import ValidationError
-from flask_ssm.utils.type_utils import validate_params, validate_value_with_type, to_json
+from flask_ssm.utils.type_utils import validate_params, validate_value_with_type
 
 
 class Validated:

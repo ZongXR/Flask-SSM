@@ -11,7 +11,7 @@ from flask_ssm.springframework.web.bind.annotation import RequestMethod, Request
 @ResponseBody
 def custom_error_handler(e: Exception) -> CommonResult:
     current_app.logger.exception(e)
-    return CommonResult.failed(message=str(e))
+    return CommonResult.failed(message=str(e), data=e)
 
 
 # TODO 自定义接口，restful风格
