@@ -434,4 +434,7 @@ class Pojo:
 <tr>
 <td>3.9.0.0</td><td>fix some bugs; 新增templates和static目录的配置项; 取消对Flask-Pydantic的依赖</td><td>2025年4月14日</td>
 </tr>
+<tr>
+<td>3.9.1.0</td><td>新增<code>@Validated</code>装饰器，统一管理参数类型校验; fix some bugs</td><td>2025年4月17日</td>
+</tr>
 </table>

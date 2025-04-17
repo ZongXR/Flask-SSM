@@ -6,7 +6,7 @@ import inspect
 from inspect import Parameter
 from typing import Type, Tuple
 from types import FunctionType
-from pydantic import create_model, ValidationError, TypeAdapter
+from pydantic import create_model, ValidationError, TypeAdapter, validate_call
 
 
 if sys.version_info >= (3, 8):
@@ -99,7 +99,7 @@ def function_parameter_defaults(func):
     return defaults
 
 
-def validate_function(func: FunctionType, kwargs: dict) -> Tuple[dict, dict]:
+def validate_params(func: FunctionType, kwargs: dict) -> Tuple[dict, dict]:
     """
     验证函数的参数是否符合类型\n
     :param func: 函数

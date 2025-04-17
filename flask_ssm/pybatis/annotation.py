@@ -15,7 +15,6 @@ from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.result import MappingResult
 from sqlalchemy.engine.row import Row
 from flask_sqlalchemy import SQLAlchemy
-from pydantic import validate_call
 from flask_ssm.springframework.stereotype import Repository
 from flask_ssm.utils.module_utils import try_to_import
 from flask_ssm.utils.type_utils import __get_origin__, pojo_private_properties, validate_single_value
@@ -54,8 +53,6 @@ class Mapper:
         :param func: 原函数
         :return:
         """
-        func = validate_call(func)
-
         @wraps(func)
         def wrapper(*params, **kwparams):
             _module_ = inspect.getmodule(func)

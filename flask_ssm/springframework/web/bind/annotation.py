@@ -6,7 +6,7 @@ import inspect
 from urllib.parse import unquote
 from flask import request, Response
 from flask_ssm.utils.module_utils import blueprint_from_module
-from flask_ssm.utils.type_utils import to_json, validate_function
+from flask_ssm.utils.type_utils import to_json
 
 
 class RequestMethod:
@@ -58,13 +58,10 @@ class RequestMapping:
                 if request.mimetype.startswith("multipart/form-data"):
                     kwargs.update(request.files)
             kwargs.update(dict(zip(inspect.signature(func).parameters.keys(), args)))
-            kwargs, errors = validate_function(func, kwargs)
-            if errors:
-                return Response(response=to_json(errors), status=400, mimetype="application/json;charset=utf-8")
             _module_ = inspect.getmodule(func)
             _inner_result_ = func(**kwargs)
             if inspect.getmembers(_module_, lambda x: x is RestController):
-                return to_json(_inner_result_)
+                return Response(status=200, response=to_json(_inner_result_))
             else:
                 return _inner_result_
         bp = blueprint_from_module(func)
@@ -203,7 +200,7 @@ class ResponseBody:
         if type(result) is Response:
             return result
         else:
-            return to_json(result)
+            return Response(status=200, response=to_json(result))
 
 
 class RestController:
