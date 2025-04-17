@@ -226,12 +226,12 @@ class SpringApplication:
         """
         @wraps(app.run)
         def run(*args, **kwargs):
+            kwargs.update(dict(zip(inspect.signature(app.run).parameters.keys(), args)))
             kwargs["host"] = kwargs.get("host", app.config.get("APP_HOST", None))
             kwargs["port"] = kwargs.get("port", app.config.get("APP_PORT", None))
             kwargs["threaded"] = kwargs.get("threaded", app.config.get("APP_THREAD", None))
             kwargs["processes"] = kwargs.get("processes", app.config.get("APP_PROCESS", None))
             kwargs["use_reloader"] = kwargs.get("use_reloader", app.config.get("APP_RELOADER", None))
-            kwargs.update(dict(zip(inspect.signature(app.run).parameters.keys(), args)))
             return Flask.run(app, **kwargs)
         mounts = None if app.config.get("APPLICATION_ROOT", "/") == "/" else {app.config.get("APPLICATION_ROOT", "/"): app}
         app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts=mounts)
