@@ -4,7 +4,7 @@ import os
 
 
 __path__ = os.path.join(os.getcwd(), "logs")
-if not __path__:
+if not os.path.exists(__path__):
     os.mkdir(__path__)
 
 

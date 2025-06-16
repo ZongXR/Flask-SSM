@@ -19,7 +19,6 @@ from flask_ssm.springframework.scheduling.annotation import Scheduled
 from flask_ssm.utils.module_utils import walk_sub_modules, run_with_outside_server
 from flask_ssm.utils.context_utils import add_app_context
 from flask_ssm.utils.type_utils import pojo_private_properties
-import flask_ssm.logging.logs_config
 
 
 class SpringApplication:
@@ -59,7 +58,7 @@ class SpringApplication:
                     logging.info("已发现dao包: " + _import_package_.__package__)
                 if inspect.getmembers(_import_package_, lambda x: x is Service):
                     self.__service_packages__.append(_import_package_)
-                    logging.info("已发现service包： " + _import_package_.__package__)
+                    logging.info("已发现service包: " + _import_package_.__package__)
                 if inspect.getmembers(_import_package_, lambda x: x is Scheduled):
                     self.__task_packages__.append(_import_package_)
                     logging.info("已发现task包: " + _import_package_.__package__)
@@ -119,6 +118,8 @@ class SpringApplication:
                                 app.config[__key__] = __env_value__
                             else:
                                 app.config[__key__] = eval(__env_value__)
+        if len(logging.root.handlers) <= 1:
+            __import__("flask_ssm.logging.logs_config")
         app.logger.info("初始化配置成功")
 
     def __init_controller__(self, app: Flask):

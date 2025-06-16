@@ -5,7 +5,7 @@ import os
 
 # TODO 日志保存位置
 __path__ = os.path.join(os.getcwd(), "logs")
-if not __path__:
+if not os.path.exists(__path__):
     os.mkdir(__path__)
 
 
