@@ -4,167 +4,73 @@
     <meta charset="UTF-8">
     <base href='{{ base }}/'>
     <link rel="shortcut icon" href="https://github.com/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>flask-ssm主页</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.0.min.js" charset="utf-8"></script>
-    <script>
-        $(document).ready(function () {
-            document.previousMime = $("input[name='mime']:checked").val();
-        })
-
-        /**
-         * 清屏按钮的响应函数
-         */
-        function clearDiv(dom) {
-            $(dom).text("");
-        }
-
-        /**
-         * form格式参数转json
-         */
-        function formToJson(formString) {
-            let jsonObject = {};
-            for (let keyValue of formString.split("&")) {
-                let item = keyValue.split("=");
-                jsonObject[decodeURI(item[0])] = decodeURI(item[1]);
-            }
-            return JSON.stringify(jsonObject);
-        }
-
-        /**
-         * json格式参数转form
-         */
-        function jsonToForm(jsonString) {
-            let jsonObj = JSON.parse(jsonString);
-            return Object.keys(jsonObj)
-                .map(key => `${encodeURI(key)}=${encodeURI(jsonObj[key])}`)
-                .join("&");
-        }
-
-        /**
-         * 格式化输入数据
-         */
-        function formatData(obj) {
-            let mime = obj.value;
-            let outputBox = $("#inpu");
-            if ((document.previousMime.startsWith("application/x-www-form-urlencoded") || document.previousMime.startsWith("multipart/form-data")) && mime.startsWith("application/json"))
-                outputBox.val(formToJson(outputBox.val()));
-            if (document.previousMime.startsWith("application/json") && (mime.startsWith("application/x-www-form-urlencoded") || mime.startsWith("multipart/form-data")))
-                outputBox.val(jsonToForm(outputBox.val()));
-            document.previousMime = mime;
-        }
-
-        /**
-         * 请求按钮的响应函数
-         */
-        async function getCustom(dom, with_ajax) {
-            let requestMethod = $("input[name='request_method']:checked").val().trim();
-            let mime = $("input[name='mime']:checked").val().trim();
-            let url = $("#url").val().trim();
-            let data = $("#inpu").val().trim();
-            let outputDiv = $("#oupu");
-            let form = $("#uploadform");
-            let uploadfile = $("#uploadfile");
-
-            if (with_ajax) {
-                if (mime.startsWith("multipart/form-data")) {
-                    form.attr("enctype", mime);
-                    let formData = new FormData(form[0]);
-                    for (let keyValue of data.split("&")) {
-                        let item = keyValue.split("=");
-                        formData.append(item[0], item[1]);
-                    }
-                    data = formData;
-                    mime = false;
-                }
-                let response = await fetch(url, {
-                    method: requestMethod,
-                    headers: {"Content-Type": mime},
-                    body: data
-                });
-                if (response.ok) {
-                    let responseJson = await response.json();
-                    outputDiv.append("--------------------------------------------------");
-                    outputDiv.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
-                    outputDiv.append($("<div></div>").html("<strong><i>响应: </i></strong>" + JSON.stringify(responseJson)));
-                } else {
-                    let responseText = await response.text();
-                    outputDiv.append("--------------------------------------------------");
-                    outputDiv.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
-                    outputDiv.append($("<div></div>").html("<strong><i>响应: </i></strong>" + responseText));
-                }
-            } else {
-                form.attr("action", url);
-                form.attr("method", requestMethod);
-                form.attr("enctype", mime);
-                try {
-                    for (let keyValue of data.split("&")) {
-                        let item = keyValue.split("=");
-                        let newInput = $("<input class='new_input'/>").attr("type", "hidden").attr("name", item[0]).attr("value", item[1]);
-                        form.append(newInput);
-                    }
-                    if (!uploadfile.val()) {
-                        uploadfile.prop("disabled", true);
-                    }
-                    form.submit();
-                } finally {
-                    $("input.new_input").remove();
-                    uploadfile.prop("disabled", false);
-                }
-            }
-        }
-    </script>
+    <script type="text/javascript" src="js/common.js" charset="utf-8"></script>
 </head>
 <body>
-<small>*请在此输入请求地址</small>
-<label for="url">
-    <input id="url" placeholder="输入请求地址" type="text" value="{{ base }}/hello_world"/>
-</label><br/>
-<br/>
-<small>*请在此选择mime值</small><br/>
-<label title="request.json.get&lpar;&quot;param&quot;&rpar;">
-    <input type="radio" id="mime_json" name="mime" value="application/json;charset=utf-8" onchange="formatData(this)" checked/>application/json;charset=utf-8
-</label><br/>
-<label title="request.values.get&lpar;&quot;param&quot;&rpar;">
-    <input type="radio" id="mime_form" name="mime" value="application/x-www-form-urlencoded;charset=utf-8" onchange="formatData(this)"/>application/x-www-form-urlencoded;charset=utf-8
-</label><br/>
-<label title="request.files.get&lpar;&quot;param&quot;&rpar;">
-    <input type="radio" id="mime_file" name="mime" value="multipart/form-data" onchange="formatData(this)"/>multipart/form-data
-</label><br/>
-<br/>
-<small>*请在此选择请求方式</small><br/>
-<label>
-    <input type="radio" name="request_method" value="POST" checked/>POST
-</label><br/>
-<label>
-    <input type="radio" name="request_method" value="GET"/>GET
-</label><br/>
-<label>
-    <input type="radio" name="request_method" value="PUT"/>PUT
-</label><br/>
-<label>
-    <input type="radio" name="request_method" value="DELETE"/>DELETE
-</label><br/>
-<label>
-    <input type="radio" name="request_method" value="PATCH"/>PATCH
-</label><br/>
-<br/>
-<label for="inpu">
-    <small>*请在此输入请求正文</small><br/>
-    <textarea id="inpu" cols="100" rows="8">
+<fieldset>
+    <legend>*请在此输入请求地址</legend>
+    <label for="inputUrl">
+        <input id="inputUrl" placeholder="输入请求地址" type="text" value="{{ base }}/helloWorld"/>
+    </label>
+</fieldset>
+<fieldset>
+    <legend>*请在此选择mime值</legend>
+    <label title="request.json.get&lpar;&quot;param&quot;&rpar;">
+        <input type="radio" id="radioMimeJson" name="mime" value="application/json;charset=utf-8"
+               onclick="formatData(this)" onchange="updateButtonState(this)" checked/>application/json;charset=utf-8
+    </label>
+    <label title="request.values.get&lpar;&quot;param&quot;&rpar;">
+        <input type="radio" id="radioMimeForm" name="mime" value="application/x-www-form-urlencoded;charset=utf-8"
+               onclick="formatData(this)" onchange="updateButtonState(this)"/>application/x-www-form-urlencoded;charset=utf-8
+    </label>
+    <label title="request.files.get&lpar;&quot;param&quot;&rpar;">
+        <input type="radio" id="radioMimeFile" name="mime" value="multipart/form-data" onclick="formatData(this)"
+               onchange="updateButtonState(this)"/>multipart/form-data
+    </label>
+</fieldset>
+<fieldset>
+    <legend>*请在此选择请求方式</legend>
+    <label>
+        <input type="radio" name="requestMethod" value="POST" checked/>POST
+    </label>
+    <label>
+        <input type="radio" name="requestMethod" value="GET"/>GET
+    </label>
+    <label>
+        <input type="radio" name="requestMethod" value="PUT"/>PUT
+    </label>
+    <label>
+        <input type="radio" name="requestMethod" value="DELETE"/>DELETE
+    </label>
+    <label>
+        <input type="radio" name="requestMethod" value="PATCH"/>PATCH
+    </label>
+</fieldset>
+<fieldset>
+    <legend>请在此输入请求正文</legend>
+    <label for="textParams">
+        <textarea id="textParams" cols="100" rows="8">
 {
     "param": "hello world"
 }
     </textarea>
-</label><br/>
-<form id="uploadform">
-    <span>upload_file&equals;</span><input id="uploadfile" type="file" name="upload_file" /><input type="reset" />
-</form>
-<button onclick="getCustom(this, true)">ajax请求</button>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<button onclick="getCustom(this, false)">提交表单</button>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button onclick="clearDiv(document.getElementById('oupu'))">清屏</button>
-<br/>
-<div id="oupu"></div>
+    </label>
+</fieldset>
+<div id="divUpload">
+    <form id="formUpload">
+        <span>upload_file&equals;</span><input id="fileUpload" type="file" name="upload_file"/><input type="reset"/>
+    </form>
+</div>
+<div id="divButtons">
+    <button id="buttonAjax" onclick="getCustom(this, true)">ajax请求</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button id="buttonForm" onclick="getCustom(this, false)">提交表单</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button id="buttonClear" onclick="clearDiv(document.getElementById('divOutput'))">清屏</button>
+</div>
+<div id="divOutput"></div>
 </body>
 </html>

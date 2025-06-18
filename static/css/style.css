@@ -1,0 +1,343 @@
+/* 基础样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* 整体容器 */
+body > * {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+}
+
+/* 标题和说明文字 */
+small {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* URL输入框样式 */
+#inputUrl {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+#inputUrl:focus {
+  border-color: #4c6ef5;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.1);
+}
+
+/* 字段组样式 */
+fieldset, #divUpload {
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #f8fafc;
+  transition: border-color 0.3s;
+}
+
+fieldset:hover {
+  border-color: #bac8f3;
+}
+
+legend {
+  padding: 0 10px;
+  font-weight: 600;
+  color: #4c6ef5;
+  font-size: 1.1rem;
+}
+
+/* 单选按钮组样式 */
+label {
+  display: block;
+  padding: 10px 15px;
+  margin: 8px 0;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  padding-left: 40px;
+}
+
+label:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+label > input[type="radio"] {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* 文本区域样式 */
+#textParams {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.95rem;
+  background: #f8fafc;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.3s;
+}
+
+#textParams:focus {
+  border-color: #4c6ef5;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.1);
+}
+
+/* 文件上传表单样式 */
+#formUpload {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 2px dashed #cbd5e1;
+}
+
+#formUpload span {
+  font-weight: 500;
+  color: #4c6ef5;
+}
+
+#fileUpload {
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  flex-grow: 1;
+}
+
+#formUpload input[type="reset"] {
+  padding: 8px 15px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#formUpload input[type="reset"]:hover {
+  background: #e2e8f0;
+}
+
+/* 按钮区域样式 */
+#buttonAjax, #buttonForm, #buttonClear {
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 15px;
+}
+
+#buttonAjax {
+  background: #4c6ef5;
+  color: white;
+}
+
+#buttonAjax:hover {
+  background: #3b5bdb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 110, 245, 0.3);
+}
+
+#buttonForm {
+  background: #20c997;
+  color: white;
+}
+
+#buttonForm:hover {
+  background: #099268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(32, 201, 151, 0.3);
+}
+
+#buttonClear {
+  background: #fa5252;
+  color: white;
+  float: right;
+}
+
+#buttonClear:hover {
+  background: #e03131;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(250, 82, 82, 0.3);
+}
+
+/* 输出区域样式 */
+#divOutput {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  background: #1e293b;
+  color: #f8fafc;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.95rem;
+  min-height: 200px;
+  max-height: 500px;
+  overflow: auto;
+  white-space: pre-wrap;
+  border: 1px solid #334155;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+  
+  body > * {
+    padding: 20px 15px;
+  }
+  
+  #buttonAjax, #buttonForm, #buttonClear {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  #buttonClear {
+    float: none;
+  }
+  
+  fieldset {
+    padding: 15px 10px;
+  }
+}
+
+/* 添加一些动画效果 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+fieldset, #formUpload, #textParams, #divOutput, #divUpload, #divButtons {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 单选按钮自定义样式 */
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #94a3b8;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+input[type="radio"]:checked {
+  border-color: #4c6ef5;
+  background: #4c6ef5;
+}
+
+input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* 禁用按钮样式 */
+#buttonAjax:disabled,
+#buttonForm:disabled,
+#buttonClear:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  filter: grayscale(70%);
+}
+
+#buttonAjax:disabled {
+  background: linear-gradient(to bottom, #a0aec0, #718096);
+  color: #e2e8f0;
+}
+
+#buttonForm:disabled {
+  background: linear-gradient(to bottom, #84d8c9, #20b2a3);
+  color: #e6fffa;
+}
+
+#buttonClear:disabled {
+  background: linear-gradient(to bottom, #fc9d9d, #f87171);
+  color: #fff5f5;
+}
+
+/* 添加禁用状态的视觉指示器 */
+#buttonAjax:disabled::after,
+#buttonForm:disabled::after,
+#buttonClear:disabled::after {
+  content: " (禁用)";
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+/* 添加禁用状态的工具提示 */
+#buttonAjax:disabled:hover::before,
+#buttonForm:disabled:hover::before,
+#buttonClear:disabled:hover::before {
+  content: "当前不可用";
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  transform: translateY(-35px);
+  white-space: nowrap;
+  z-index: 100;
+}
+
+/* 按钮容器定位 */
+#buttonAjax, #buttonForm, #buttonClear {
+  position: relative;
+}
+

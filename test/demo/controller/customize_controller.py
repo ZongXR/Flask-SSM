@@ -15,7 +15,7 @@ def custom_error_handler(e: Exception) -> CommonResult:
 
 
 # TODO 自定义接口，restful风格
-@RequestMapping("/hello_world", [RequestMethod.POST])
+@RequestMapping("/helloWorld", [RequestMethod.POST])
 @ResponseBody
 def hello_world(param) -> CommonResult:
     """
@@ -38,4 +38,4 @@ def upload(upload_file) -> Response:
     result = TemporaryFile()
     result.write(upload_file.stream.read())
     result.seek(0)
-    return send_file(result, mimetype=upload_file.mimetype, as_attachment=True, download_name=upload_file.filename, attachment_filename=upload_file.filename)
+    return send_file(result, mimetype=upload_file.mimetype, as_attachment=True, download_name=upload_file.filename)
