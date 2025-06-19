@@ -285,6 +285,11 @@ input[type="radio"]:checked::after {
   border-radius: 50%;
 }
 
+/* 错误信息提示 */
+span.spanErrors {
+  color: red;
+}
+
 /* 禁用按钮样式 */
 #buttonAjax:disabled,
 #buttonForm:disabled,

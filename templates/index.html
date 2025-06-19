@@ -12,9 +12,7 @@
 <body>
 <fieldset>
     <legend>*请在此输入请求地址</legend>
-    <label for="inputUrl">
-        <input id="inputUrl" placeholder="输入请求地址" type="text" value="{{ base }}/helloWorld"/>
-    </label>
+    <input id="inputUrl" placeholder="输入请求地址" type="text" value="{{ base }}/helloWorld"/>
 </fieldset>
 <fieldset>
     <legend>*请在此选择mime值</legend>
@@ -51,13 +49,11 @@
 </fieldset>
 <fieldset>
     <legend>请在此输入请求正文</legend>
-    <label for="textParams">
-        <textarea id="textParams" cols="100" rows="8">
+    <textarea id="textParams" cols="100" rows="8">
 {
     "param": "hello world"
 }
     </textarea>
-    </label>
 </fieldset>
 <div id="divUpload">
     <form id="formUpload">

@@ -1,13 +1,20 @@
 $(document).ready(function () {
-    document.previousMime = $("input[name='mime']:checked").val();
+    const radioMimeChecked = $("input[name='mime']:checked")[0];
+    document.previousMime = radioMimeChecked.value;
+    updateButtonState(radioMimeChecked);
+    // 检测页面是否从缓存中恢复（即通过返回按钮返回）
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted)
+            window.location.reload(); // 强制刷新页面
+    });
 })
 
 /**
  * 更新按钮状态
  */
 function updateButtonState(dom) {
-    const buttonAjax = document.getElementById("buttonAjax");
-    buttonAjax.disabled = dom.value.trim().startsWith("multipart/form-data");
+    const buttonForm = document.getElementById("buttonForm");
+    buttonForm.disabled = dom.value.trim().startsWith("application/json");
 }
 
 /**
@@ -73,23 +80,22 @@ async function getCustom(dom, with_ajax) {
                 formData.append(item[0], item[1]);
             }
             data = formData;
-            mime = false;
         }
         let response = await fetch(url, {
             method: requestMethod,
-            headers: {"Content-Type": mime},
+            headers: mime.startsWith("multipart/form-data") ? {} : {"Content-Type": mime},
             body: data
         });
         if (response.ok) {
-            let responseJson = await response.json();
+            let responseText = await response.text();
             divOutput.append("--------------------------------------------------");
             divOutput.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
-            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong>" + JSON.stringify(responseJson)));
+            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong><span>" + responseText + "</span>"));
         } else {
             let responseText = await response.text();
             divOutput.append("--------------------------------------------------");
             divOutput.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
-            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong>" + responseText));
+            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong><span class='spanErrors'>" + responseText + "</span>"));
         }
     } else {
         formUpload.attr("action", url);
@@ -98,7 +104,7 @@ async function getCustom(dom, with_ajax) {
         try {
             for (let keyValue of data.split("&")) {
                 let item = keyValue.split("=");
-                let newInput = $("<input class='new_input'/>").attr("type", "hidden").attr("name", item[0]).attr("value", item[1]);
+                let newInput = $("<input class='inputHiddenForm'/>").attr("type", "hidden").attr("name", item[0]).attr("value", item[1]);
                 formUpload.append(newInput);
             }
             if (!fileUpload.val()) {
@@ -106,7 +112,7 @@ async function getCustom(dom, with_ajax) {
             }
             formUpload.submit();
         } finally {
-            $("input.new_input").remove();
+            $("input.inputHiddenForm").remove();
             fileUpload.prop("disabled", false);
         }
     }
