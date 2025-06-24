@@ -58,6 +58,8 @@ class RequestMapping:
                 if request.mimetype.startswith("multipart/form-data"):
                     kwargs.update(request.files)
             kwargs.update(dict(zip(inspect.signature(func).parameters.keys(), args)))
+            if "" in kwargs.keys():
+                kwargs.pop("")
             _module_ = inspect.getmodule(func)
             _inner_result_ = func(**kwargs)
             if inspect.getmembers(_module_, lambda x: x is RestController):

@@ -87,15 +87,15 @@ async function getCustom(dom, with_ajax) {
             body: data
         });
         if (response.ok) {
-            let responseText = await response.text();
+            let responseJson = await response.json();
             divOutput.append("--------------------------------------------------");
             divOutput.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
-            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong><span>" + responseText + "</span>"));
+            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong><span>" + JSON.stringify(responseJson) + "</span>"));
         } else {
-            let responseText = await response.text();
+            let responseJson = await response.json();
             divOutput.append("--------------------------------------------------");
             divOutput.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
-            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong><span class='spanErrors'>" + responseText + "</span>"));
+            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong><span class='spanErrors'>" + JSON.stringify(responseJson) + "</span>"));
         }
     } else {
         formUpload.attr("action", url);
