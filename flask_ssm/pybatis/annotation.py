@@ -57,6 +57,7 @@ class Mapper:
         def wrapper(*params, **kwparams):
             _module_ = inspect.getmodule(func)
             db: SQLAlchemy = getattr(_module_, "__orm__")
+            in_transaction = db.session().in_transaction()
             sql: str = func(*params, **kwparams)
             sql = re.sub(r'#\{(\w+)\}', r':\1', sql)
             if not isinstance(sql, str):
@@ -216,7 +217,7 @@ class Mapper:
             finally:
                 if self.result_type in (CursorResult, MappingResult):
                     current_app.logger.warning(f"result_type={self.result_type}, 未关闭session, 请手动关闭session!")
-                else:
+                elif not in_transaction:
                     db.session.close()
         return wrapper
 

@@ -29,14 +29,16 @@ class Transactional:
         def wrapper(*args, **kwargs):
             _module_ = inspect.getmodule(func)
             db = getattr(_module_, "__orm__")
-            result = None
             try:
+                db.session.begin()
                 result = func(*args, **kwargs)
             except self.rollback_for as e:
                 db.session.rollback()
                 current_app.logger.exception(e)
+                return None
             else:
                 db.session.commit()
-            finally:
                 return result
+            finally:
+                db.session.close()
         return wrapper
