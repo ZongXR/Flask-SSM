@@ -461,4 +461,7 @@ class Pojo:
 <tr>
 <td>3.9.2.5</td><td>fix some bugs</td><td>2025年6月27日</td>
 </tr>
+<tr>
+<td>3.10.0.0</td><td>完善<code>@Transactional</code>装饰器的使用, 新增<code>propagation</code>参数; 修改<code>@Validated</code>装饰器校验类型失败时的抛出异常类型; 完善枚举类型</td><td>2025年7月4日</td>
+</tr>
 </table>

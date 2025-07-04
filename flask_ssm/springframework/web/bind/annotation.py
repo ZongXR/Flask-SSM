@@ -3,13 +3,15 @@ import re
 import json
 from functools import wraps
 from typing import Union, Collection, Type
+from collections.abc import Iterable
 import inspect
 from urllib.parse import unquote
+from enum import Enum
 from flask import request, Response
 from flask_ssm.utils.module_utils import blueprint_from_module
 
 
-class RequestMethod:
+class RequestMethod(Enum):
     """
     请求方法\n
     """
@@ -27,7 +29,7 @@ class RequestMapping:
     """
     用它修饰请求接口函数\n
     """
-    def __init__(self, value: str, method: Union[str, Collection[str]]):
+    def __init__(self, value: str, method: Union[str, Collection[str], RequestMethod, Collection[RequestMethod]]):
         """
         构造方法\n
         :param value: 请求路径
@@ -36,8 +38,12 @@ class RequestMapping:
         self.rule = re.sub(r'\{([^}]+)\}', r'<\1>', value)
         if type(method) is str:
             self.methods = [method]
+        elif type(method) is RequestMethod:
+            self.methods = [method.value]
+        elif isinstance(method, Iterable):
+            self.methods = list(map(lambda x: x if type(x) is str else x.value, method))
         else:
-            self.methods = list(method)
+            raise ValueError(f"Unknown parameter method={method}")
 
     def __call__(self, func):
         """
