@@ -4,7 +4,7 @@ Flask-APScheduler~=1.12.3,>1.12.2
 Flask-Cors~=3.0.10
 Flask-HTTPAuth~=4.5.0
 Flask-SQLAlchemy~=3.0.5
-SQLAlchemy~=1.4.18
+SQLAlchemy~=2.0.41
 pydantic~=2.0
 typing-inspect~=0.8.0;python_version=="3.7"
 APScheduler==3.10.4

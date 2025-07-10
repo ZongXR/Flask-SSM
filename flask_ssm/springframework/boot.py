@@ -114,6 +114,7 @@ class SpringApplication:
                         __value__ = app.config.get(__key__)
                         __env_value__ = os.getenv(__key__)
                         if __env_value__ is not None:
+                            logging.warning(f"使用环境变量{__key__}={__env_value__}配置项")
                             if type(__value__) is str:
                                 app.config[__key__] = __env_value__
                             else:
