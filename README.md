@@ -467,4 +467,7 @@ class Pojo:
 <tr>
 <td>3.10.1.0</td><td>升级SQLalchemy, 解决若干BUG; <code>@Mapper</code>装饰器兼容polars的Series和DataFrame; 使用环境变量设置项时进行警告</td>
 </tr>
+<tr>
+<td>3.10.1.1</td><td>修改Flask-SQLalchemy的配置项</td><td>2025年7月14日</td>
+</tr>
 </table>

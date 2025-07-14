@@ -13,4 +13,7 @@ db_database = 'dbname'               # 数据库名称
 SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(db_dialect, db_driver, db_username, db_password, db_host, db_port, db_database)
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SQLALCHEMY_ECHO = True
-SQLALCHEMY_POOL_RECYCLE = 7200       # 自动回收数据库连接的时长，单位秒。可用于防止长时间闲置断开数据库连接
+SQLALCHEMY_ENGINE_OPTIONS = {
+    'pool_recycle': 7200,            # 自动回收数据库连接的时长，单位秒。可用于防止长时间闲置断开数据库连接
+    'pool_pre_ping': True,           # 连接先ping后用
+}
