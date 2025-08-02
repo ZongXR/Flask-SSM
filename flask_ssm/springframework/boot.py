@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-from typing import List, Optional
+import sys
+from typing import List
 from types import ModuleType, MethodType
 import inspect
 import pkgutil
@@ -14,11 +15,10 @@ from flask_apscheduler import APScheduler
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_ssm.springframework.stereotype import Controller, Service, Repository
-from flask_ssm.springframework.context.annotation import Configuration, Bean
+from flask_ssm.springframework.context.annotation import Configuration
 from flask_ssm.springframework.scheduling.annotation import Scheduled
 from flask_ssm.utils.module_utils import walk_sub_modules, run_with_outside_server
 from flask_ssm.utils.context_utils import add_app_context
-from flask_ssm.utils.type_utils import pojo_private_properties
 
 
 class SpringApplication:
@@ -27,15 +27,12 @@ class SpringApplication:
         """
         构造方法\n
         """
-        self.orm: Optional[SQLAlchemy] = None
-        self.scheduler = APScheduler()
         # 记录下哪些包需要自动导入
         self.__config_packages__: List[ModuleType] = list()
         self.__controller_packages__: List[ModuleType] = list()
         self.__service_packages__: List[ModuleType] = list()
         self.__dao_packages__: List[ModuleType] = list()
         self.__task_packages__: List[ModuleType] = list()
-        self.__pojo_packages__: List[ModuleType] = list()
         # 遍历子包，自动导入
         self.base_package = inspect.getmodule(inspect.stack()[1].frame)
         for _sub_package_ in pkgutil.iter_modules([os.path.dirname(self.base_package.__file__)]):
@@ -49,12 +46,6 @@ class SpringApplication:
                     logging.info("已发现controller包: " + _import_package_.__package__)
                 if inspect.getmembers(_import_package_, lambda x: x is Repository):
                     self.__dao_packages__.append(_import_package_)
-                    for cls_name, cls in inspect.getmembers(_import_package_, lambda x: x is Repository):
-                        for var_name, var in inspect.getmembers(cls, lambda x: isinstance(x, SQLAlchemy)):
-                            if self.orm is None:
-                                self.orm = var
-                            else:
-                                setattr(cls, var_name, self.orm)
                     logging.info("已发现dao包: " + _import_package_.__package__)
                 if inspect.getmembers(_import_package_, lambda x: x is Service):
                     self.__service_packages__.append(_import_package_)
@@ -62,9 +53,6 @@ class SpringApplication:
                 if inspect.getmembers(_import_package_, lambda x: x is Scheduled):
                     self.__task_packages__.append(_import_package_)
                     logging.info("已发现task包: " + _import_package_.__package__)
-                if inspect.getmembers(_import_package_, lambda x: x is Bean):
-                    self.__pojo_packages__.append(_import_package_)
-                    logging.info("已发现pojo包: " + _import_package_.__package__)
 
     def init_app(self, app: Flask):
         """
@@ -74,7 +62,6 @@ class SpringApplication:
         """
         self.__init_self__(app)
         self.__init_config__(app)
-        # self.__init_pojo__(app)
         self.__init_dao__(app)
         self.__init_service__(app)
         self.__init_controller__(app)
@@ -136,6 +123,7 @@ class SpringApplication:
                     if "__blueprint__" == _var_name_:
                         _blueprint_.template_folder = app.config.get("APP_TEMPLATES")
                         _blueprint_.static_folder = app.config.get("APP_STATIC")
+                        _blueprint_.root_path = os.path.dirname(os.path.abspath(sys.argv[0]))
                     app.register_blueprint(_blueprint_)
         app.logger.info("初始化视图成功")
 
@@ -145,12 +133,9 @@ class SpringApplication:
         :param app: Flask对象
         :return:
         """
-        for __dao_package__ in self.__dao_packages__:
-            for __dao_module__ in walk_sub_modules(__dao_package__):
-                setattr(__dao_module__, "__orm__", self.orm)
-        if self.__dao_packages__ and self.orm:
-            self.orm.init_app(app)
-            app.logger.info("初始化数据库连接成功")
+        db = SQLAlchemy()
+        db.init_app(app)
+        app.logger.info("初始化数据库连接成功")
 
     def __init_task__(self, app: Flask):
         """
@@ -158,10 +143,10 @@ class SpringApplication:
         :param app: Flask对象
         :return:
         """
+        scheduler = APScheduler()
         jobs = list()
         for __task_package__ in self.__task_packages__:
             for __task_module__ in walk_sub_modules(__task_package__):
-                setattr(__task_module__, "__orm__", self.orm)
                 cfg = Config(os.path.dirname(os.path.abspath(Path(__task_package__.__file__))))
                 cfg.from_object(__task_module__)
                 if not cfg.get("FUNC", None):
@@ -178,9 +163,9 @@ class SpringApplication:
         app.config.update({
             "JOBS": jobs
         })
-        if self.__task_packages__ and self.scheduler:
-            self.scheduler.init_app(app)
-            self.scheduler.start()
+        if self.__task_packages__ and scheduler:
+            scheduler.init_app(app)
+            scheduler.start()
             app.logger.info("初始化定时任务成功")
 
     def __init_service__(self, app: Flask):
@@ -189,27 +174,7 @@ class SpringApplication:
         :param app: Flask对象
         :return:
         """
-        for __service_package__ in self.__service_packages__:
-            for __service_module__ in walk_sub_modules(__service_package__):
-                setattr(__service_module__, "__orm__", self.orm)
         app.logger.info("初始化业务逻辑成功")
-
-    def __init_pojo__(self, app: Flask):
-        """
-        初始化pojo包\n
-        :param app: Flask对象
-        :return:
-        """
-        for __pojo_package__ in self.__pojo_packages__:
-            for __pojo_module__ in walk_sub_modules(__pojo_package__):
-                members = inspect.getmembers(__pojo_module__)
-                members = filter(lambda x: inspect.isclass(x[1]) and x[1].__module__ == __pojo_module__.__name__, members)
-                for name, cls in members:
-                    if not issubclass(cls, self.orm.Model):
-                        metadata = pojo_private_properties(cls)
-                        cls = type(cls.__name__, (self.orm.Model, cls), metadata)
-                        setattr(__pojo_module__, name, cls)
-        app.logger.info("初始化映射对象成功")
 
     def __init_cors__(self, app: Flask):
         """

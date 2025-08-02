@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
 from typing import List, Optional, Union, Tuple, Any
 from types import ModuleType, FunctionType, LambdaType
 import inspect
@@ -94,8 +93,7 @@ def blueprint_from_module(func: FunctionType) -> Blueprint:
         result = Blueprint(
             _module_.__name__.replace(".", "_"),
             _module_.__name__,
-            static_url_path="",
-            root_path=os.path.dirname(os.path.abspath(sys.argv[0]))
+            static_url_path=""
         )
         setattr(_module_, "__blueprint__", result)
     return result

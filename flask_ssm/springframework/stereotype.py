@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from flask_sqlalchemy import SQLAlchemy
 
 
 class Controller:
@@ -20,7 +19,4 @@ class Repository:
     """
     数据交互\n
     """
-    db = SQLAlchemy()
-
-
-
+    pass

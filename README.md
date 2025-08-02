@@ -465,9 +465,12 @@ class Pojo:
 <td>3.10.0.0</td><td>完善<code>@Transactional</code>装饰器的使用, 新增<code>propagation</code>参数; 修改<code>@Validated</code>装饰器校验类型失败时的抛出异常类型; 完善枚举类型</td><td>2025年7月4日</td>
 </tr>
 <tr>
-<td>3.10.1.0</td><td>升级SQLalchemy, 解决若干BUG; <code>@Mapper</code>装饰器兼容polars的Series和DataFrame; 使用环境变量设置项时进行警告</td>
+<td>3.10.1.0</td><td>升级SQLalchemy, 解决若干BUG; <code>@Mapper</code>装饰器兼容polars的Series和DataFrame; 使用环境变量设置项时进行警告</td><td>2025年7月10日</td>
 </tr>
 <tr>
 <td>3.10.1.1</td><td>修改Flask-SQLalchemy的配置项</td><td>2025年7月14日</td>
+</tr>
+<tr>
+<td>3.10.2.0</td><td>优化执行逻辑; 修复数据库连接无法关闭的BUG; 修复前端页面的显示BUG</td><td>2025年8月2日</td>
 </tr>
 </table>

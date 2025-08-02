@@ -58,7 +58,7 @@ class Transactional:
         @wraps(func)
         def wrapper(*args, **kwargs):
             _module_ = inspect.getmodule(func)
-            db: SQLAlchemy = getattr(_module_, "__orm__")
+            db: SQLAlchemy = current_app.extensions["sqlalchemy"]
             in_transaction = db.session().in_transaction()
             if self.propagation is Propagation.REQUIRED:
                 if in_transaction:

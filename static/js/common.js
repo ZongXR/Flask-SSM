@@ -90,7 +90,7 @@ async function getCustom(dom, with_ajax) {
             let responseJson = await response.json();
             divOutput.append("--------------------------------------------------");
             divOutput.append($("<div></div>").html("<strong><i>请求: </i></strong><pre>" + data + "</pre>"));
-            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong><span>" + JSON.stringify(responseJson) + "</span>"));
+            divOutput.append($("<div></div>").html("<strong><i>响应: </i></strong><pre>" + JSON.stringify(responseJson) + "</pre>"));
         } else {
             let responseText = await response.text();
             divOutput.append("--------------------------------------------------");
