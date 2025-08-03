@@ -13,6 +13,7 @@ from sqlalchemy import text
 from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.result import MappingResult
 from sqlalchemy.engine.row import Row
+from sqlalchemy.sql.elements import TextClause
 from flask_sqlalchemy import SQLAlchemy
 from flask_ssm.utils.module_utils import try_to_import
 from flask_ssm.utils.type_utils import __get_origin__, pojo_private_properties, validate_single_value
@@ -219,12 +220,16 @@ class Mapper:
                     if issubclass(_class_, db.Model):                                           # Pojo
                         return db.session.query(_class_).from_statement(text(sql)).params(**kwparams).first()
                     else:                                                                       # T
-                        result: CursorResult = db.session.execute(text(sql), kwparams, bind_arguments={"bind": db.engines[self.namespace]})
-                        keys = list(result.mappings().keys())
-                        if len(keys) > 1:
-                            current_app.logger.warning("found %d fields, only pick fields[0]: %s" % (len(keys), keys[0]))
-                        fetch_result = result.fetchone()
-                        _res_ = None if fetch_result is None else fetch_result[0]
+                        statement: TextClause = text(sql)
+                        result: CursorResult = db.session.execute(statement, kwparams, bind_arguments={"bind": db.engines[self.namespace]})
+                        if statement.is_insert or statement.is_update or statement.is_delete:
+                            _res_ = result.rowcount
+                        else:
+                            keys = list(result.mappings().keys())
+                            if len(keys) > 1:
+                                current_app.logger.warning("found %d fields, only pick fields[0]: %s" % (len(keys), keys[0]))
+                            fetch_result = result.scalar()
+                            _res_ = None if fetch_result is None else fetch_result
                         return validate_single_value(_class_, _res_)
             finally:
                 if self.result_type in (CursorResult, MappingResult):

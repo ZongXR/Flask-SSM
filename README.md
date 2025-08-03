@@ -473,4 +473,7 @@ class Pojo:
 <tr>
 <td>3.10.2.0</td><td>优化执行逻辑; 修复数据库连接无法关闭的BUG; 修复前端页面的显示BUG</td><td>2025年8月2日</td>
 </tr>
+<tr>
+<td>3.10.3.0</td><td>执行<code>INSERT</code>、<code>UPDATE</code>、<code>DELETE</code>语句, 如果把<code>result_type</code>设置为<code>int</code>可以返回受影响行数</td><td>2025年8月3日</td>
+</tr>
 </table>
