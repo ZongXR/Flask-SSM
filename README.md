@@ -476,4 +476,7 @@ class Pojo:
 <tr>
 <td>3.10.3.0</td><td>执行<code>INSERT</code>、<code>UPDATE</code>、<code>DELETE</code>语句, 如果把<code>result_type</code>设置为<code>int</code>可以返回受影响行数</td><td>2025年8月3日</td>
 </tr>
+<tr>
+<td>3.10.3.1</td><td>Flask-SQLalchemy升级版本至3.1.1</td><td>2025年8月4日</td>
+</tr>
 </table>

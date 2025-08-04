@@ -139,5 +139,4 @@ sql
 run_with_docker.sh
 run_without_docker.sh
 
-logs/*
-!logs/.gitkeep
+logs

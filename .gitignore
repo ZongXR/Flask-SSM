@@ -131,6 +131,4 @@ dmypy.json
 .idea
 **.iml
 
-logs/*
-
-!logs/.gitkeep
+logs
