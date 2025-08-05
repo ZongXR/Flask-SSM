@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+import inspect
 from types import FunctionType
 from functools import wraps
-from flask import Flask
-import flask.globals as globs
+from flask import Flask, has_app_context, current_app
+from flask_sqlalchemy import SQLAlchemy
 
 
 def add_app_context(app: Flask, func: FunctionType) -> FunctionType:
@@ -19,10 +20,19 @@ def add_app_context(app: Flask, func: FunctionType) -> FunctionType:
     return result
 
 
-def has_app_context() -> bool:
+def get_sqlalchemy() -> SQLAlchemy:
     """
-    判断是否有上下文\n
-    :return: 是否有上下文
+    获取SQLalchemy对象\n
+    :return: SQLalchemy对象, 没找到返回空
     """
-    _app_ctx_stack = getattr(globs, "_app_ctx_stack", None)
-    return _app_ctx_stack.top is not None
+    if has_app_context():
+        if "sqlalchemy" in current_app.extensions.keys():
+            return current_app.extensions["sqlalchemy"]
+        else:
+            raise ValueError("未连接数据库, 未找到绑定Flask的数据源")
+    else:
+        main_module = __import__("__main__")
+        for _name_, _var_ in inspect.getmembers(main_module, lambda x: isinstance(x, Flask)):
+            if "sqlalchemy" in _var_.extensions.keys():
+                return _var_.extensions["sqlalchemy"]
+        raise ValueError("未连接数据库, 未找到绑定Flask的数据源")

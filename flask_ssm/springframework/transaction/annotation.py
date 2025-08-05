@@ -7,6 +7,7 @@ from sqlalchemy.orm import scoped_session
 from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_ssm.springframework.transaction import IllegalTransactionStateException
+from flask_ssm.utils.context_utils import get_sqlalchemy
 
 
 class Isolation(IntEnum):
@@ -58,7 +59,7 @@ class Transactional:
         @wraps(func)
         def wrapper(*args, **kwargs):
             _module_ = inspect.getmodule(func)
-            db: SQLAlchemy = current_app.extensions["sqlalchemy"]
+            db: SQLAlchemy = get_sqlalchemy()
             in_transaction = db.session().in_transaction()
             if self.propagation is Propagation.REQUIRED:
                 if in_transaction:

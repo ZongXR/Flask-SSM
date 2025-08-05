@@ -479,4 +479,7 @@ class Pojo:
 <tr>
 <td>3.10.3.1</td><td>Flask-SQLalchemy升级版本至3.1.1</td><td>2025年8月4日</td>
 </tr>
+<tr>
+<td>3.10.4.0</td><td>优化执行逻辑</td><td>2025年8月5日</td>
+</tr>
 </table>

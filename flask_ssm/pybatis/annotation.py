@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 import re
 import sys
-import logging
 import typing
 from typing import Type, List, Tuple, Dict, Union, NoReturn, Optional
 from functools import wraps
 from inspect import signature
 import inspect
 from collections.abc import Generator
-from flask import current_app, Flask
+from flask import current_app
 from sqlalchemy import text
 from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.result import MappingResult
 from sqlalchemy.engine.row import Row
 from sqlalchemy.sql.elements import TextClause
 from flask_sqlalchemy import SQLAlchemy
+from flask_ssm.utils.context_utils import get_sqlalchemy
 from flask_ssm.utils.module_utils import try_to_import
 from flask_ssm.utils.type_utils import __get_origin__, pojo_private_properties, validate_single_value
 
@@ -55,7 +55,7 @@ class Mapper:
         @wraps(func)
         def wrapper(*params, **kwparams):
             _module_ = inspect.getmodule(func)
-            db: SQLAlchemy = current_app.extensions["sqlalchemy"]
+            db: SQLAlchemy = get_sqlalchemy()
             in_transaction = db.session().in_transaction()
             sql: str = func(*params, **kwparams)
             sql = re.sub(r'#\{(\w+)\}', r':\1', sql)
@@ -258,24 +258,20 @@ class TableName:
         :param cls: 装饰的类
         :return:
         """
-        main_module = __import__("__main__")
-        for _name_, _var_ in inspect.getmembers(main_module, lambda x: isinstance(x, Flask)):
-            db: SQLAlchemy = _var_.extensions["sqlalchemy"]
-            if issubclass(cls, db.Model):
-                return cls
-            metadata = pojo_private_properties(cls)
-            if self.table_name:
-                metadata["__tablename__"] = self.table_name
-            if self.schema:
-                if "__table_args__" in metadata.keys():
-                    __table_args__ = metadata["__table_args__"]
-                    for i, __table_arg__ in enumerate(__table_args__):
-                        if type(__table_arg__) is dict:
-                            metadata["__table_args__"][i]["schema"] = self.schema
-                            break
-                else:
-                    metadata["__table_args__"] = ({"schema": self.schema},)
-            cls = type(cls.__name__, (db.Model, cls), metadata)
+        db: SQLAlchemy = get_sqlalchemy()
+        if issubclass(cls, db.Model):
             return cls
-        logging.warning("未找到Flask对象")
+        metadata = pojo_private_properties(cls)
+        if self.table_name:
+            metadata["__tablename__"] = self.table_name
+        if self.schema:
+            if "__table_args__" in metadata.keys():
+                __table_args__ = metadata["__table_args__"]
+                for i, __table_arg__ in enumerate(__table_args__):
+                    if type(__table_arg__) is dict:
+                        metadata["__table_args__"][i]["schema"] = self.schema
+                        break
+            else:
+                metadata["__table_args__"] = ({"schema": self.schema},)
+        cls = type(cls.__name__, (db.Model, cls), metadata)
         return cls
