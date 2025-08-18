@@ -485,4 +485,7 @@ class Pojo:
 <tr>
 <td>3.10.5.0</td><td>修复数据库增删改无法返回行数的BUG</td><td>2025年8月18日</td>
 </tr>
+<tr>
+<td>3.10.6.0</td><td>fix some bugs</td><td>2025年8月18日</td>
+</tr>
 </table>
