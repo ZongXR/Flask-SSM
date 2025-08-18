@@ -222,7 +222,7 @@ class Mapper:
                     else:                                                                       # T
                         statement: TextClause = text(sql)
                         result: CursorResult = db.session.execute(statement, kwparams, bind_arguments={"bind": db.engines[self.namespace]})
-                        if statement.is_insert or statement.is_update or statement.is_delete:
+                        if self.result_type is int:
                             _res_ = result.rowcount
                         else:
                             keys = list(result.mappings().keys())
