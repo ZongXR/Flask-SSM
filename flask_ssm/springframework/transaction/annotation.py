@@ -65,7 +65,7 @@ class Transactional:
                 if in_transaction:
                     return func(*args, **kwargs)
                 else:
-                    return self.__start_transaction__(func, db.session, *args, **kwargs)
+                    return self.__start_transaction__(func, db.session, False, *args, **kwargs)
             elif self.propagation is Propagation.SUPPORTS:
                 return func(*args, **kwargs)
             elif self.propagation is Propagation.MANDATORY:
@@ -82,12 +82,12 @@ class Transactional:
                     db_session = db.session
                     try:
                         db.session = secondary_session
-                        return self.__start_transaction__(func, db.session, *args, **kwargs)
+                        return self.__start_transaction__(func, db.session, False, *args, **kwargs)
                     finally:
                         db.session = db_session
                         secondary_session.remove()
                 else:
-                    return self.__start_transaction__(func, db.session, *args, **kwargs)
+                    return self.__start_transaction__(func, db.session, False, *args, **kwargs)
             elif self.propagation is Propagation.NOT_SUPPORTED:
                 if in_transaction:
                     secondary_session = scoped_session(
@@ -112,7 +112,7 @@ class Transactional:
                 if in_transaction:
                     return self.__start_transaction__(func, db.session, True, *args, **kwargs)
                 else:
-                    return self.__start_transaction__(func, db.session, *args, **kwargs)
+                    return self.__start_transaction__(func, db.session, False, *args, **kwargs)
             else:
                 raise ValueError(f"Unknown parameter propagation={self.propagation}")
         return wrapper
