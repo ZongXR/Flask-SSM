@@ -265,12 +265,14 @@ class TableName:
             metadata["__tablename__"] = self.table_name
         if self.schema:
             if "__table_args__" in metadata.keys():
-                __table_args__ = metadata["__table_args__"]
-                for i, __table_arg__ in enumerate(__table_args__):
-                    if type(__table_arg__) is dict:
-                        metadata["__table_args__"][i]["schema"] = self.schema
-                        break
+                if type(metadata["__table_args__"]) is dict:
+                    metadata["__table_args__"]["schema"] = self.schema
+                elif type(metadata["__table_args__"]) is tuple:
+                    __table_arg__ = [x for x in metadata["__table_args__"] if type(x) is dict][-1]
+                    __table_arg__["schema"] = self.schema
+                else:
+                    raise ValueError(f"属性__table_args__类型只能是tuple或dict, 类型错误: {type(metadata['__table_args__'])}")
             else:
-                metadata["__table_args__"] = ({"schema": self.schema},)
+                metadata["__table_args__"] = {"schema": self.schema}
         cls = type(cls.__name__, (db.Model, cls), metadata)
         return cls
