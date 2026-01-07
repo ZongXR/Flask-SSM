@@ -9,5 +9,7 @@ pydantic~=2.0
 typing-inspect~=0.8.0;python_version=="3.7"
 APScheduler==3.10.4
 Werkzeug>=2.1.2,<=2.3.8
-setuptools~=65.5.0
-sqlglot~=27.7.0
+setuptools
+sqlglot
+twine==6.2.0
+packaging==25.0

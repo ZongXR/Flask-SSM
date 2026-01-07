@@ -494,4 +494,7 @@ class Pojo:
 <tr>
 <td>3.10.8.0</td><td>修复<code>@TableName</code>设置schema的BUG</td><td>2025年8月27日</td>
 </tr>
+<tr>
+<td>3.10.8.1</td><td>修复Dockerfile以及requirements.txt的若干问题</td><td>2026年1月7日</td>
+</tr>
 </table>

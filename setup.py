@@ -10,7 +10,7 @@ with open("./README.md", "r", encoding="utf-8") as f:
     long_description = long_description.replace("./app.py", base_url + "/tree/main/app.py")
 packages = list(filter(lambda x: not x.startswith("test"), setuptools.find_packages()))
 requires_list = open('./requirements.txt', 'r', encoding='utf8').readlines()
-requires_list = [x.strip() for x in requires_list if (not x.startswith("PyMySQL")) and (not x.startswith("setuptools"))]
+requires_list = [x.strip() for x in requires_list if (not x.startswith("PyMySQL")) and (not x.startswith("setuptools")) and (not x.startswith("twine")) and (not x.startswith("packaging"))]
 
 
 setuptools.setup(
